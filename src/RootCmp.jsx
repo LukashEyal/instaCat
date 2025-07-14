@@ -23,11 +23,18 @@ import { Explore } from './pages/Explore.jsx'
 import { Reels } from './pages/Reels.jsx'
 import { Messages } from './pages/Messages.jsx'
 import { Profile } from './pages/Profile.jsx'
+
+console.log("test")
+
 export function RootCmp() {
     return (
+
+        
         <div className="main-container">
             <SideBar />
             {/* <UserMsg /> */}
+
+        
 
             <main>
                 <Routes>
