@@ -24,6 +24,8 @@ import { Reels } from './pages/Reels.jsx'
 import { Messages } from './pages/Messages.jsx'
 import { Profile } from './pages/Profile.jsx'
 export function RootCmp() {
+
+    console.log("TEST")
     return (
         <div className="main-container">
             <SideBar />
