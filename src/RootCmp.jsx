@@ -1,24 +1,15 @@
 import React from 'react'
-import { Routes, Route, Navigate } from 'react-router'
 
-import { userService } from './services/user'
-import { HomePage } from './pages/HomePage'
-import { AboutUs, AboutTeam, AboutVision } from './pages/AboutUs'
-import { CarIndex } from './pages/CarIndex.jsx'
-import { ReviewIndex } from './pages/ReviewIndex.jsx'
-import { ChatApp } from './pages/Chat.jsx'
-import { AdminIndex } from './pages/AdminIndex.jsx'
-
-import { CarDetails } from './pages/CarDetails'
-import { UserDetails } from './pages/UserDetails'
-
-import { SideBar } from './cmps/SideBar.jsx'
-
-import { UserMsg } from './cmps/UserMsg.jsx'
 import { LoginSignup } from './pages/LoginSignup.jsx'
 import { Login } from './pages/Login.jsx'
 import { Signup } from './pages/Signup.jsx'
 
+
+import { Routes, Route, Navigate } from 'react-router'
+import { userService } from './services/user'
+import { HomePage } from './pages/HomePage'
+import { SideBar } from './cmps/SideBar.jsx'
+import { UserMsg } from './cmps/UserMsg.jsx'
 import { Explore } from './pages/Explore.jsx'
 import { Reels } from './pages/Reels.jsx'
 import { Messages } from './pages/Messages.jsx'
@@ -27,12 +18,10 @@ import { Profile } from './pages/Profile.jsx'
 
 export function RootCmp() {
 
-    console.log("TEST")
-    console.log("TEST")
     return (
         <div className="main-container">
             <SideBar />
-            {/* <UserMsg /> */}
+            <UserMsg />
 
             <main>
                 <Routes>
