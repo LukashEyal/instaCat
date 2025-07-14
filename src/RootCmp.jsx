@@ -26,6 +26,7 @@ import { Profile } from './pages/Profile.jsx'
 export function RootCmp() {
 
     console.log("TEST")
+    console.log("TEST")
     return (
         <div className="main-container">
             <SideBar />
