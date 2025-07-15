@@ -1,4 +1,29 @@
 .side-bar {
-display: flex;
-border: 1px solid black;
-}
+    width: 190px;
+    padding: 20px;
+    background-color: #fff;
+    border-right: 1px solid #dbdbdb;
+    box-sizing: border-box;
+  }
+
+  .nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #000;
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+  
+  .nav-links a:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .nav-links svg {
+    width: 24px;
+    height: 24px;
+  }
+  
