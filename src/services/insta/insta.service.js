@@ -1,8 +1,15 @@
 import { utilService} from "../util.service.js"
 import { storageService } from "../async-storage.service.js"
+import { faker } from '@faker-js/faker';
+
+
 
 const INSTA_KEY = "instaDB"
 _createPosts()
+
+_loadPosts().then((posts) => {
+  console.log('Loaded posts:', posts)
+})
 
 export const instaService = {
     query,
@@ -13,29 +20,51 @@ export const instaService = {
     getDefaultFilter,
 }
 
-function query(filterBy = {}) {
-    return storageService.query(INSTA_KEY).then((books) => {
-        // console.log("filterBy", filterBy)
-        if (filterBy.txt) {
-            const regExp = new RegExp(filterBy.txt, "i")
-            books = books.filter((book) => regExp.test(book.title))
-        }
-        if (filterBy.categories) {
-            books = books.filter(
-                (book) => book.categories[0] === filterBy.categories
-            )
-        }
-        if (filterBy.maxPrice) {
-            books = books.filter(
-                (book) => book.listPrice.amount <= filterBy.maxPrice
-            )
-        }
-        return books
-    })
+
+function _loadPosts()
+
+{
+
+return storageService.query(INSTA_KEY)
+
 }
 
-function get(bookId) {
-    return storageService.get(INSTA_KEY, bookId).then(_setNextPrevCarId)
+
+
+function query() {
+
+    return storageService.query(INSTA_KEY).then((posts) => {
+
+        return posts
+
+    })
+
+}
+
+
+// function query(filterBy = {}) {
+//     return storageService.query(INSTA_KEY).then((books) => {
+//         // console.log("filterBy", filterBy)
+//         if (filterBy.txt) {
+//             const regExp = new RegExp(filterBy.txt, "i")
+//             books = books.filter((book) => regExp.test(book.title))
+//         }
+//         if (filterBy.categories) {
+//             books = books.filter(
+//                 (book) => book.categories[0] === filterBy.categories
+//             )
+//         }
+//         if (filterBy.maxPrice) {
+//             books = books.filter(
+//                 (book) => book.listPrice.amount <= filterBy.maxPrice
+//             )
+//         }
+//         return books
+//     })
+// }
+
+function get(postId) {
+    return storageService.get(INSTA_KEY, postId).then(_setNextPrevCarId)
 }
 
 function remove(carId) {
@@ -59,39 +88,43 @@ function getDefaultFilter() {
     return { txt: "", maxPrice: 0, categories: "" }
 }
 
-function _setNextPrevCarId(car) {
-    return query().then((cars) => {
-        const carIdx = cars.findIndex((currCar) => currCar.id === car.id)
-        const nextCar = cars[carIdx + 1] ? cars[carIdx + 1] : cars[0]
-        const prevCar = cars[carIdx - 1]
-            ? cars[carIdx - 1]
-            : cars[cars.length - 1]
-        car.nextCarId = nextCar.id
-        car.prevCarId = prevCar.id
-        return car
-    })
-}
+// function _setNextPrevCarId(car) {
+//     return query().then((cars) => {
+//         const carIdx = cars.findIndex((currCar) => currCar.id === car.id)
+//         const nextCar = cars[carIdx + 1] ? cars[carIdx + 1] : cars[0]
+//         const prevCar = cars[carIdx - 1]
+//             ? cars[carIdx - 1]
+//             : cars[cars.length - 1]
+//         car.nextCarId = nextCar.id
+//         car.prevCarId = prevCar.id
+//         return car
+//     })
+// }
 
 function _createPosts() {
-    let posts = utilService.loadFromStorage(INSTA_KEY)
-    if (!posts || !posts.length) {
-        const ctgs = ["Love", "Fiction", "Poetry", "Computers", "Religion"]
-        posts = []
-        for (let i = 0; i < 2; i++) {
-            const post = {
-            id: `p${i}`,
-            userId: "u3",
-            userName: "Cody Vargas",
-            content: "Agency when price place show hand far far. Against design court give improve. Store cause newspaper such skill language throw.",
-            }
-            posts.push(post)
-        }
-        utilService.saveToStorage(INSTA_KEY, posts)
+  let posts = utilService.loadFromStorage(INSTA_KEY)
+
+  if (!posts || !posts.length) {
+    posts = []
+
+    for (let i = 0; i < 2; i++) {
+      const post = {
+        postId: `p${i}`,
+        userId: `u${faker.string.alphanumeric(3)}`,
+        userName: faker.person.fullName(),
+        content: faker.lorem.paragraph(),
+        createdAt: faker.date.recent().toISOString(),
+        location: faker.location.city(),
+      }
+
+      posts.push(post)
     }
 
-    // console.log("books", books)
-}
+    utilService.saveToStorage(INSTA_KEY, posts)
+  }
 
+  return JSON.stringify(posts, null, 2)
+}
 // function _createBooks() {
 //  let books = loadFromStorage(INSTA_KEY)
 
