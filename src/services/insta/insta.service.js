@@ -101,29 +101,41 @@ function getDefaultFilter() {
 //     })
 // }
 
+
 function _createPosts() {
-  let posts = utilService.loadFromStorage(INSTA_KEY)
+  let posts = utilService.loadFromStorage(INSTA_KEY);
 
   if (!posts || !posts.length) {
-    posts = []
+    posts = [];
 
-    for (let i = 0; i < 2; i++) {
-      const post = {
-        postId: `p${i}`,
-        userId: `u${faker.string.alphanumeric(3)}`,
-        userName: faker.person.fullName(),
-        content: faker.lorem.paragraph(),
-        createdAt: faker.date.recent().toISOString(),
-        location: faker.location.city(),
-      }
+    for (let i = 0; i < 20; i++) {
+      const catName = faker.animal.cat();
+      const userId = `u${faker.string.alphanumeric(5)}`;
+      const userName = faker.internet.userName();
 
-      posts.push(post)
+const isGif = Math.random() < 0.5;
+
+const post = {
+  postId: `p${i}`,
+  userId,
+  userName,
+  catName,
+  content: faker.lorem.sentence({ min: 6, max: 12 }),
+  createdAt: faker.date.recent({ days: 10 }).toISOString(),
+  location: faker.location.city(),
+  imgUrl: `https://cataas.com/cat${isGif ? '/gif' : ''}?unique=${faker.string.alphanumeric(6)}`,
+  avatarUrl: faker.image.avatar(),
+  likes: faker.number.int({ min: 0, max: 1000 }),
+};
+
+
+      posts.push(post);
     }
 
-    utilService.saveToStorage(INSTA_KEY, posts)
+    utilService.saveToStorage(INSTA_KEY, posts);
   }
 
-  return JSON.stringify(posts, null, 2)
+  return JSON.stringify(posts, null, 2);
 }
 // function _createBooks() {
 //  let books = loadFromStorage(INSTA_KEY)
