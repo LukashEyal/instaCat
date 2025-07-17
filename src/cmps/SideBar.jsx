@@ -58,7 +58,7 @@ function SideBarItem({ icon, path, linkTo }) {
   return (
     <Link to={linkTo} className="sidebar-item">
       <ReactSVG src={path} />
-      <span>{icon}</span>
+      <div className='test'><span>{icon}</span></div>
     </Link>
   )
 }
