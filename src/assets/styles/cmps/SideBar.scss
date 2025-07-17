@@ -3,9 +3,7 @@
 }
 
 .side-bar {
-  font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-
-  .test {
+  .sidebar-item-name {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -16,6 +14,8 @@
     padding-left: 16px;
     cursor: pointer;
   }
+
+  font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -23,9 +23,7 @@
   border-right: 1px solid #dbdbdb;
   // box-sizing: border-box;
   width: 244px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-bottom: 20px;
+  padding: 12px 12px 20px 12px;
   line-height: 18px;
   text-size-adjust: 100%;
 
@@ -50,6 +48,8 @@
     font-size: 16px;
     align-items: center;
     justify-content: flex-start;
+    width: 100%;
+    cursor: pointer;
 
     &:hover {
       background-color: rgb(0, 0, 0, 0.05);
