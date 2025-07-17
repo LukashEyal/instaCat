@@ -6,13 +6,11 @@ export function SideBar() {
       <div className="logo">
         <img src="../../public/img/instagram-logo.png" alt="instagram-logo" />
       </div>
-      <nav>
-      <Link to="/"><div className="sidebar-home">Home</div></Link>
-      <Link to="/explore"><div className="sidebar-explore">Explore</div></Link>
-      <Link to="/reels"><div className="sidebar-reels">Reels</div></Link>
-      <Link to="/messages"><div className="sidebar-messages">Messages</div></Link>
-      <Link to="/profile/123"><div className="sidebar-profile">Profile</div></Link>
-      </nav>
+      <div className="sidebar-home"><Link to="/">Home</Link></div>
+      <div className="sidebar-explore"><Link to="/explore">Explore</Link></div>
+      <div className="sidebar-reels"><Link to="/reels">Reels</Link></div>
+      <div className="sidebar-messages"><Link to="/messages">Messages</Link></div>
+      <div className="sidebar-profile"><Link to="/profile/123">Profile</Link></div>
     </section>
   )
 }
