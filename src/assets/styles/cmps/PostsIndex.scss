@@ -9,70 +9,68 @@
     display: grid;
     background-color: #fff;
     
-  
-    .post-header {
+.post-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.6em 0.8em;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 0.6em;
+    flex-shrink: 0;
+  }
+
+  .post-user-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    min-width: 0; // allows text to truncate nicely
+
+    .post-user-meta {
       display: flex;
-     
-      align-items: start;
-   
-      
-      ;
-
-      img{
-        grid-area: a;
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-
-      }
-      .post-user {
-
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: 1fr 1fr ;
-      grid-template-areas: "a b c"
-                          "d f g ";
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.4em;
 
       .post-user-name {
-      
-      grid-area: a;
-
+        font-weight: bold;
+        font-size: 0.95em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .post-created-at {
-      grid-area: b;
+        font-size: 0.85em;
+        color: #777;
       }
-   
-      .post-location {
-      
-      grid-area: d;
-      }
-  
-
-      .post-options {
-      
-      grid-area: c;
-      background-color: #fff;
-      border-style: none;
-      width: 35px;
-      height: 35px;
-      justify-self: end;
-      align-self: start;
-      align-items: center;
-      justify-content: center;
-      
-     
-     
-
-      }
-
-        
-
-        
-      
-      }
-
     }
+
+    .post-location {
+      font-size: 0.8em;
+      color: #999;
+      margin-top: 2px;
+    }
+  }
+
+  .post-options {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+   
+    align-items: center;
+    justify-content: center;
+    
+    
+  }
+}
+
 
   }
 
@@ -90,10 +88,9 @@
 
     .post-actions {
       
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
-      grid-template-areas: "a b c d e f g h ";
-      
+     display: flex;
+  justify-content: space-between;
+  padding: 0.5em 0.5em 0 0.5em;
 
 
       .bookmark-button {

@@ -111,7 +111,7 @@ function _createPosts() {
     for (let i = 0; i < 20; i++) {
       const catName = faker.animal.cat();
       const userId = `u${faker.string.alphanumeric(5)}`;
-      const userName = faker.internet.userName();
+      const userName = faker.internet.username();
 
 const isGif = Math.random() < 0.5;
 
