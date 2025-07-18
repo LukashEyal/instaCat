@@ -101,7 +101,7 @@ export function SideBar() {
     <>
       <section className="side-bar">
         <div className="logo">
-          <Link to="/" ><img src="/img/instagram-logo.png" alt="Instagram logo" /></Link>
+          <Link to="/" ><img src="/img/instacat-logo.png" alt="Instagram logo" width="100%" height="100%" /></Link>
         </div>
         <div className='sidebar-main-links'>
           {sideBarItems.map((item, index) => <SideBarItem key={index} {...item} />)}
