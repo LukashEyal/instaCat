@@ -14,10 +14,11 @@ _loadPosts().then((posts) => {
 export const instaService = {
     query,
     get,
-    remove,
-    save,
-    getEmptyBook,
-    getDefaultFilter,
+    // remove,
+    // save,
+    // getEmptyBook,
+    // getDefaultFilter,
+    likePost
 }
 
 
@@ -64,29 +65,47 @@ function query() {
 // }
 
 function get(postId) {
-    return storageService.get(INSTA_KEY, postId).then(_setNextPrevCarId)
+    return storageService.get(INSTA_KEY, postId).then((post) => {
+
+      return post
+      })
 }
 
-function remove(carId) {
-    // return Promise.reject('Oh No!')
-    return storageService.remove(INSTA_KEY, carId)
+function likePost(postId) {
+  return get(postId).then((post) => {
+    const updatedPost = { ...post }
+
+    // Toggle like
+    updatedPost.isLiked = !updatedPost.isLiked
+    updatedPost.likes += updatedPost.isLiked ? 1 : -1
+
+    // Save and return updated post
+    return storageService.put(INSTA_KEY, updatedPost)
+  })
 }
 
-function save(car) {
-    if (car.id) {
-        return storageService.put(INSTA_KEY, car)
-    } else {
-        return storageService.post(INSTA_KEY, car)
-    }
-}
 
-function getEmptyBook(name = "", description = "") {
-    return { name, description }
-}
 
-function getDefaultFilter() {
-    return { txt: "", maxPrice: 0, categories: "" }
-}
+// function remove(carId) {
+//     // return Promise.reject('Oh No!')
+//     return storageService.remove(INSTA_KEY, carId)
+// }
+
+// function save(post) {
+//     if (post.id) {
+//         return storageService.put(INSTA_KEY, post)
+//     } else {
+//         return storageService.post(INSTA_KEY, post)
+//     }
+// }
+
+// function getEmptyBook(name = "", description = "") {
+//     return { name, description }
+// }
+
+// function getDefaultFilter() {
+//     return { txt: "", maxPrice: 0, categories: "" }
+// }
 
 // function _setNextPrevCarId(car) {
 //     return query().then((cars) => {
@@ -112,6 +131,7 @@ function _createPosts() {
       const catName = faker.animal.cat();
       const userId = `u${faker.string.alphanumeric(5)}`;
       const userName = faker.internet.username();
+      const isLiked = false
 
 const isGif = Math.random() < 0.5;
 
@@ -120,6 +140,7 @@ const post = {
   userId,
   userName,
   catName,
+  isLiked,
   content: faker.lorem.sentence({ min: 6, max: 12 }),
   createdAt: faker.date.recent({ days: 10 }).toISOString(),
   location: faker.location.city(),

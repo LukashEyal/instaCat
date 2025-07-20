@@ -14,6 +14,17 @@ export async function loadPosts() {
     }
 }
 
+
+// export async function likePost(postId)
+// {
+//     try {
+//         const post = await instaService.get(postId)
+
+//     }
+
+
+// }
+
 // export async function loadCar(carId) {
 //     try {
 //         const car = await carService.getById(carId)

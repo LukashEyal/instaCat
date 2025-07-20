@@ -51,7 +51,7 @@ export function PostsIndex({ posts }) {
   return (
     
     <div className="feed">
-      <hr />
+   
       {posts.map(post => (
         <div key={post.postId} className="post">
           
