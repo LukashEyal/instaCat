@@ -1,41 +1,101 @@
 .feed {
   max-width: 500px;
   margin: 0 auto;
-  font-family: Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #262626; /* Instagram’s default text color */
+
+ .post-likes {
+  font-weight: 600;
+  margin-top: 8px;
+  margin-bottom: 4px;}
+
+  .post-caption {
+  line-height: 1.4;
+}
+
+
+
+.post-caption strong {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+
 
   .post {
-    border: 1px solid #ddd;
-    margin-bottom: 1.5em;
+    display: grid;
     background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
+    
+.post-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.6em 0.8em;
 
-    .post-header {
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 0.6em;
+    flex-shrink: 0;
+  }
+
+  .post-user-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    min-width: 0; // allows text to truncate nicely
+
+    .post-user-meta {
       display: flex;
       align-items: center;
-      padding: 0.75em;
+      flex-wrap: wrap;
+      gap: 0.4em;
 
-      img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 0.75em;
+      .post-user-name {
+        font-weight: bold;
+        font-size: 0.95em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
-      div {
-        display: flex;
-        flex-direction: column;
-
-        strong {
-          font-size: 0.95em;
-        }
-
-        .post-date {
-          font-size: 0.8em;
-          color: #888;
-        }
+      .post-created-at {
+        font-size: 0.85em;
+        color: #777;
       }
     }
+
+    .post-location {
+      font-size: 0.8em;
+      color: #999;
+      margin-top: 2px;
+    }
+  }
+
+  .post-options {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+   
+    align-items: center;
+    justify-content: center;
+    
+    
+  }
+}
+
+
+  }
+
+
+
+
+
 
     .post-image {
       img {
@@ -45,38 +105,78 @@
     }
 
     .post-actions {
-      padding: 0.5em 0.75em;
+      
+     display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-areas: "a b c d e f g h i j k l ";
+    
 
-      button {
-        background: none;
-        border: none;
-        font-size: 1.2em;
-        margin-right: 0.5em;
-        cursor: pointer;
+    
 
-        &:hover {
-          opacity: 0.6;
-        }
+
+      .bookmark-button {
+         grid-area: l;
+         justify-self: end;
+        
+        
       }
+
+button {
+  background-color: #fff;
+  border: none;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+      
     }
 
-    .post-likes {
-      padding: 0 0.75em;
-      font-weight: bold;
-    }
-
-    .post-caption {
-      padding: 0.5em 0.75em;
-
-      strong {
-        margin-right: 0.5em;
-      }
-    }
 
     .post-comment {
-      padding: 0.5em 0.75em;
-      font-size: 0.9em;
-      color: #999;
+
+    display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
+      grid-template-areas: "a b c d e f g h ";
+      
+
     }
-  }
+
+    .comment-input {
+
+      grid-area: a;
+         flex: 1;
+    border: none;
+    outline: none;
+    font-size: 0.9em;
+    color: #333;
+
+    &::placeholder {
+      color: #aaa;
+    }
+    }
+
+    .emoji-button {
+
+      grid-area: h;
+      width: 25px;
+      height: 25px;
+      background: transparent;
+        
+      border: none;
+          margin-left: 3.5em;
+    }
+
+.liked-icon {
+  color: red !important;
+  fill: red !important;
+  stroke: red !important;
+}
+
+
 }

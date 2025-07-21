@@ -1,18 +1,31 @@
-import { instaService } from '../services/insta/insta.service'
+import { postService } from '../services/posts/post.service'
 
-import { SET_POSTS } from './posts.reducer'
+import { SET_POSTS, UPDATE_POST } from './posts.reducer'
 
 import { store } from './store'
 
 export async function loadPosts() {
     try {
-        const posts = await instaService.query()
+        const posts = await postService.query()
         store.dispatch( {type: SET_POSTS, posts})
     } catch (err) {
         console.log('Cannot load posts', err)
         throw err
     }
 }
+
+
+export function toggleLike(postId, userId) {
+  return async (dispatch) => {
+    try {
+      const updatedPost = await postService.likePost(postId, userId);
+      dispatch({ type: 'UPDATE_POST', post: updatedPost });
+    } catch (err) {
+      console.error('Failed to toggle like:', err);
+    }
+  };
+}
+
 
 // export async function loadCar(carId) {
 //     try {
