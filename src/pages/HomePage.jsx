@@ -32,7 +32,9 @@ export function HomePage() {
         <PostsIndex posts={posts} users={users} />
       </div>
       <div className="sidebar-container">
-        <UserSideBar user={loggedInUser} />
+        <div className="user-sidebar">
+          <UserSideBar user={loggedInUser} />
+        </div>
       </div>
     </div>
   )

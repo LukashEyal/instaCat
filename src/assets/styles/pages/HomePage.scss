@@ -5,6 +5,7 @@
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  align-items: flex-start;
 }
 
 .feed-container {
@@ -14,9 +15,10 @@
 
 .sidebar-container {
   width: 250px;
+  height: fit-content; // Ensure it's not overflowing
+}
 
-  .user-sidebar {
-    position: sticky;
-    top: 2rem;
-  }
+.user-sidebar {
+  position: sticky;
+  top: 2rem;
 }

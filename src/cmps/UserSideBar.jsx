@@ -5,10 +5,12 @@ export function UserSideBar({ user }) {
 
   return (
     <div className="user-sidebar">
-      <img src={user.avatarUrl} alt={user.username} />
-      <div>
-        <div className="username">{user.username}</div>
-        <div className="fullname">{user.userFullname}</div>
+      <div className="user-info">
+        <img src={user.avatarUrl} alt={user.username} />
+        <div>
+          <div className="username">{user.username}</div>
+          <div className="fullname">{user.userFullname}</div>
+        </div>
       </div>
     </div>
   )
