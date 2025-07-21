@@ -17,10 +17,15 @@ import option from '../assets/svgs/post-container/option.svg'
 import share from '../assets/svgs/post-container/share.svg'
 import verified from '../assets/svgs/post-container/verified.svg'
 
-function PostItem({ icon, path, linkTo, onClick }) {
+function PostItem({ icon, path, linkTo, onClick, className = '' }) {
   const content = (
     <>
-      <ReactSVG src={path} />
+      <ReactSVG
+        src={path}
+        beforeInjection={(svg) => {
+          if (className) svg.classList.add(className)
+        }}
+      />
       <div className="post-item-name">
         <span>{icon}</span>
       </div>
@@ -98,6 +103,9 @@ export function PostsIndex({ posts, users, user }) {
                 >
                   <PostItem
                     path={post.likeBy.includes(user._id) ? liked : like}
+                    className={
+                      post.likeBy.includes(user._id) ? 'liked-icon' : ''
+                    }
                   />
                 </button>
 
