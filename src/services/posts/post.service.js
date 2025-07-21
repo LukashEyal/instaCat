@@ -9,7 +9,7 @@ _createPosts();
 export const postService = {
   query,
   get,
-  likePost,
+  toggleLike,
 };
 
 function _createPosts() {
@@ -32,20 +32,18 @@ function get(postId) {
   return storageService.get(POST_KEY, postId);
 }
 
-function likePost(postId, userId) {
-  return get(postId).then(post => {
-    const updatedPost = { ...post };
-    updatedPost.likeBy = updatedPost.likeBy || [];
+export async function toggleLike(postId, userId) {
+  const post = await get(postId)
+  const updatedPost = { ...post }
 
-    const idx = updatedPost.likeBy.indexOf(userId);
-    if (idx === -1) {
-      updatedPost.likeBy.push(userId);
-      updatedPost.likes++;
-    } else {
-      updatedPost.likeBy.splice(idx, 1);
-      updatedPost.likes--;
-    }
+  const idx = updatedPost.likeBy.indexOf(userId)
+  if (idx === -1) {
+    updatedPost.likeBy.push(userId)
+    updatedPost.likes++
+  } else {
+    updatedPost.likeBy.splice(idx, 1)
+    updatedPost.likes--
+  }
 
-    return storageService.put(POST_KEY, updatedPost);
-  });
+  return storageService.put(POST_KEY, updatedPost)
 }

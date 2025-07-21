@@ -1,5 +1,5 @@
 export const SET_POSTS = 'SET_POSTS'
-
+export const UPDATE_POST = "UPDATE_POST"
 
 const initialState = {
     posts: []
@@ -15,6 +15,14 @@ export function postsReducer(state = initialState, action
         case SET_POSTS:
             newState = { ...state, posts: action.posts }
             break
+
+        case 'UPDATE_POST':
+  return {
+    ...state,
+    posts: state.posts.map(post =>
+      post._id === action.post._id ? action.post : post
+    )
+  };
         // case SET_CAR:
         //     newState = { ...state, car: action.car }
         //     break

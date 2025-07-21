@@ -29,7 +29,7 @@ export function HomePage() {
   return (
     <div className="main-layout">
       <div className="feed-container">
-        <PostsIndex posts={posts} users={users} />
+        <PostsIndex posts={posts} users={users} user={loggedInUser} />
       </div>
       <div className="sidebar-container">
         <div className="user-sidebar">

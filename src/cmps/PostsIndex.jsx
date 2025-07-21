@@ -2,8 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { ReactSVG } from 'react-svg'
 import { formatDistanceToNow } from 'date-fns'
-import { UserSideBar } from '../cmps/UserSideBar'
-import { useSelector } from 'react-redux'
+import { postService } from '../services/posts/post.service'
+
+import { useDispatch } from 'react-redux'
+import { toggleLike } from '../store/posts.actions'
 
 import bookmark from '../assets/svgs/post-container/bookmark.svg'
 import comment from '../assets/svgs/post-container/comment.svg'
@@ -40,20 +42,36 @@ function PostItem({ icon, path, linkTo, onClick }) {
   )
 }
 
-export function PostsIndex({ posts, users }) {
+export function PostsIndex({ posts, users, user }) {
+  const dispatch = useDispatch()
+
+  function onToggleLike(postId) {
+    postService
+      .toggleLike(postId, user._id)
+      .then((updatedPost) => {
+        dispatch({ type: 'UPDATE_POST', post: updatedPost }) // plain object ✅
+      })
+      .catch((err) => {
+        console.error('Failed to toggle like', err)
+      })
+  }
+
   return (
     <div className="feed">
       {posts.map((post) => {
-        const user = users.find((user) => user._id === post.userId)
+        const postAuthor = users.find((u) => u._id === post.userId)
 
         return (
           <div key={post._id} className="post">
             <div className="post-header">
-              <img src={user?.avatarUrl} alt={`${user?.username}'s avatar`} />
+              <img
+                src={postAuthor?.avatarUrl}
+                alt={`${postAuthor?.username}'s avatar`}
+              />
 
               <div className="post-user-details">
                 <div className="post-user-meta">
-                  <span className="post-user-name">{user?.username}</span>
+                  <span className="post-user-name">{postAuthor?.username}</span>
                   <span className="post-created-at">
                     •{' '}
                     {formatDistanceToNow(new Date(post.createdAt), {
@@ -73,11 +91,16 @@ export function PostsIndex({ posts, users }) {
               <div className="post-image">
                 <img src={post.post_imgUrl || post.imgUrl} alt="post image" />
               </div>
-
               <div className="post-actions">
-                <button className="like-button">
-                  <PostItem path={like} />
+                <button
+                  className="like-button"
+                  onClick={() => onToggleLike(post._id)}
+                >
+                  <PostItem
+                    path={post.likeBy.includes(user._id) ? liked : like}
+                  />
                 </button>
+
                 <button className="comment-button">
                   <PostItem path={comment} />
                 </button>
@@ -92,7 +115,7 @@ export function PostsIndex({ posts, users }) {
               <div className="post-likes">{post.likes} likes</div>
 
               <div className="post-caption">
-                <strong>@{user?.username}</strong> {post.content}
+                <strong>@{postAuthor?.username}</strong> {post.content}
               </div>
 
               <div className="post-comment">
