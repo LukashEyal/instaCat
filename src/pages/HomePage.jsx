@@ -1,35 +1,39 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
-import { instaService } from "../services/insta/insta.service";
+import { postService } from '../services/posts/post.service'
+
+import { userService } from '../services/user'
+
+import { UserSideBar } from '../cmps/UserSideBar'
 
 import { useSelector } from 'react-redux'
 
 import { useState, useEffect } from 'react'
 
-import { loadPosts } from "../store/posts.actions";
+import { loadPosts } from '../store/posts.actions'
 
-import { PostsIndex } from "../cmps/PostsIndex"
+import { PostsIndex } from '../cmps/PostsIndex'
+import { loadUser, loadUsers } from '../store/user.actions'
 
 export function HomePage() {
+  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
+  const posts = useSelector((storeState) => storeState.postsModule.posts)
+  const users = useSelector((storeState) => storeState.userModule.users)
 
-
-const posts = useSelector(storeState => storeState.postsModule.posts)
-
-useEffect(() =>{
-
+  useEffect(() => {
+    loadUser()
+    loadUsers()
     loadPosts()
+  }, [])
 
-}, [])
-
-
-    return (
-        <main className="posts-conatiner">
-
-            <PostsIndex posts={posts} />
-
-
-          
-        </main>
-    )
+  return (
+    <div className="main-layout">
+      <div className="feed-container">
+        <PostsIndex posts={posts} users={users} />
+      </div>
+      <div className="sidebar-container">
+        <UserSideBar user={loggedInUser} />
+      </div>
+    </div>
+  )
 }
-

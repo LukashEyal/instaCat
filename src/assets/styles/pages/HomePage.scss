@@ -1,0 +1,22 @@
+.main-layout {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feed-container {
+  flex: 1;
+  max-width: 500px;
+}
+
+.sidebar-container {
+  width: 250px;
+
+  .user-sidebar {
+    position: sticky;
+    top: 2rem;
+  }
+}
