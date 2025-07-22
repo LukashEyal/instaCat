@@ -113,12 +113,14 @@ export function SideBar() {
 			<section className="side-bar">
 				<div className="logo">
 					<Link to="/">
-						<img
+						<ReactSVG
 							src={logo}
-							alt="InstaCat logo"
-							width="100%"
-							height="100%"
+							style={{
+								margin: "0px 0px 19px",
+								padding: "25px 12px 16px",
+							}}
 						/>
+						{/* <img src={logo} alt="InstaCat logo" /> */}
 					</Link>
 				</div>
 				<div className="sidebar-main-links">
@@ -126,8 +128,14 @@ export function SideBar() {
 						<SideBarItem key={index} {...item} />
 					))}
 				</div>
-				<SideBarItem icon="Threads" path={threads} linkTo="/threads" />
-				<SideBarItem icon="More" path={more} linkTo="/more" />
+				<div className="sidebar-side-items">
+					<SideBarItem
+						icon="Threads"
+						path={threads}
+						linkTo="/threads"
+					/>
+					<SideBarItem icon="More" path={more} linkTo="/more" />
+				</div>
 			</section>
 
 			{isSearchDrawerOpen && (
