@@ -7,6 +7,7 @@ import { store } from './store'
 export async function loadPosts() {
     try {
         const posts = await postService.query()
+   
         store.dispatch( {type: SET_POSTS, posts})
     } catch (err) {
         console.log('Cannot load posts', err)
@@ -15,18 +16,23 @@ export async function loadPosts() {
 }
 
 
-export function toggleLike(postId, userId) {
-  return async (dispatch) => {
+export async function toggleLike(postId, userId) {
+
+  console.log('post.actions.js: toggleLike called with', postId, userId)
+
+  
     try {
-      const updatedPost = await postService.likePost(postId, userId);
-      dispatch({ type: 'UPDATE_POST', post: updatedPost });
+      const post = await postService.toggleLike(postId, userId)
+      store.dispatch({ type: UPDATE_POST, post })
+      
     } catch (err) {
-      console.error('Failed to toggle like:', err);
+      console.error("Cannot like post", err)
+      throw err
     }
-  };
+  
 }
 
-
+// onClick = {() => like(post._id, user._id)}
 // export async function loadCar(carId) {
 //     try {
 //         const car = await carService.getById(carId)
