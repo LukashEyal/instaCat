@@ -129,13 +129,18 @@ export function Post({ user }) {
               <div className="post-actions">
              <button className="like-button">
               <PostButton
-                path={post.likeBy.includes(user._id) ? liked : like}
-                
+
                 onClick={() => onToggleLike(post._id, user._id)}
 
-                className={
-                  post.likeBy.includes(user._id) ? 'liked' : 'like'
-                }
+                path={post.likeBy.includes(user._id) ? liked : like}
+
+                  className={
+                      post.likeBy.includes(user._id) ? 'liked-icon' : ''
+                    }
+                
+                
+
+              
 
 
 
