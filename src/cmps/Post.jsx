@@ -134,7 +134,7 @@ export function Post({ user }) {
                 onClick={() => onToggleLike(post._id, user._id)}
 
                 className={
-                  post.likeBy.includes(user._id) ? 'like-button' : 'like-button'
+                  post.likeBy.includes(user._id) ? 'liked' : 'like'
                 }
 
 
