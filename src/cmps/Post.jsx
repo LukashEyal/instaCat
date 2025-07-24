@@ -21,7 +21,7 @@ import { CommentsView } from './CommentsView'
 
 
 
-function PostButton({ icon, path, linkTo, onClick, className = '' }) {
+export function PostButton({ icon, path, linkTo, onClick, className = '' }) {
   const content = (
     <>
       <ReactSVG
@@ -68,23 +68,27 @@ function LikeBy({ likeIds, currentUser }) {
     }
 
     loadFullnames()
-  }, [likeIds])
+  }, [])
 
   if (!Array.isArray(likeIds) || likeIds.length === 0) return null
 
   const isLikedByUser = likeIds.includes(currentUser._id)
   const currentFullname = currentUser.fullname
   const otherNames = fullnames.filter(name => name !== currentFullname)
-
+  
   if (isLikedByUser) {
     if (!otherNames.length) {
       return <p>Liked by <strong>you</strong></p>
     }
+
+    else {
+
     return (
       <p>
         Liked by <strong>you</strong> and <strong>{otherNames.length} other{otherNames.length > 1 ? 's' : ''}</strong>
       </p>
     )
+    }
   }
 
   if (fullnames.length > 0) {
