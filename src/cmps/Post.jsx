@@ -4,7 +4,7 @@ import { ReactSVG } from 'react-svg'
 import { formatDistanceToNow } from 'date-fns'
 
 import { useSelector } from 'react-redux'
-import { toggleLike, getFullnamesFromUserIds } from '../store/posts.actions'
+import { toggleLike, getFullnamesFromUserIds, getUserNames } from '../store/posts.actions'
 
 import bookmark from '../assets/svgs/post-container/bookmark.svg'
 import comment from '../assets/svgs/post-container/comment.svg'
@@ -15,6 +15,11 @@ import love from '../assets/svgs/post-container/love.svg'
 import option from '../assets/svgs/post-container/option.svg'
 import share from '../assets/svgs/post-container/share.svg'
 import verified from '../assets/svgs/post-container/verified.svg'
+import { CommentsView } from './CommentsView'
+
+
+
+
 
 function PostButton({ icon, path, linkTo, onClick, className = '' }) {
   const content = (
@@ -95,7 +100,53 @@ function LikeBy({ likeIds, currentUser }) {
   return null
 }
 
+
+
+function CommentBy({ comments, currentUser, onClick }) {
+  const [usernames, setUserNames] = useState([])
+  
+
+  const commentUserIds = comments.map(comment => comment.userId)
+
+  useEffect(() => {
+    if (!Array.isArray(commentUserIds) || commentUserIds.length === 0) return
+
+    const loadUserNames = async () => {
+      try {
+        const result = await getUserNames(commentUserIds)
+        setUserNames(result)
+      } catch (err) {
+        console.error('Failed to fetch fullnames', err)
+      }
+    }
+
+    loadUserNames()
+  }, [comments])
+
+  if (!usernames.length) return null
+
+  const currentFullname = currentUser.fullname
+  const others = usernames.filter(name => name !== currentFullname)
+
+  return (
+    <button className="view-comments-btn" onClick={onClick}>
+      View all{' '}
+      {usernames.includes(currentFullname) && <strong>you</strong>}
+      {others.length > 0 && (
+        <>
+          {usernames.includes(currentFullname) && ' and '}
+          {others.length} comment{others.length > 1 ? 's' : ''}
+        </>
+      )}
+    </button>
+  )
+}
+
+
 export function Post({ user }) {
+    const [showModal, setShowModal] = useState(false)
+    const [selectedComments, setSelectedComments] = useState([])
+  
   const posts = useSelector(store => store.postsModule.posts)
 
   function onToggleLike(postId, userId) {
@@ -106,7 +157,9 @@ export function Post({ user }) {
     <div className="feed">
       {posts.map((post) => {
         const postAuthor = post.user
-
+        const comments = post.comments
+        
+       
         return (
           <div key={post._id} className="post">
             <div className="post-header">
@@ -160,6 +213,20 @@ export function Post({ user }) {
                 <strong>@{postAuthor?.username}</strong> {post.content}
               </div>
 
+              <div className="post-comments">
+              <CommentBy
+                comments={comments}
+                currentUser={user}
+                onClick={() => {
+                  setSelectedComments(post)
+                  setShowModal(true)
+  }}
+/>
+
+               
+                
+                </div>
+
               <div className="post-comment">
                 <input
                   type="text"
@@ -174,8 +241,15 @@ export function Post({ user }) {
               <hr />
             </div>
           </div>
+          
         )
       })}
+   {showModal && (
+  <CommentsView
+    post={selectedComments} // this is now the full post
+    onClose={() => setShowModal(false)}
+  />
+)}
     </div>
   )
 }

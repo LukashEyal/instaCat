@@ -43,6 +43,19 @@ export async function getFullnamesFromUserIds(userIds = []) {
 }
 
 
+export async function getUserNames(userIds = []) {
+
+  const allUsers = await postService.getUsers()
+
+  // Filter users that are in the list
+  const matchedUsers = allUsers.filter(user => userIds.includes(user._id))
+
+  // Return only fullnames
+  return matchedUsers.map(user => user.username)
+  
+}
+
+
 // onClick = {() => like(post._id, user._id)}
 // export async function loadCar(carId) {
 //     try {
