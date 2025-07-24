@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ReactSVG } from 'react-svg'
 import { formatDistanceToNow } from 'date-fns'
 
-import { useDispatch, useSelector } from 'react-redux'
-import { toggleLike } from '../store/posts.actions'
+import { useSelector } from 'react-redux'
+import { toggleLike, getFullnamesFromUserIds } from '../store/posts.actions'
 
 import bookmark from '../assets/svgs/post-container/bookmark.svg'
 import comment from '../assets/svgs/post-container/comment.svg'
@@ -15,12 +15,6 @@ import love from '../assets/svgs/post-container/love.svg'
 import option from '../assets/svgs/post-container/option.svg'
 import share from '../assets/svgs/post-container/share.svg'
 import verified from '../assets/svgs/post-container/verified.svg'
-
-
-
-
-
-
 
 function PostButton({ icon, path, linkTo, onClick, className = '' }) {
   const content = (
@@ -52,44 +46,61 @@ function PostButton({ icon, path, linkTo, onClick, className = '' }) {
   )
 }
 
-// function onToggleLike(postId, user) {
-//   console.log("CLIKECD LIKE")
-  
-//   const dispatch = useDispatch()
-//     .toggleLike(postId, user._id)
-//     .then((updatedPost) => {
-//       dispatch({ type: 'UPDATE_POST', post: updatedPost }) // plain object ✅
-//     })
-//     .catch((err) => {
-//       console.error('Failed to toggle like', err)
-//     })
-// }
+// LikeBy component: handles its own fetching
+function LikeBy({ likeIds, currentUser }) {
+  const [fullnames, setFullnames] = useState([])
 
+  useEffect(() => {
+    if (!Array.isArray(likeIds) || likeIds.length === 0) return
 
-  // function onToggleLike {} (postId) => {
-  //   console.log("CLICKED LIKE")
-  //   toggleLike(postId, user._id)
-  //     .then((updatedPost) => {
-  //       dispatch({ type: 'UPDATE_POST', post: updatedPost }) // plain object ✅
-  //     })
-  //     .catch((err) => {
-  //       console.error('Failed to toggle like', err)
-  //     })
-  // }
+    const loadFullnames = async () => {
+      try {
+        const result = await getFullnamesFromUserIds(likeIds)
+        setFullnames(result)
+      } catch (err) {
+        console.error('Failed to fetch fullnames', err)
+      }
+    }
 
+    loadFullnames()
+  }, [likeIds])
 
+  if (!Array.isArray(likeIds) || likeIds.length === 0) return null
 
+  const isLikedByUser = likeIds.includes(currentUser._id)
+  const currentFullname = currentUser.fullname
+  const otherNames = fullnames.filter(name => name !== currentFullname)
 
-export function Post({ user }) {
-
-
-  function onToggleLike(postId, userId) {
-
-    toggleLike(postId, userId)
-
+  if (isLikedByUser) {
+    if (!otherNames.length) {
+      return <p>Liked by <strong>you</strong></p>
+    }
+    return (
+      <p>
+        Liked by <strong>you</strong> and <strong>{otherNames.length} other{otherNames.length > 1 ? 's' : ''}</strong>
+      </p>
+    )
   }
 
-  const posts = useSelector((storeState) => storeState.postsModule.posts)
+  if (fullnames.length > 0) {
+    const [first, ...rest] = fullnames
+    return (
+      <p>
+        Liked by <strong>{first}</strong>
+        {rest.length > 0 && <> and <strong>{rest.length} other{rest.length > 1 ? 's' : ''}</strong></>}
+      </p>
+    )
+  }
+
+  return null
+}
+
+export function Post({ user }) {
+  const posts = useSelector(store => store.postsModule.posts)
+
+  function onToggleLike(postId, userId) {
+    toggleLike(postId, userId)
+  }
 
   return (
     <div className="feed">
@@ -103,20 +114,15 @@ export function Post({ user }) {
                 src={postAuthor?.avatarUrl}
                 alt={`${postAuthor?.username}'s avatar`}
               />
-
               <div className="post-user-details">
                 <div className="post-user-meta">
                   <span className="post-user-name">{postAuthor?.username}</span>
                   <span className="post-created-at">
-                    •{' '}
-                    {formatDistanceToNow(new Date(post.createdAt), {
-                      addSuffix: true,
-                    })}
+                    • {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
                   </span>
                 </div>
                 <div className="post-location">{post.location}</div>
               </div>
-
               <button className="post-options">
                 <PostButton path={option} />
               </button>
@@ -124,29 +130,17 @@ export function Post({ user }) {
 
             <div className="post-content">
               <div className="post-image">
-                <img src={post.post_imgUrl || post.imgUrl} alt="post image" />
+                <img src={post.post_imgUrl || post.imgUrl} alt="post" />
               </div>
+
               <div className="post-actions">
-             <button className="like-button">
-              <PostButton
-
-                onClick={() => onToggleLike(post._id, user._id)}
-
-                path={post.likeBy.includes(user._id) ? liked : like}
-
-                  className={
-                      post.likeBy.includes(user._id) ? 'liked-icon' : ''
-                    }
-                
-                
-
-              
-
-
-
-              />
-            </button>
-
+                <button className="like-button">
+                  <PostButton
+                    onClick={() => onToggleLike(post._id, user._id)}
+                    path={post.likeBy.includes(user._id) ? liked : like}
+                    className={post.likeBy.includes(user._id) ? 'liked-icon' : ''}
+                  />
+                </button>
                 <button className="comment-button">
                   <PostButton path={comment} />
                 </button>
@@ -158,7 +152,9 @@ export function Post({ user }) {
                 </button>
               </div>
 
-              <div className="post-likes">{post.likes} likes</div>
+              <div className="post-likes">
+                <LikeBy likeIds={post.likeBy} currentUser={user} />
+              </div>
 
               <div className="post-caption">
                 <strong>@{postAuthor?.username}</strong> {post.content}

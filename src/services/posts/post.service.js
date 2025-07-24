@@ -14,6 +14,7 @@ export const postService = {
   query,
   get,
   toggleLike,
+  getUsers
 };
 
 function _createPosts() {
@@ -65,4 +66,16 @@ async function toggleLike(postId, userId) {
   await storageService.put(POST_KEY, updatedPost)
 
   return updatedPost
+}
+
+
+async function getUsers()
+
+{
+  const users = await userService.getUsers()
+  return users
+
+
+
+
 }
