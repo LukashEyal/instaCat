@@ -1,0 +1,27 @@
+.post-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  cursor: pointer;
+  padding: 0.2em;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    fill: #262626;
+  }
+
+  &.liked-icon svg {
+    fill: red !important;
+  }
+}
+
+.post-item-name {
+  display: none; // hidden by default (optional)
+  font-size: 0.85em;
+}

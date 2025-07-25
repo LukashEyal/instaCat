@@ -1,0 +1,16 @@
+.view-comments-btn {
+  background: none;
+  border: none;
+  color: #8e8e8e;
+  font-weight: 500;
+  font-size: 0.9em;
+  padding: 0;
+  margin: 4px 0;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}

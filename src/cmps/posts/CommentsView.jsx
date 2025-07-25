@@ -1,18 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react'
-import  PostButton from './Post'
+import  PostButton from './RenderPost'
 import { formatDistanceToNow } from 'date-fns'
-import { toggleLike, getFullnamesFromUserIds, getUserNames } from '../store/posts.actions'
+import { toggleLike, getFullNamesFromUserIds, getUserNames } from '../../store/posts.actions'
 
 
-import bookmark from '../assets/svgs/post-container/bookmark.svg'
-import comment from '../assets/svgs/post-container/comment.svg'
-import emoji from '../assets/svgs/post-container/emoji.svg'
-import like from '../assets/svgs/post-container/like.svg'
-import liked from '../assets/svgs/post-container/liked.svg'
-import love from '../assets/svgs/post-container/love.svg'
-import option from '../assets/svgs/post-container/option.svg'
-import share from '../assets/svgs/post-container/share.svg'
-import verified from '../assets/svgs/post-container/verified.svg'
+
 
 
 export function CommentsView({ post, onClose }) {
