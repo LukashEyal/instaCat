@@ -1,35 +1,34 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom"
 
-import { UserSideBar } from '../cmps/UserSideBar'
+import { UserSideBar } from "../cmps/UserSideBar"
 
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from "react"
 
-import { loadPosts } from '../store/posts.actions'
+import { loadPosts } from "../store/posts.actions"
 
-import { Post } from '../cmps/Post'
-import { loadUser } from '../store/user.actions'
+import { Post } from "../cmps/Post"
+import { loadUser } from "../store/user.actions"
 
 export function HomePage() {
-  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
+	const loggedInUser = useSelector(storeState => storeState.userModule.user)
 
-  useEffect(() => {
-    loadUser()
+	useEffect(() => {
+		loadUser()
+		loadPosts()
+	}, [])
 
-    loadPosts()
-  }, [])
-
-  return (
-    <div className="main-layout">
-      <div className="feed-container">
-        <Post user={loggedInUser} />
-      </div>
-      <div className="sidebar-container">
-        <div className="user-sidebar">
-          <UserSideBar user={loggedInUser} />
-        </div>
-      </div>
-    </div>
-  )
+	return (
+		<div className="main-layout">
+			<div className="feed-container">
+				<Post user={loggedInUser} />
+			</div>
+			<div className="sidebar-container">
+				<div className="user-sidebar">
+					<UserSideBar />
+				</div>
+			</div>
+		</div>
+	)
 }

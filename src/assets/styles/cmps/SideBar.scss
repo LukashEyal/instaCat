@@ -25,10 +25,15 @@
   flex-direction: column;
   background-color: rgb(255, 255, 255);
   border-right: 0.0625rem solid #dbdbdb;
-  width: 20.9375rem;
   padding: 0.5rem 0.75rem 1.25rem 0.75rem;
   line-height: 1.125rem;
   text-size-adjust: 100%;
+  width: var(--nav-medium-width);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1000;
 
   .logo {
     display: flex;
@@ -46,7 +51,7 @@
 
   .sidebar-item {
     margin: 0.25rem 0rem;
-    padding: 0.75rem;
+    padding: 0.625rem;
     display: flex;
     font-size: 1rem;
     align-items: center;
@@ -56,6 +61,9 @@
 
     &.active {
       font-weight: 700;
+      & svg {
+        fill: black;
+      }
     }
 
     &:hover {
@@ -74,5 +82,59 @@
     align-items: flex-start;
     width: 100%;
     flex: 1;
+  }
+
+  .sidebar-profile-avatar {
+    top: 50%;
+    border-top-width: 2px;
+    border-bottom-color: rgb(0, 0, 0);
+    list-style: none;
+    overflow-y: visible;
+    padding-top: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    overflow-x: visible;
+    padding-bottom: 0;
+    padding-right: 0;
+    background-color: transparent;
+    flex-direction: column;
+    display: flex;
+    border-bottom-left-radius: 0;
+    align-items: stretch;
+
+    img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  .sidebar-item svg {
+    fill: none;
+    transition: fill 0.2s ease;
+  }
+}
+
+// @media (min-width: 1264px) and (max-width: 1919px) {
+//   .main {
+//     width: calc(100% - var(--nav-medium-width));
+//     margin-right: var(--nav-medium-width);
+//   }
+// }
+
+.main-container main {
+  width: 100%;
+  margin-left: var(--nav-medium-width); // Offset for sidebar
+  padding: 1rem;
+}
+
+@media (min-width: 1264px) and (max-width: 1919px) {
+  .side-bar {
+    width: var(--nav-medium-width); // 260px
+  }
+  .main-container main {
+    width: calc(100% - var(--nav-medium-width));
+    margin-left: var(--nav-medium-width);
   }
 }

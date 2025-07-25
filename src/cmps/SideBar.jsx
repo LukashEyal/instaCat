@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom"
 import { ReactSVG } from "react-svg"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import home from "../assets/svgs/home.svg"
 import search from "../assets/svgs/search.svg"
@@ -16,44 +16,16 @@ import logo from "../assets/svgs/instacat-logo.svg"
 import { SearchDrawer } from "./SearchDrawer.jsx"
 import { CreateCmp } from "./CreateCmp.jsx"
 
-const userId = 123
-
-function SideBarItem({ icon, path, linkTo, onClick }) {
-	const location = useLocation()
-	console.log("location", location)
-	const isActive = location.pathname === linkTo
-
-	const content = (
-		<>
-			<ReactSVG src={path} />
-			<div className="sidebar-item-name">
-				<span>{icon}</span>
-			</div>
-		</>
-	)
-
-	if (onClick) {
-		return (
-			<div
-				className={`sidebar-item ${isActive ? "active" : ""}`}
-				onClick={onClick}
-			>
-				{content}
-			</div>
-		)
-	}
-
-	return (
-		<Link
-			to={linkTo}
-			className={`sidebar-item ${isActive ? "active" : ""}`}
-		>
-			{content}
-		</Link>
-	)
-}
+import { useSelector } from "react-redux"
+import { loadUser } from "../store/user.actions.js"
 
 export function SideBar() {
+	useEffect(() => {
+		loadUser()
+	}, [])
+
+	const user = useSelector(storeState => storeState.userModule.user)
+
 	const [isSearchDrawerOpen, setIsSearchDrawerOpen] = useState(false)
 	const [isCreateOpen, setIsCreateOpen] = useState(false)
 
@@ -101,12 +73,11 @@ export function SideBar() {
 			path: create,
 			onClick: () => onCreateClick(prev => !prev),
 		},
-		{
-			icon: "Profile",
-			path: create,
-			linkTo: `/profile/${userId}`,
-		},
 	]
+
+	if (user.length === 0) {
+		return <div className="loader">Loading...</div>
+	}
 
 	return (
 		<>
@@ -127,14 +98,16 @@ export function SideBar() {
 					{sideBarItems.map((item, index) => (
 						<SideBarItem key={index} {...item} />
 					))}
+
+					<ProfileSideBar />
 				</div>
 				<div className="sidebar-side-items">
+					<SideBarItem icon="More" path={more} linkTo="/more" />
 					<SideBarItem
-						icon="Threads"
+						icon="Also from InstaCat"
 						path={threads}
 						linkTo="/threads"
 					/>
-					<SideBarItem icon="More" path={more} linkTo="/more" />
 				</div>
 			</section>
 
@@ -143,5 +116,65 @@ export function SideBar() {
 			)}
 			{isCreateOpen && <CreateCmp onClose={() => onCreateClick(false)} />}
 		</>
+	)
+}
+
+function ProfileSideBar() {
+	const user = useSelector(storeState => storeState.userModule.user)
+	console.log("user", user)
+	if (!user) return null
+
+	const { avatarUrl, _id: userId } = user
+	const icon = "Profile"
+	const linkTo = `/profile/${userId}`
+	const location = useLocation()
+	const isActive = location.pathname === linkTo
+
+	return (
+		<Link
+			to={linkTo}
+			className={`sidebar-item ${isActive ? "active" : ""}`}
+		>
+			<div className="sidebar-profile-avatar">
+				<img src={avatarUrl} alt="User Profile" />
+			</div>
+			<div className="sidebar-item-name">
+				<span>{icon}</span>
+			</div>
+		</Link>
+	)
+}
+
+function SideBarItem({ icon, path, linkTo, onClick }) {
+	const location = useLocation()
+	const isActive = location.pathname === linkTo
+
+	const content = (
+		<>
+			<ReactSVG src={path} />
+			<div className="sidebar-item-name">
+				<span>{icon}</span>
+			</div>
+		</>
+	)
+
+	if (onClick) {
+		return (
+			<div
+				className={`sidebar-item ${isActive ? "active" : ""}`}
+				onClick={onClick}
+			>
+				{content}
+			</div>
+		)
+	}
+
+	return (
+		<Link
+			to={linkTo}
+			className={`sidebar-item ${isActive ? "active" : ""}`}
+		>
+			{content}
+		</Link>
 	)
 }
