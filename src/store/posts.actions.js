@@ -32,7 +32,7 @@ export async function toggleLike(postId, userId) {
   
 }
 
-export async function getFullnamesFromUserIds(userIds = []) {
+export async function getFullNamesFromUserIds(userIds = []) {
   const allUsers = await postService.getUsers()
 
   // Filter users that are in the list
@@ -54,6 +54,10 @@ export async function getUserNames(userIds = []) {
   return matchedUsers.map(user => user.username)
   
 }
+
+
+
+
 
 
 // onClick = {() => like(post._id, user._id)}

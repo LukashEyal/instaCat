@@ -8,27 +8,32 @@ import { useState, useEffect, useRef } from "react"
 
 import { loadPosts } from "../store/posts.actions"
 
-import { Post } from "../cmps/Post"
-import { loadUser } from "../store/user.actions"
+import { Post } from '../cmps/Post'
+import { loadUser } from '../store/user.actions'
 
 export function HomePage() {
-	const loggedInUser = useSelector(storeState => storeState.userModule.user)
+  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
-	useEffect(() => {
-		loadUser()
-		loadPosts()
-	}, [])
+  useEffect(() => {
+    loadUser()
 
-	return (
-		<div className="main-layout">
-			<div className="feed-container">
-				<Post user={loggedInUser} />
-			</div>
-			<div className="sidebar-container">
-				<div className="user-sidebar">
-					<UserSideBar />
-				</div>
-			</div>
-		</div>
-	)
+    loadPosts()
+  }, [])
+
+  return (
+    <div className="main-layout">
+      <div className="feed-container">
+        <Post user={loggedInUser} />
+      </div>
+      <div className="sidebar-container">
+        <div className="user-sidebar">
+          <UserSideBar user={loggedInUser} />
+        </div>
+      </div>
+    </div>
+  )
 }
+
+
+    // const [showModal, setShowModal] = useState(false)
+    // const [selectedComments, setSelectedComments] = useState([])
