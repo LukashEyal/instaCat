@@ -34,6 +34,7 @@
   left: 0;
   height: 100vh;
   z-index: 1000;
+  width: var(--nav-wide-width);
 
   .logo {
     display: flex;
@@ -136,5 +137,29 @@
   .main-container main {
     width: calc(100% - var(--nav-medium-width));
     margin-left: var(--nav-medium-width);
+  }
+}
+
+@media (max-width: 1263px) {
+  .side-bar {
+    width: var(--nav-narrow-width);
+    & .sidebar-item-name {
+      display: none;
+    }
+  }
+  .main-container main {
+    width: calc(100% - var(--nav-narrow-width));
+    margin-left: var(--nav-narrow-width);
+  }
+}
+
+/* Large screens (above 1920px) */
+@media (min-width: 1920px) {
+  .side-bar {
+    width: var(--nav-wide-width); /* Revert to full width */
+  }
+  .main-container main {
+    width: calc(100% - var(--nav-wide-width));
+    margin-left: var(--nav-wide-width);
   }
 }
