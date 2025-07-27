@@ -16,85 +16,107 @@
   background: #fff;
   max-width: 1000px;
   max-height: 90vh;
-  width: 95%;
+  width: 85%;
   border-radius: 10px;
-  overflow: hidden;
+  overflow: hidden; // keep this
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   pointer-events: auto;
 
   .post {
-    display: flex;
-    width: 100%;
-  }
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 2.5fr 2.5fr 2.5fr 2.5fr;
+    grid-template-areas:
+      "image header"
+      "image content"
+      "image comments"
+      "image comments"
+      "image postActions";
 
-  .post-image {
-    flex: 1;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      max-height: 90vh;
-    }
-  }
-
-  .comments {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 1em;
-    overflow-y: auto;
-  }
-
-  .header {
-    display: flex;
-    align-items: center;
-    gap: 0.8em;
-    margin-bottom: 1em;
-
-    img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+    .actions {
+      grid-area: postActions;
     }
 
-    strong {
-      font-weight: 600;
-    }
-  }
-
-  .post-caption {
-    font-size: 0.95em;
-    line-height: 1.4;
-    margin-bottom: 1.2em;
-
-    strong {
-      font-weight: 600;
-      margin-right: 4px;
-    }
-  }
-
-  .comment-section {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid #eee;
-    padding-top: 1em;
-    margin-top: 1em;
-
-    .user-content {
+    .post-image {
+      grid-area: image;
       display: flex;
-      gap: 0.5em;
-      margin-bottom: 1em;
       align-items: center;
+      justify-content: center;
+      padding: 0.5em;
+      width: 100%;
+      height: 100%;
 
       img {
-        width: 32px;
-        height: 32px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+
+    .user-post {
+      display: grid;
+    }
+
+    .post-comments {
+   grid-area: comments;
+  padding: 1em;
+  overflow-y: auto; // scroll the entire comments section
+
+
+      .comments-list {
+     display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+  .comment-item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.75em;
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  
+
+  .comment-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+      .comment-text {
+      color: #444;
+      line-height: 1.5;
+      margin-bottom: 0.5em;
+      font-size: 0.95em;
+    }
+
+      .comment-time {
+      font-size: 0.75em;
+      color: #888;
+      align-self: flex-end;
+    }
+  }
+}
+
+
+    }
+
+    .header {
+      grid-area: header;
+      display: flex;
+      gap: 0.8em;
+      margin-bottom: 1em;
+
+      img {
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
       }
 
@@ -103,20 +125,56 @@
       }
     }
 
-    .comment-row {
-      margin-bottom: 1.2em;
+    .post-caption {
+      grid-area: content;
 
-      p {
-        margin: 0;
-        line-height: 1.4;
-        font-size: 0.95em;
+      strong {
+        font-weight: 600;
+        margin-right: 4px;
+      }
+    }
+
+    .comment-section {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid #eee;
+      padding-top: 1em;
+      margin-top: 1em;
+
+      
+
+      .user-content {
+        display: flex;
+        gap: 0.5em;
+        margin-bottom: 1em;
+        align-items: center;
+
+        img {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+        }
+
+        strong {
+          font-weight: 600;
+        }
       }
 
-      small {
-        display: block;
-        color: #999;
-        font-size: 0.75em;
-        margin-top: 4px;
+      .comment-row {
+        margin-bottom: 1.2em;
+
+        p {
+          margin: 0;
+          line-height: 1.4;
+          font-size: 0.95em;
+        }
+
+        small {
+          display: block;
+          color: #999;
+          font-size: 0.75em;
+          margin-top: 4px;
+        }
       }
     }
   }

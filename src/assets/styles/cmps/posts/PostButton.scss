@@ -13,11 +13,12 @@
   svg {
     width: 24px;
     height: 24px;
-    fill: #262626;
+   color: black
   }
 
   &.liked-icon svg {
-    fill: red !important;
+      color: #ed4956; /* Instagram red for liked heart */
+
   }
 }
 
