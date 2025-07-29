@@ -56,6 +56,7 @@ export function RenderPost({ post, user }) {
         </div>
 
         <div className="post-actions">
+          <div className='left-actions'>
           <button className="like-button">
             <PostButton
               onClick={() => onToggleLike(post._id, user._id)}
@@ -69,6 +70,9 @@ export function RenderPost({ post, user }) {
           <button className="share-button">
             <PostButton path={share} />
           </button>
+
+
+          </div>
           <button className="bookmark-button">
             <PostButton path={bookmark} />
           </button>
@@ -79,7 +83,7 @@ export function RenderPost({ post, user }) {
         </div>
 
         <div className="post-caption">
-          <strong>@{postAuthor?.username}</strong> {post.content}
+          <strong>{postAuthor?.username}</strong> {post.content}
         </div>
 
         <div className="post-comments">
@@ -108,7 +112,7 @@ export function RenderPost({ post, user }) {
   </button>
 </div>
 
-<hr />
+
       </div>
 
       {showModal && selectedComments && (

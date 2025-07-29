@@ -7,55 +7,50 @@
 }
 
 .post {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   background-color: #fff;
+  border-bottom: 1px solid #dbdbdb;
 }
 
 .post-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  padding: 0.6em 0.8em;
+  padding: 0.75em;
 
   img {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    margin-right: 0.6em;
-    flex-shrink: 0;
+    margin-right: 10px;
   }
 
   .post-user-details {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    flex-grow: 1;
-    min-width: 0;
 
     .post-user-meta {
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
       gap: 0.4em;
+      font-size: 14px;
 
       .post-user-name {
-        font-weight: bold;
-        font-size: 0.95em;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        font-weight: 600;
       }
 
       .post-created-at {
-        font-size: 0.85em;
-        color: #777;
+        font-size: 12px;
+        color: #8e8e8e;
       }
     }
 
     .post-location {
-      font-size: 0.8em;
-      color: #999;
-      margin-top: 2px;
+      font-size: 12px;
+      color: #8e8e8e;
+      margin-top: 1px;
     }
   }
 
@@ -63,52 +58,70 @@
     background: none;
     border: none;
     cursor: pointer;
-    width: 35px;
-    height: 35px;
+    padding: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
   }
 }
 
 .post-image img {
-  height: 585px;
   width: 100%;
+  height: auto;
   display: block;
+  object-fit: cover;
 }
 
 .post-actions {
-  
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-areas: "a b c d e f g h i j k l ";
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 0.75em;
 
+  .left-actions {
+    display: flex;
+    align-self: baseline;
+    gap: 1em;
+  }
 
-  button {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
+    button {
+    all: unset; // <== removes all default button styles including focus outlines, borders, backgrounds
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    svg {
+      width: 24px;
+      height: 24px;
+        display: block; // prevents inline spacing
+
+      
+    }
   }
 
+  .unlike {
+    color: #ed4956;
+    width: 24px;
+    height: 24px;
+  }
 
   .bookmark-button {
-    grid-area: l;
-    justify-self: end;
+    padding: 0;
   }
-.unlike {
-  color: #ed4956; /* Instagram red */
-  width: 24px;
-  height: 24px;
 }
 
+.post-likes {
+  font-weight: 600;
+  padding: 0 0.75em;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
 .post-caption {
+  padding: 0 0.75em;
   line-height: 1.4;
+  margin-bottom: 4px;
 
   strong {
     font-weight: 600;
@@ -116,19 +129,26 @@
   }
 }
 
+.post-comments {
+  padding: 0 0.75em;
+  color: #8e8e8e;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
 .post-comment {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-areas: "a b c d e f g h";
+  display: flex;
+  align-items: center;
+  padding: 0.5em 0.75em;
 }
 
 .comment-input {
-  grid-area: a;
   flex: 1;
   border: none;
   outline: none;
-  font-size: 0.9em;
+  font-size: 14px;
   color: #333;
+  background: none;
 
   &::placeholder {
     color: #aaa;
@@ -136,10 +156,10 @@
 }
 
 .emoji-button {
-  grid-area: h;
-  width: 25px;
-  height: 25px;
   background: transparent;
   border: none;
-  margin-left: 3.5em;
+  margin-left: 1em;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
 }
