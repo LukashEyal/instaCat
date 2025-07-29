@@ -77,14 +77,34 @@
 }
 
 .post-actions {
+  
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-areas: "a b c d e f g h i j k l ";
+
+
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
 
   .bookmark-button {
     grid-area: l;
     justify-self: end;
   }
+.unlike {
+  color: #ed4956; /* Instagram red */
+  width: 24px;
+  height: 24px;
+}
+
 }
 
 .post-caption {

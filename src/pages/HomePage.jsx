@@ -1,19 +1,20 @@
-import { Link } from "react-router-dom"
 
-import { UserSideBar } from "../cmps/UserSideBar"
+import { Link } from 'react-router-dom'
 
-import { useSelector } from "react-redux"
+import { UserSideBar } from '../cmps/UserSideBar'
 
-import { useState, useEffect, useRef } from "react"
+import { useSelector } from 'react-redux'
 
-import { loadPosts } from "../store/posts.actions"
+import { useState, useEffect } from 'react'
 
-import { Post } from '../cmps/Post'
+import { loadPosts } from '../store/posts.actions'
+
+import { RenderPost } from '../cmps/posts/RenderPost'
 import { loadUser } from '../store/user.actions'
 
 export function HomePage() {
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
-
+  const posts = useSelector(store => store.postsModule.posts)
   useEffect(() => {
     loadUser()
 
@@ -23,7 +24,10 @@ export function HomePage() {
   return (
     <div className="main-layout">
       <div className="feed-container">
-        <Post user={loggedInUser} />
+        {posts.map(post => (
+  <RenderPost key={post._id} post={post} user={loggedInUser} />
+))}
+        
       </div>
       <div className="sidebar-container">
         <div className="user-sidebar">

@@ -7,7 +7,7 @@ import bookmark from '../../assets/svgs/post-container/bookmark.svg'
 import comment from '../../assets/svgs/post-container/comment.svg'
 import emoji from '../../assets/svgs/post-container/emoji.svg'
 import like from '../../assets/svgs/post-container/like.svg'
-import liked from '../../assets/svgs/post-container/liked.svg'
+import unlike from '../../assets/svgs/post-container/unlike.svg'
 import option from '../../assets/svgs/post-container/option.svg'
 import share from '../../assets/svgs/post-container/share.svg'
 
@@ -76,8 +76,8 @@ export function RenderPostClicked({ post, user }) {
           <button className="like-button">
             <PostButton
               onClick={() => onToggleLike(post._id, user._id)}
-              path={post.likeBy.includes(user._id) ? liked : like}
-              className={post.likeBy.includes(user._id) ? 'liked-icon' : ''}
+              path={post.likeBy.includes(user._id) ? unlike : like}
+              className={post.likeBy.includes(user._id) ? 'unlike-icon' : ''}
             />
           </button>
           <button className="comment-button">

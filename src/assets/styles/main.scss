@@ -11,6 +11,7 @@
 @import "basics/links";
 @import "basics/forms";
 
+
 // pages
 @import "RootCmp";
 
@@ -19,8 +20,15 @@
 @import "pages/Reels";
 @import "pages/Messages";
 
+
 // Components
 @import "cmps/UserSideBar.scss";
 @import "cmps/SideBar";
 @import "cmps/UserMsg";
-@import "cmps/PostsIndex.scss"
+@import "cmps/posts/RenderPost.scss";
+@import "cmps/posts/CommentBy.scss";
+@import "cmps/posts/CommentsView.scss";
+@import "cmps/posts/LikeBy.scss";
+@import "cmps/posts/PostButton.scss";
+
+
