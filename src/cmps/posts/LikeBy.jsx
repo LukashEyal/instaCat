@@ -10,52 +10,19 @@ import { toggleLike, getFullNamesFromUserIds, getUserNames } from '../../store/p
 
 
 
+export function LikeBy({ likeIds = [], currentUser }) {
+  const currentUserId = currentUser._id;
+  const userLiked = likeIds.includes(currentUserId);
 
-export function LikeBy({ likeIds, currentUser }) {
-  const [fullnames, setFullnames] = useState([])
+  // Avoid mutating original array length — just adjust display
+  const likesCount = likeIds.length;
+  const displayCount = userLiked ? likesCount : likesCount;
 
-  useEffect(() => {
-    if (!Array.isArray(likeIds) || likeIds.length === 0) return
+  if (likesCount === 0) return null;
 
-    const loadFullnames = async () => {
-      try {
-        const result = await getFullNamesFromUserIds(likeIds)
-        setFullnames(result)
-      } catch (err) {
-        console.error('Failed to fetch fullnames', err)
-      }
-    }
-
-    loadFullnames()
-  }, [])
-
-  if (!Array.isArray(likeIds) || likeIds.length === 0) return null
-
-  const isLikedByUser = likeIds.includes(currentUser._id)
-  const currentFullname = currentUser.fullname
-  const otherNames = fullnames.filter(name => name !== currentFullname)
-  
-  if (isLikedByUser) {
-    if (!otherNames.length) {
-      return <p className="like-by">Liked by <strong>you</strong></p>
-    }
-
-    return (
-      <p className="like-by">
-        Liked by <strong>you</strong> and <strong>{otherNames.length} other{otherNames.length > 1 ? 's' : ''}</strong>
-      </p>
-    )
-  }
-
-  if (fullnames.length > 0) {
-    const [first, ...rest] = fullnames
-    return (
-      <p className="like-by">
-        Liked by <strong>{first}</strong>
-        {rest.length > 0 && <> and <strong>{rest.length} other{rest.length > 1 ? 's' : ''}</strong></>}
-      </p>
-    )
-  }
-
-  return null
+  return (
+    <p>
+      {displayCount} {displayCount === 1 ? 'like' : 'likes'}
+    </p>
+  );
 }

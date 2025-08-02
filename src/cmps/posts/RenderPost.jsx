@@ -10,6 +10,7 @@ import like from '../../assets/svgs/post-container/like.svg'
 import unlike from '../../assets/svgs/post-container/unlike.svg'
 import option from '../../assets/svgs/post-container/option.svg'
 import share from '../../assets/svgs/post-container/share.svg'
+import verfied from '../../assets/svgs/post-container/verified.svg'
 
 import { CommentsView } from './CommentsView.jsx'
 import { PostButton } from './PostButton.jsx'
@@ -36,9 +37,11 @@ export function RenderPost({ post, user }) {
           src={postAuthor?.avatarUrl}
           alt={`${postAuthor?.username}'s avatar`}
         />
+      
         <div className="post-user-details">
           <div className="post-user-meta">
             <span className="post-user-name">{postAuthor?.username}</span>
+            <PostButton path={verfied} />
             <span className="post-created-at">
               • {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
             </span>
@@ -82,9 +85,13 @@ export function RenderPost({ post, user }) {
           <LikeBy likeIds={post.likeBy} currentUser={user} />
         </div>
 
-        <div className="post-caption">
-          <strong>{postAuthor?.username}</strong> {post.content}
-        </div>
+     <div className="post-caption">
+  <span className="caption-user">
+    <strong>{postAuthor?.username}</strong>
+    <PostButton path={verfied} />
+  </span>
+  {` ${post.content}`}
+</div>
 
         <div className="post-comments">
           <CommentBy
