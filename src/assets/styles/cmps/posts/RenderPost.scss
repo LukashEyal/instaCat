@@ -59,7 +59,7 @@ strong {
       }
 
       .post-created-at {
-        font-size: 12px;
+        font-size: 14px;
         color: #8e8e8e;
       }
     }
@@ -77,8 +77,16 @@ strong {
     cursor: pointer;
     padding: 0;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-right: -1em;
+ 
+
+     svg.injected-svg {
+    width: 1.5em;
+    height: 1.5em;
+    
+    display: block;
+  }
+    
   }
 }
 

@@ -16,7 +16,7 @@ import { CommentsView } from './CommentsView.jsx'
 import { PostButton } from './PostButton.jsx'
 import { LikeBy } from './LikeBy.jsx'
 import { CommentBy } from './CommentBy.jsx'
-
+import { getShortTimeAgo } from './GetTime.js'
 
 
 export function RenderPost({ post, user }) {
@@ -42,9 +42,9 @@ export function RenderPost({ post, user }) {
           <div className="post-user-meta">
             <span className="post-user-name">{postAuthor?.username}</span>
             <PostButton path={verfied} />
-            <span className="post-created-at">
-              • {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
-            </span>
+         <span className="post-created-at">
+  • {getShortTimeAgo(post.createdAt)}
+</span>
           </div>
           <div className="post-location">{post.location}</div>
         </div>
