@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 
 import { loadPosts } from '../store/posts.actions'
 
-import { RenderPost } from '../cmps/posts/RenderPost'
+import { Post } from '../cmps/post/Post'
 import { loadUser } from '../store/user.actions'
 
 export function HomePage() {
@@ -25,7 +25,7 @@ export function HomePage() {
     <div className="main-layout">
       <div className="feed-container">
         {posts.map(post => (
-  <RenderPost key={post._id} post={post} user={loggedInUser} />
+  <Post key={post._id} post={post} user={loggedInUser} />
 ))}
         
       </div>

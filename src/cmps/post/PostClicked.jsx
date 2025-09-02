@@ -10,22 +10,21 @@ import like from '../../assets/svgs/post-container/like.svg'
 import unlike from '../../assets/svgs/post-container/unlike.svg'
 import option from '../../assets/svgs/post-container/option.svg'
 import share from '../../assets/svgs/post-container/share.svg'
-import verfied from '../../assets/svgs/post-container/verified.svg'
 
-import { CommentsView } from './CommentsView.jsx'
+
 import { PostButton } from './PostButton.jsx'
 import { LikeBy } from './LikeBy.jsx'
-import { CommentBy } from './CommentBy.jsx'
-import { getShortTimeAgo } from './GetTime.js'
+import { Comments } from './Comments.jsx'
 
 
-export function RenderPost({ post, user }) {
+
+export function PostClicked({ post, user }) {
   const [showModal, setShowModal] = useState(false)
   const [selectedComments, setSelectedComments] = useState(null)
 
   const postAuthor = post.user
   const comments = post.comments
-
+  console.log(comments)
   function onToggleLike(postId, userId) {
     toggleLike(postId, userId)
   }
@@ -37,14 +36,12 @@ export function RenderPost({ post, user }) {
           src={postAuthor?.avatarUrl}
           alt={`${postAuthor?.username}'s avatar`}
         />
-      
         <div className="post-user-details">
           <div className="post-user-meta">
             <span className="post-user-name">{postAuthor?.username}</span>
-            <PostButton path={verfied} />
-         <span className="post-created-at">
-  • {getShortTimeAgo(post.createdAt)}
-</span>
+            <span className="post-created-at">
+              • {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+            </span>
           </div>
           <div className="post-location">{post.location}</div>
         </div>
@@ -52,19 +49,37 @@ export function RenderPost({ post, user }) {
           <PostButton path={option} />
         </button>
       </div>
-
-      <div className="post-content">
-        <div className="post-image">
+ <div className="post-image">
           <img src={post.post_imgUrl || post.imgUrl} alt="post" />
         </div>
+      <div className="user-post">
+        <div className='user-post-header'>
+       <div className='avatar'>
+               <img
+          src={postAuthor?.avatarUrl}
+          alt={`${postAuthor?.username}'s avatar`}
+          
+        /></div>
+        <span className="user-name">{postAuthor?.username}</span>
+        </div>
+        </div>
+             <span className='user-post-content'>{post.content}</span>
+        
+        
 
+           <div className="post-comments">
+
+            <Comments comments={comments} />
+       
+        </div>
+       
+        <div className='actions'>
         <div className="post-actions">
-          <div className='left-actions'>
           <button className="like-button">
             <PostButton
               onClick={() => onToggleLike(post._id, user._id)}
               path={post.likeBy.includes(user._id) ? unlike : like}
-              className={post.likeBy.includes(user._id) ? 'unlike' : ''}
+              className={post.likeBy.includes(user._id) ? 'unlike-icon' : ''}
             />
           </button>
           <button className="comment-button">
@@ -73,9 +88,6 @@ export function RenderPost({ post, user }) {
           <button className="share-button">
             <PostButton path={share} />
           </button>
-
-
-          </div>
           <button className="bookmark-button">
             <PostButton path={bookmark} />
           </button>
@@ -85,24 +97,8 @@ export function RenderPost({ post, user }) {
           <LikeBy likeIds={post.likeBy} currentUser={user} />
         </div>
 
-     <div className="post-caption">
-  <span className="caption-user">
-    <strong>{postAuthor?.username}</strong>
-    <PostButton path={verfied} />
-  </span>
-  {` ${post.content}`}
-</div>
-
-        <div className="post-comments">
-          <CommentBy
-            comments={comments}
-            currentUser={user}
-            onClick={() => {
-              setSelectedComments(post)
-              setShowModal(true)
-            }}
-          />
-        </div>
+    
+     
 
     <div className="post-comment">
   <input
@@ -119,18 +115,20 @@ export function RenderPost({ post, user }) {
   </button>
 </div>
 
-
-      </div>
+<hr />
+     
 
       {showModal && selectedComments && (
-        <CommentsView
+        <Comments
           post={post}
           onClose={() => setShowModal(false)}
           user={user}
         />
       )}
-    </div>
+   </div>
+   </div>
   )
 }
 
-export default RenderPost
+
+export default PostClicked

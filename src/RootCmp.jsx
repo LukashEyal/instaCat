@@ -1,26 +1,23 @@
 import React from "react"
 
-import { LoginSignup } from "./pages/LoginSignup.jsx"
-import { Login } from "./pages/Login.jsx"
-import { Signup } from "./pages/Signup.jsx"
+
 
 import { Routes, Route, Navigate } from "react-router"
 import { userService } from "./services/user"
 import { HomePage } from "./pages/HomePage"
 import { SideBar } from "./cmps/SideBar.jsx"
-import { UserMsg } from "./cmps/UserMsg.jsx"
+
 import { Explore } from "./pages/Explore.jsx"
 import { Reels } from "./pages/Reels.jsx"
 import { Messages } from "./pages/Messages.jsx"
 import { Profile } from "./pages/Profile.jsx"
-import { UserSideBar } from "./cmps/UserSideBar.jsx"
-import { useSelector } from "react-redux"
+
 
 export function RootCmp() {
 	return (
 		<div className="main-container">
 			<SideBar />
-			<UserMsg />
+		
 
 			<main>
 				<Routes>

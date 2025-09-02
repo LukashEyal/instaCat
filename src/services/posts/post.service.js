@@ -1,5 +1,5 @@
 import { storageService } from '../async-storage.service.js';
-import { utilService } from '../util.service.js';
+import { saveToStorage, utilService } from '../util.service.js';
 import instaData from '../db/instaCatData.json' assert { type: 'json' };
 import { userService } from '../user/user.service.js'
 
@@ -14,7 +14,8 @@ export const postService = {
   query,
   get,
   toggleLike,
-  getUsers
+  getUsers,
+  addComment
 };
 
 function _createPosts() {
@@ -79,3 +80,41 @@ async function getUsers()
 
 
 }
+
+
+
+async function addComment({ postId, userId, text }) {
+  // const post = await storageService.get(POST_KEY, postId); 
+  // if (!post) throw new Error(`Post ${postId} not found`);
+
+  // if (!Array.isArray(post.comments)) post.comments = [];
+
+  const post = await storageService.get(POST_KEY, postId)
+ 
+  
+  const newId = await utilService.makeId()
+  const newComment = {
+    _id: newId,
+    userId,
+    text,
+    createdAt: new Date().toISOString(),
+  };
+
+  const updatedPost = {
+    ...post,
+    comments: [...(post.comments || []), newComment],
+  }
+
+  
+
+  await storageService.put(POST_KEY, updatedPost)
+  return updatedPost
+
+  // post.comments.push(newComment);
+
+  // Persist and return updated post (adjust to your storage)
+  // const updatedPost = await storageService.put(POST_KEY, post);
+  // return updatedPost // or return post if you mutate in-memory
+}
+
+
