@@ -1,14 +1,15 @@
-import { useEffect } from "react"
-
 export function CreateCmp({ onClose }) {
-	// useEffect(() => {
-	//     console.log('CreateCmp opened')
-	// }, [])
-
 	return (
-		<div className="create-cmp">
-			test
-			<div aria-label="Create new post" role="dialog"></div>
+		<div className="modal-overlay" onClick={onClose}>
+			<div
+				className="create-post-main-container"
+				onClick={e => e.stopPropagation()}
+			>
+				<div className="create-post-header">Create new post</div>
+				<div className="create-post-body">
+					{/* Your content goes here */}
+				</div>
+			</div>
 		</div>
 	)
 }
