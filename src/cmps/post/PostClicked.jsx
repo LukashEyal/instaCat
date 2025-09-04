@@ -24,7 +24,7 @@ export function PostClicked({ post, user }) {
 
   const postAuthor = post.user
   const comments = post.comments
-  console.log(comments)
+
   function onToggleLike(postId, userId) {
     toggleLike(postId, userId)
   }

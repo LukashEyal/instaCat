@@ -29,7 +29,7 @@ export function Post({ post, user }) {
   const postId = post._id
   const postAuthor = post.user
   const comments = post.comments
-console.log("comments:", comments)
+
   function onToggleLike(postId, userId) {
     toggleLike(postId, userId)
   }

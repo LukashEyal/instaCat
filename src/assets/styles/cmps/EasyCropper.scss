@@ -1,0 +1,43 @@
+.ig-cropper {
+  display: grid;
+  gap: 14px;
+}
+.ig-cropper-stage {
+  position: relative;
+  width: 480px;      /* adjust to your modal */
+  height: 480px;     /* square stage looks IG-like */
+  background: #111;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+.ig-controls {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+.ig-aspects {
+  display: flex;
+  gap: 8px;
+}
+.pill {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  cursor: pointer;
+}
+.pill.active {
+  border-color: #4a5df9;
+  color: #fff;
+  background: #4a5df9;
+}
+.ig-zoom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ig-actions {
+  display: flex;
+  gap: 10px;
+}
