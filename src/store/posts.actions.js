@@ -58,6 +58,26 @@ export async function getUserNames(userIds = []) {
 
 
 
+export async function addComment(commentInput) {
+  try {
+    
+    const { postId, userId, text } = commentInput;
+    const payload = { postId, userId, text: text }; 
+
+    const updatedPost = await postService.addComment(payload);
+
+    // Update Redux
+    store.dispatch({ type: UPDATE_POST, post: updatedPost });
+
+    
+  } catch (err) {
+    console.error("Cannot Add Comment to post", err);
+    throw err;
+  }
+}
+
+
+
 
 
 // onClick = {() => like(post._id, user._id)}
@@ -104,9 +124,9 @@ export async function getUserNames(userIds = []) {
 //     }
 // }
 
-// export async function addCarMsg(carId, txt) {
+// export async function addCarMsg(carId, text) {
 //     try {
-//         const msg = await carService.addCarMsg(carId, txt)
+//         const msg = await carService.addCarMsg(carId, text)
 //         store.dispatch(getCmdAddCarMsg(msg))
 //         return msg
 //     } catch (err) {

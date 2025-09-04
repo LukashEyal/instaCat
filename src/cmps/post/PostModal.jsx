@@ -1,14 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react'
-import  PostButton from './RenderPost'
+import  PostButton from './Post'
 import { formatDistanceToNow } from 'date-fns'
 import { toggleLike, getFullNamesFromUserIds, getUserNames } from '../../store/posts.actions'
 
-import RenderPostClicked from './RenderPostClicked'
+import PostClicked from './PostClicked'
 
 
 
 
-export function CommentsView({ post, onClose }) {
+export function Comments({ post, onClose }) {
   const modalRef = useRef()
 
   const handleClickOutside = (e) => {
@@ -30,7 +30,7 @@ export function CommentsView({ post, onClose }) {
     <div className="modal-overlay">
       <div className="modal-content" ref={modalRef}>
         
-        <RenderPostClicked post={post} user={user} />
+        <PostClicked post={post} user={user} />
 
           </div>
 

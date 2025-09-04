@@ -121,7 +121,7 @@ export function SideBar() {
 
 function ProfileSideBar() {
 	const user = useSelector(storeState => storeState.userModule.user)
-	console.log("user", user)
+	
 	if (!user) return null
 
 	const { avatarUrl, _id: userId } = user

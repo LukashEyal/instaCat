@@ -1,25 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { getUserNames } from '../../store/posts.actions';
+import { loadUsers } from '../../store/user.actions';
 
 export function Comments({ comments }) {
   const [usernames, setUsernames] = useState([]);
 
   useEffect(() => {
-    const fetchUsernames = async () => {
-      const userIds = comments.map(comment => comment.userId);
-      console.log('User IDs:', userIds);
+    
+    console.log('comments data' ,comments)
 
-      try {
-        const result = await getUserNames(userIds);
-        console.log('Usernames:', result);
-        setUsernames(result);
-      } catch (err) {
-        console.error('Failed to fetch usernames:', err);
-      }
-    };
-
-    fetchUsernames();
+  
   }, [comments]);
 
   console.log(usernames)

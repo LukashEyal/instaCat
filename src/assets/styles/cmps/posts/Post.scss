@@ -171,7 +171,7 @@ strong {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.4;
   margin-top: 0.25em;
   margin-bottom: 0.5em;
@@ -185,7 +185,7 @@ strong {
 
     strong {
       font-weight: 600;
-      font-size: 12px;
+      font-size: 13px;
     }
 
     svg.injected-svg {
@@ -200,31 +200,19 @@ strong {
 .post-comments {
   
   color: #8e8e8e;
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 4px;
 }
 
 .post-comment {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 1em;
   margin-left: -0.2em;
   
 }
 
-.comment-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-size: 14px;
-  color: #333;
-  background: none;
-  margin-bottom: 5px;
-
-  &::placeholder {
-    color: #aaa;
-  }
-}
 
 .emoji-button {
   background: none;

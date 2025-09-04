@@ -2,14 +2,15 @@ export const SET_POSTS = 'SET_POSTS'
 export const UPDATE_POST = "UPDATE_POST"
 
 const initialState = {
-    posts: []
+    posts: [],
+    post: []
     
 }
 
 export function postsReducer(state = initialState, action
 ) {
     var newState = state
-    var posts
+    
     
     switch (action.type) {
         case SET_POSTS:
@@ -17,12 +18,45 @@ export function postsReducer(state = initialState, action
             break
 
         case 'UPDATE_POST':
-  return {
-    ...state,
-    posts: state.posts.map(post =>
-      post._id === action.post._id ? action.post : post
+        return {
+        ...state,
+        posts: state.posts.map(post =>
+        post._id === action.post._id ? action.post : post
     )
   };
+
+        default:
+    }
+    return newState
+}
+
+// unitTestReducer()
+
+// function unitTestReducer() {
+//     var state = initialState
+//     const car1 = { _id: 'b101', vendor: 'Car ' + parseInt(Math.random() * 10), msgs: [] }
+//     const car2 = { _id: 'b102', vendor: 'Car ' + parseInt(Math.random() * 10), msgs: [] }
+
+//     state = carReducer(state, { type: SET_CARS, cars: [car1] })
+//     console.log('After SET_CARS:', state)
+
+//     state = carReducer(state, { type: ADD_CAR, car: car2 })
+//     console.log('After ADD_CAR:', state)
+
+//     state = carReducer(state, { type: UPDATE_CAR, car: { ...car2, vendor: 'Good' } })
+//     console.log('After UPDATE_CAR:', state)
+
+//     state = carReducer(state, { type: REMOVE_CAR, carId: car2._id })
+//     console.log('After REMOVE_CAR:', state)
+
+//     const msg = { id: 'm' + parseInt(Math.random() * 100), txt: 'Some msg' }
+//     state = carReducer(state, { type: ADD_CAR_MSG, carId: car1._id, msg })
+//     console.log('After ADD_CAR_MSG:', state)
+
+//     state = carReducer(state, { type: REMOVE_CAR, carId: car1._id })
+//     console.log('After REMOVE_CAR:', state)
+// }
+
         // case SET_CAR:
         //     newState = { ...state, car: action.car }
         //     break
@@ -41,35 +75,3 @@ export function postsReducer(state = initialState, action
         // case ADD_CAR_MSG:
         //     newState = { ...state, car: { ...state.car, msgs: [...state.car.msgs || [], action.msg] } }
         //     break
-        default:
-    }
-    return newState
-}
-
-// unitTestReducer()
-
-function unitTestReducer() {
-    var state = initialState
-    const car1 = { _id: 'b101', vendor: 'Car ' + parseInt(Math.random() * 10), msgs: [] }
-    const car2 = { _id: 'b102', vendor: 'Car ' + parseInt(Math.random() * 10), msgs: [] }
-
-    state = carReducer(state, { type: SET_CARS, cars: [car1] })
-    console.log('After SET_CARS:', state)
-
-    state = carReducer(state, { type: ADD_CAR, car: car2 })
-    console.log('After ADD_CAR:', state)
-
-    state = carReducer(state, { type: UPDATE_CAR, car: { ...car2, vendor: 'Good' } })
-    console.log('After UPDATE_CAR:', state)
-
-    state = carReducer(state, { type: REMOVE_CAR, carId: car2._id })
-    console.log('After REMOVE_CAR:', state)
-
-    const msg = { id: 'm' + parseInt(Math.random() * 100), txt: 'Some msg' }
-    state = carReducer(state, { type: ADD_CAR_MSG, carId: car1._id, msg })
-    console.log('After ADD_CAR_MSG:', state)
-
-    state = carReducer(state, { type: REMOVE_CAR, carId: car1._id })
-    console.log('After REMOVE_CAR:', state)
-}
-
