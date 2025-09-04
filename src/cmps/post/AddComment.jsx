@@ -29,15 +29,16 @@ const [text, setText] = useState("")
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
+    <form className="form" onSubmit={handleSubmit}>
+      <input 
+        className="comment-input"
         type="text"
         value={text}
         placeholder="Add a comment..."
         onChange={(e) => setText(e.target.value)}
       />
 
-      {text.trim() && <button type="submit">Post</button>}
+      {text.trim() && <button type="submit" className="post-button">Post</button>}
     </form>
   )
 }

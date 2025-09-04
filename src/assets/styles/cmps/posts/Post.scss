@@ -207,24 +207,12 @@ strong {
 .post-comment {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 1em;
   margin-left: -0.2em;
   
 }
 
-.comment-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-size: 14px;
-  color: #333;
-  background: none;
-  margin-bottom: 5px;
-
-  &::placeholder {
-    color: #aaa;
-  }
-}
 
 .emoji-button {
   background: none;
