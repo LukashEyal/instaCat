@@ -1,3 +1,13 @@
 .main-container {
-    min-height: calc(100vh - 10rem);
+  min-height: calc(100vh - 10rem);
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;                       // full-screen backdrop
+  background: rgba(0, 0, 0, 0.5); // dim the page
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;                  // above everything
+}
 }

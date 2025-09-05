@@ -1,0 +1,130 @@
+/* The cropper fills this, so set your desired size here */
+
+.create-post-body {
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+/* Cropper container */
+.cropper-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;          /* set your desired height */
+  
+  border-radius: 12px;
+  overflow: hidden;
+}
+/* Header */
+.crop-header {
+  display: grid;
+  grid-template-columns: 48px 1fr 72px;
+  align-items: center;
+  padding: 10px 14px;
+}
+.crop-header .header-title { justify-self: center; font-weight: 600; }
+.crop-header .next-btn {
+  justify-self: end;
+  background: transparent;
+  border: none;
+  color: #1877f2;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Body */
+.create-post-body { display: flex; flex-direction: column; }
+.crop-body {
+  position: relative;        /* anchor for toolbar */
+ 
+}
+
+
+.cropper-frame img {
+  width: 100%;
+  height: 100%;
+
+  
+
+
+ 
+  overflow: hidden;
+
+}
+
+
+/* Toolbar bottom-left in white area */
+/* Toolbar bottom-left spanning full width so we can push the last button */
+.cropper-toolbar.bl {
+  position: absolute;
+  left: 20px;
+  right: 20px;          /* stretch across the white area */
+  bottom: 16px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  z-index: 2;
+}
+
+/* push the Add Image button to the far right */
+.cropper-toolbar .push-right {
+  margin-left: auto;
+}
+
+/* dark pills */
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(68, 61, 61, 0.95);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* make the icons white */
+.icon-btn img {
+  width: 18px;
+  height: 18px;
+  display: block;
+  filter: brightness(0) saturate(100%) invert(1);
+}
+.icon-btn:hover img { opacity: .9; }
+.icon-btn:active img { opacity: .8; }
+
+/* the button */
+.back-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  cursor: pointer;
+
+  /* optional layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;         /* remove inline extra space */
+  width: 34px;            /* optional hit area */
+  height: 34px;
+}
+
+/* the icon inside (img or inline svg) */
+.back-btn img,
+.back-btn svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* keep keyboard focus visible (recommended) */
+.back-btn:focus-visible {
+  outline: 2px solid #1877f2;
+  outline-offset: 2px;
+}

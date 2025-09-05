@@ -1,0 +1,74 @@
+// /* Modal box */
+
+
+
+
+.create-post-main-container {
+    background-color: #fff;
+    width: 755px;
+    height: 755px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    /* no need for z-index here */
+}
+
+
+
+
+// .composer {
+
+
+//   justify-content: center;
+//   align-items: center;
+
+// }
+
+
+
+// /* icon */
+
+// /* text under icon */
+
+
+// /* container */
+// .upload-preview {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   gap: 12px; /* spacing between preview and button */
+// }
+
+// /* the rounded button */
+// .select-button {
+//   display: inline-flex;
+//   align-items: center;
+//   justify-content: center;
+//   padding: 10px 16px;         /* inner spacing */
+//   font-size: 14px;
+//   font-weight: 600;
+//   color: #fff;
+//   background-color: #4a5df9;
+//   border: none;               /* remove default border */
+//   border-radius: 9999px;      /* pill shape */
+//   cursor: pointer;
+//   box-shadow: 0 1px 0 rgba(0,0,0,0.12);
+//   transition: background-color 0.2s ease, transform 0.1s ease;
+// }
+
+// /* hover/active for a nice feel */
+// .select-button:hover {
+//   background-color: #3e53ff;
+// }
+
+// .select-button:active {
+//   background-color: #3649e6;
+//   transform: translateY(1px);
+// }
+
+// .select-button:focus {
+//   outline: none;
+//   box-shadow: 0 0 0 3px rgba(74,93,249,0.25);
+// }
