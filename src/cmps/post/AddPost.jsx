@@ -24,7 +24,7 @@ function Section({ title, children, defaultOpen=false }) {
 
 export function AddPost({ imageBlob, onBack, onShare, userAvatar, UserFullName }) {
   const [url, setUrl] = useState(null);
-  console.log({UserFullName})
+
   // right-side state
   const [caption, setCaption] = useState("");
   const [location, setLocation] = useState("");
@@ -129,7 +129,7 @@ export function AddPost({ imageBlob, onBack, onShare, userAvatar, UserFullName }
     </div>
 
           {/* collaborators */}
-   
+
             <div className="collab-input">
               <input
                 type="text"

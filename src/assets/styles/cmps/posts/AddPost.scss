@@ -1,4 +1,7 @@
-.create-post-main-container { transition: width .25s ease; }
+
+
+
+.create-post-main-container { transition: width .25s ease;   font-family: var(--ui-font);}
 .create-post-main-container.wide { width: 1040px; }
 
 .create-post-main-container.wide .add-post-body {
@@ -153,6 +156,7 @@ border: none;
   background: none;
   height: 15px;
   width: 15px;
+  
 
 }
 
