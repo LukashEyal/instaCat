@@ -40,6 +40,7 @@ export function AddPost({ imageBlob, onBack, onShare, userAvatar, UserFullName }
   useEffect(() => {
     if (!imageBlob) return;
     const u = URL.createObjectURL(imageBlob);
+   
     setUrl(u);
     return () => URL.revokeObjectURL(u);
   }, [imageBlob]);
