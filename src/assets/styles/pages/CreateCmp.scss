@@ -6,16 +6,17 @@
 .create-post-main-container {
     background-color: #fff;
     width: 755px;
-    height: 755px;
+    height: 775px;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    transition: width .25s ease;
     /* no need for z-index here */
 }
 
-
+.create-post-main-container.wide { width: 1040px; }
 
 
 // .composer {

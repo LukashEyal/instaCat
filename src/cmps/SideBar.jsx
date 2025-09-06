@@ -114,7 +114,7 @@ export function SideBar() {
 			{isSearchDrawerOpen && (
 				<SearchDrawer onClose={() => changeSearchDrawer(false)} />
 			)}
-			{isCreateOpen && <CreateCmp onClose={() => onCreateClick(false)} />}
+			{isCreateOpen && <CreateCmp loggedInUser={user} onClose={() => onCreateClick(false)} />}
 		</>
 	)
 }
