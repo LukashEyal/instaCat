@@ -1,43 +1,39 @@
+import { Link } from "react-router-dom"
 
-import { Link } from 'react-router-dom'
+import { UserSideBar } from "../cmps/UserSideBar"
 
-import { UserSideBar } from '../cmps/UserSideBar'
+import { useSelector } from "react-redux"
 
-import { useSelector } from 'react-redux'
+import { useState, useEffect } from "react"
 
-import { useState, useEffect } from 'react'
+import { loadPosts } from "../store/posts.actions"
 
-import { loadPosts } from '../store/posts.actions'
-
-import { Post } from '../cmps/post/Post'
-import { loadUser } from '../store/user.actions'
+import { Post } from "../cmps/post/Post"
+import { loadUser } from "../store/user.actions"
 
 export function HomePage() {
-  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
-  const posts = useSelector(store => store.postsModule.posts)
-  useEffect(() => {
-    loadUser()
+	const loggedInUser = useSelector(storeState => storeState.userModule.user)
+	const posts = useSelector(store => store.postsModule.posts)
+	useEffect(() => {
+		loadUser()
+		loadPosts()
+	}, [])
 
-    loadPosts()
-  }, [])
-
-  return (
-    <div className="main-layout">
-      <div className="feed-container">
-        {posts.map(post => (
-  <Post key={post._id} post={post} user={loggedInUser} />
-))}
-        
-      </div>
-      <div className="sidebar-container">
-        <div className="user-sidebar">
-          <UserSideBar user={loggedInUser} />
-        </div>
-      </div>
-    </div>
-  )
+	return (
+		<div className="main-layout">
+			<div className="feed-container">
+				{posts.map(post => (
+					<Post key={post._id} post={post} user={loggedInUser} />
+				))}
+			</div>
+			<div className="sidebar-container">
+				<div className="user-sidebar">
+					<UserSideBar user={loggedInUser} />
+				</div>
+			</div>
+		</div>
+	)
 }
 
-
-    // const [showModal, setShowModal] = useState(false)
-    // const [selectedComments, setSelectedComments] = useState([])
+// const [showModal, setShowModal] = useState(false)
+// const [selectedComments, setSelectedComments] = useState([])
