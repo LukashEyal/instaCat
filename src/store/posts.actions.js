@@ -1,106 +1,100 @@
-import { postService } from '../services/posts/post.service'
+import { postService } from "../services/posts/post.service"
 
-import { SET_POSTS, UPDATE_POST } from './posts.reducer'
+import { SET_POSTS, UPDATE_POST } from "./posts.reducer"
 
-import { store } from './store'
+import { store } from "./store"
 
 export async function loadPosts() {
-    try {
-        const posts = await postService.query()
-   
-        store.dispatch( {type: SET_POSTS, posts})
-    } catch (err) {
-        console.log('Cannot load posts', err)
-        throw err
-    }
+	try {
+		const posts = await postService.query()
+
+		store.dispatch({ type: SET_POSTS, posts })
+	} catch (err) {
+		console.log("Cannot load posts", err)
+		throw err
+	}
 }
 
-
 export async function toggleLike(postId, userId) {
+	console.log("post.actions.js: toggleLike called with", postId, userId)
 
-  console.log('post.actions.js: toggleLike called with', postId, userId)
-
-  
-    try {
-      const post = await postService.toggleLike(postId, userId)
-      store.dispatch({ type: UPDATE_POST, post })
-      
-    } catch (err) {
-      console.error("Cannot like post", err)
-      throw err
-    }
-  
+	try {
+		const post = await postService.toggleLike(postId, userId)
+		store.dispatch({ type: UPDATE_POST, post })
+	} catch (err) {
+		console.error("Cannot like post", err)
+		throw err
+	}
 }
 
 export async function getFullNamesFromUserIds(userIds = []) {
-  const allUsers = await postService.getUsers()
+	const allUsers = await postService.getUsers()
 
-  // Filter users that are in the list
-  const matchedUsers = allUsers.filter(user => userIds.includes(user._id))
+	// Filter users that are in the list
+	const matchedUsers = allUsers.filter(user => userIds.includes(user._id))
 
-  // Return only fullnames
-  return matchedUsers.map(user => user.fullname)
+	// Return only fullnames
+	return matchedUsers.map(user => user.fullname)
 }
-
 
 export async function getUserNames(userIds = []) {
+	const allUsers = await postService.getUsers()
 
-  const allUsers = await postService.getUsers()
+	// Filter users that are in the list
+	const matchedUsers = allUsers.filter(user => userIds.includes(user._id))
 
-  // Filter users that are in the list
-  const matchedUsers = allUsers.filter(user => userIds.includes(user._id))
-
-  // Return only fullnames
-  return matchedUsers.map(user => user.username)
-  
+	// Return only fullnames
+	return matchedUsers.map(user => user.username)
 }
-
-
-
 
 export async function addComment(commentInput) {
-  try {
-    
-    const { postId, userId, text } = commentInput;
-    const payload = { postId, userId, text: text }; 
+	try {
+		const { postId, userId, text } = commentInput
+		const payload = { postId, userId, text: text }
 
-    const updatedPost = await postService.addComment(payload);
+		const updatedPost = await postService.addComment(payload)
 
-    // Update Redux
-    store.dispatch({ type: UPDATE_POST, post: updatedPost });
-
-    
-  } catch (err) {
-    console.error("Cannot Add Comment to post", err);
-    throw err;
-  }
+		// Update Redux
+		store.dispatch({ type: UPDATE_POST, post: updatedPost })
+	} catch (err) {
+		console.error("Cannot Add Comment to post", err)
+		throw err
+	}
 }
 
-export async function AddPostAction(data){
+export async function AddPostAction(data) {
+	console.log("Actions : ", data)
 
-  console.log("Actions : ", data)
+	const {
+		content,
+		location,
+		imageUrl,
+		user,
+		userId,
+		likeBy,
+		comments,
+		createdAt,
+	} = data
 
-  const  { content, location, post_imgUrl, user, userId, likeBy, comments, createdAt } = data
+	const payload = {
+		content,
+		location,
+		imageUrl,
+		user,
+		userId,
+		likeBy,
+		comments,
+		createdAt,
+	}
 
-  const payload = { content, location, post_imgUrl, user, userId, likeBy, comments, createdAt  }
+	const addedPost = await postService.addPost(payload)
 
-  const addedPost = await postService.addPost(payload)
+	const posts = await postService.query()
 
-  const posts = await postService.query()
-  
-  
+	store.dispatch({ type: SET_POSTS, posts })
 
-  store.dispatch( {type: SET_POSTS, posts})
-
-
-  return addedPost
-
-
-
+	return addedPost
 }
-
-
-
 
 // onClick = {() => like(post._id, user._id)}
 // export async function loadCar(carId) {
@@ -112,7 +106,6 @@ export async function AddPostAction(data){
 //         throw err
 //     }
 // }
-
 
 // export async function removeCar(carId) {
 //     try {
