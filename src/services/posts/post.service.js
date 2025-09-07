@@ -15,7 +15,8 @@ export const postService = {
   get,
   toggleLike,
   getUsers,
-  addComment
+  addComment,
+  addPost
 };
 
 function _createPosts() {
@@ -118,3 +119,11 @@ async function addComment({ postId, userId, text }) {
 }
 
 
+async function addPost(payload) {
+  console.log("Service payload : ", payload)
+  const post = await storageService.post(POST_KEY, payload)
+  return post
+
+
+  
+}

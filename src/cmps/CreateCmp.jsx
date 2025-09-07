@@ -4,16 +4,24 @@ import { AddImage } from "./post/AddImage";
 import { ImageCrop } from "./post/ImageCorp"; // your file name
 import { AddPost } from "./post/AddPost";
 import { uploadService } from "../services/upload.service.js";
+import { AddPostAction } from "../store/posts.actions.js";
 
 
 export function CreateCmp({ onClose, loggedInUser }) {
   const [step, setStep] = useState("select"); // 'select' | 'crop' | 'compose'
   const [imgUrl, setImgUrl] = useState(null); // original uploaded image url
   const [cropResult, setCropResult] = useState(null); // { blob, url, meta }
-  const [addPost, setAddPost] = useState()
-
-  const { avatarUrl, _id: userId, userFullname} = loggedInUser
+  const [PostImageUrl, setPostImageUrl] = useState()
+  const [content, setContent] = useState(null)
+  const [location, setLocation] = useState(null)
+  const [postObj, setPostObj] = useState(null)
+  const [user , setUser] = useState(loggedInUser)
+  const { avatarUrl, _id: userId, userFullname, email, username} = user
   
+
+  
+ 
+
 
   const handleUploaded = (url) => {
     setImgUrl(url);
@@ -27,27 +35,48 @@ export function CreateCmp({ onClose, loggedInUser }) {
     setStep("compose");
   };
 
-  const handleShare = async ( ) => {
+  const handleShare = async (draft) => {
 
-     async function uploadFromCropResult(cropResult) {
-  // 1) Get bytes from the blob: URL
-  const resp = await fetch(cropResult.url)
-  const blob = await resp.blob()
+        const {
+      blob,          // image Blob
+      caption,       // string
+      location,      // string
+      collaborators, // string[]
+      shareTo,       // { facebook: boolean, ... }
+      altText,       // string
+      settings,      // { hideLikeCount, disableComments }
+    } = draft;
 
-  // 2) Wrap in a File so Cloudinary sees a filename/extension
-  const type = blob.type || 'image/png'
-  const ext = type.split('/')[1] || 'png'
-  const file = new File([blob], `crop.${ext}`, { type })
+  
 
-  // 3) Build a minimal "event" object your existing function expects
-  const fakeEvent = { target: { files: [file] } }
+   const type = blob.type || "image/jpeg";
+  const ext = type.split("/")[1] || "jpg";
+  const file = new File([blob], `post_${Date.now()}.${ext}`, { type });
 
-  // 4) Reuse your unchanged uploadImg(ev)
-  return uploadService.uploadImg(fakeEvent)}
+    // Your uploadService expects an <input type="file">-style event
+  const fakeEvent = { target: { files: [file] } };
+  const imgData = await uploadService.uploadImg(fakeEvent);
+  
+  setPostImageUrl(imgData.url);
 
-  const imgData = await uploadFromCropResult(cropResult)
-  console.log(imgData.secure_url)
-   
+  setStep("post")
+
+
+  const postData = {
+    
+    comments : [],
+    content: caption,
+    createdAt: Date.now(),
+    likeBy: [],
+    location: location,
+    post_imgUrl: imgUrl,
+    user: loggedInUser
+
+  }
+
+ 
+
+   AddPostAction(postData)
 
     
     onClose();
@@ -74,12 +103,25 @@ export function CreateCmp({ onClose, loggedInUser }) {
             imageBlob={cropResult.blob}
             onBack={() => setStep("crop")}
             onShare={handleShare}
-            userAvatar={avatarUrl}
-            UserFullName={userFullname}
+            userAvatar={user.avatarUrl}
+            UserFullName={user.username}
           />
         )}
 
-        {step === "post"}
+        {step === "post" && PostImageUrl &&
+        
+          (
+
+           AddPostAction(postData)
+
+
+          )
+        
+        
+        
+        }
+
+       
 
 
 

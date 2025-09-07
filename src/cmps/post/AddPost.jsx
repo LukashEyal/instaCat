@@ -67,6 +67,8 @@ export function AddPost({ imageBlob, onBack, onShare, userAvatar, UserFullName }
     });
   };
 
+
+
   return (
     <>
       <div className="create-post-header crop-header">

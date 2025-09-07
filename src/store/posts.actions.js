@@ -76,6 +76,28 @@ export async function addComment(commentInput) {
   }
 }
 
+export async function AddPostAction(data){
+
+  console.log("Actions : ", data)
+
+  const  { content, location, post_imgUrl, user, userId, likeBy, comments, createdAt } = data
+
+  const payload = { content, location, post_imgUrl, user, userId, likeBy, comments, createdAt  }
+
+  const addedPost = await postService.addPost(payload)
+
+  const posts = await postService.query()
+  
+  
+
+  store.dispatch( {type: SET_POSTS, posts})
+
+
+  return addedPost
+
+
+
+}
 
 
 
