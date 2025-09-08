@@ -19,7 +19,8 @@ export async function toggleLike(postId, userId) {
 	console.log("post.actions.js: toggleLike called with", postId, userId)
 
 	try {
-		const post = await postService.toggleLike(postId, userId)
+		const likedPost = await postService.toggleLike(postId, userId)
+		const post = await postService.getById(postId)
 		store.dispatch({ type: UPDATE_POST, post })
 	} catch (err) {
 		console.error("Cannot like post", err)
