@@ -16,10 +16,14 @@ export const httpService = {
     put(endpoint, data) {
         return ajax(endpoint, 'PUT', data)
     },
+    patch(endpoint, data) {              // 👈 add this
+        return ajax(endpoint, 'PATCH', data)
+    },
     delete(endpoint, data) {
         return ajax(endpoint, 'DELETE', data)
     }
 }
+
 
 async function ajax(endpoint, method = 'GET', data = null) {
     const url = `${BASE_URL}${endpoint}`
