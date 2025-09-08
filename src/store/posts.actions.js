@@ -65,29 +65,20 @@ export async function addComment(commentInput) {
 export async function AddPostAction(data) {
 	console.log("Actions : ", data)
 
-	const {
-		content,
-		location,
-		imageUrl,
-		user,
-		userId,
-		likeBy,
-		comments,
-		createdAt,
-	} = data
-
-	const payload = {
-		content,
-		location,
-		imageUrl,
-		user,
-		userId,
-		likeBy,
-		comments,
-		createdAt,
+	const post =  {
+		content : data.content,
+		location : data.location,
+		imageUrl : data.imageUrl,
+		user : data.user,
+		userId : data.userId,
+		likeBy : data.likeBy,
+		comments : data.comments,
+		createdAt : data.createdAt
 	}
 
-	const addedPost = await postService.addPost(payload)
+	console.log("usedid :" , post.userId)
+
+	const addedPost = await postService.addPost(post)
 
 	const posts = await postService.query()
 

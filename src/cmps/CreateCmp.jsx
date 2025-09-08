@@ -15,8 +15,12 @@ export function CreateCmp({ onClose, loggedInUser }) {
 	const [location, setLocation] = useState(null)
 	const [postObj, setPostObj] = useState(null)
 	const [user, setUser] = useState(loggedInUser)
-	const { avatarUrl, _id: userId, userFullname, email, username } = user
+	
+	const userId = user._id
+	console.log("Logged in user", loggedInUser)
+	console.log("User id :", userId)
 
+	console.log("user: , " , user)
 	const handleUploaded = url => {
 		setImgUrl(url)
 		setStep("crop")
@@ -58,7 +62,8 @@ export function CreateCmp({ onClose, loggedInUser }) {
 			likeBy: [],
 			location: location,
 			imageUrl: imgUrl,
-			user: loggedInUser,
+			
+			userId: userId
 		}
 
 		AddPostAction(postData)
