@@ -6,9 +6,13 @@ export const postService = {
 	save,
 	remove,
 	addPostMsg,
+	toggleLike,
+	addPost,
 }
 
-async function query(filterBy = { txt: "", price: 0 }) {
+// async function query(filterBy = { txt: "", price: 0 }) {
+async function query(filterBy = {}) {
+async function query(filterBy = {}) {
 	return httpService.get(`post`, filterBy)
 }
 
@@ -33,4 +37,20 @@ async function save(post) {
 async function addPostMsg(postId, txt) {
 	const savedMsg = await httpService.post(`post/${postId}/msg`, { txt })
 	return savedMsg
+}
+
+async function toggleLike(postId, userId) {
+	return
+
+	const likedPost = await httpService.patch(`post/${postId}/like`, {userId : userId})
+	return likedPost
+
+	
+
+}
+
+async function addPost(paylod) {
+	console.log("payload serivce front", paylod)
+	const addedPost = await httpService.post(`post/`, paylod)
+	return addedPost
 }

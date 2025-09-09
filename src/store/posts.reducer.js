@@ -17,7 +17,7 @@ export function postsReducer(state = initialState, action
             newState = { ...state, posts: action.posts }
             break
 
-        case 'UPDATE_POST':
+        case UPDATE_POST:
         return {
         ...state,
         posts: state.posts.map(post =>

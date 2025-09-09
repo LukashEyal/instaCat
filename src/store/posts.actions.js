@@ -19,7 +19,8 @@ export async function toggleLike(postId, userId) {
 	console.log("post.actions.js: toggleLike called with", postId, userId)
 
 	try {
-		const post = await postService.toggleLike(postId, userId)
+		const likedPost = await postService.toggleLike(postId, userId)
+		const post = await postService.getById(postId)
 		store.dispatch({ type: UPDATE_POST, post })
 	} catch (err) {
 		console.error("Cannot like post", err)
@@ -65,29 +66,20 @@ export async function addComment(commentInput) {
 export async function AddPostAction(data) {
 	console.log("Actions : ", data)
 
-	const {
-		content,
-		location,
-		imageUrl,
-		user,
-		userId,
-		likeBy,
-		comments,
-		createdAt,
-	} = data
-
-	const payload = {
-		content,
-		location,
-		imageUrl,
-		user,
-		userId,
-		likeBy,
-		comments,
-		createdAt,
+	const post =  {
+		content : data.content,
+		location : data.location,
+		imageUrl : data.imageUrl,
+		user : data.user,
+		userId : data.userId,
+		likeBy : data.likeBy,
+		comments : data.comments,
+		createdAt : data.createdAt
 	}
 
-	const addedPost = await postService.addPost(payload)
+	console.log("usedid :" , post.userId)
+
+	const addedPost = await postService.addPost(post)
 
 	const posts = await postService.query()
 
