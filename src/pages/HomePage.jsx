@@ -14,8 +14,11 @@ import { loadUser } from "../store/user.actions"
 export function HomePage() {
 	const loggedInUser = useSelector(storeState => storeState.userModule.user)
 	const posts = useSelector(store => store.postsModule.posts)
+	
+	
+	
 	useEffect(() => {
-		loadUser()
+		
 		loadPosts()
 	}, [])
 

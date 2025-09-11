@@ -30,9 +30,9 @@ export async function login(credentials) {
         const user = await userService.login(credentials)
         store.dispatch({
             type: SET_USER,
-            user
+            user: user
         })
-        socketService.login(user._id)
+        // socketService.login(user._id)
         return user
     } catch (err) {
         console.log('Cannot login', err)
@@ -42,12 +42,14 @@ export async function login(credentials) {
 
 export async function signup(credentials) {
     try {
-        const user = await userService.signup(credentials)
+        console.log("Action cred:", credentials)
+        const user = await userService.signUp(credentials)
+        console.log("user sign up", user)
         store.dispatch({
             type: SET_USER,
-            user
+            user: user
         })
-        socketService.login(user)
+        // socketService.login(user)
         return user
     } catch (err) {
         console.log('Cannot signup', err)
@@ -69,15 +71,33 @@ export async function logout() {
     }
 }
 
-export async function loadUser() {
+export async function loadUser(userId) {
   try {
-    const user = userService.getLoggedinUser()
+    const user = userService.getLoggedinUser(userId)
     if (!user) throw new Error('No logged in user')
 
-    const fullUser = await userService.get(user._id) // or just `user` if no extra lookup needed
-    store.dispatch({ type: SET_USER, user: fullUser })
+   
+    store.dispatch({ type: SET_USER, user: user })
+   
   } catch (err) {
     showErrorMsg('Cannot load user')
     console.error('Cannot load user', err)
   }
+}
+
+export async function getUser(userId){
+
+    try {
+const user = userService.get(userId)
+return user
+
+
+    }
+
+    catch (err) {
+
+        throw err
+
+    }
+
 }
