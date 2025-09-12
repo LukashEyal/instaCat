@@ -12,7 +12,7 @@ export function UserSideBar() {
 				<img src={user.avatarUrl} alt={user.username} />
 				<div>
 					<div className="username">{user.username}</div>
-					<div className="fullname">{user.userFullname}</div>
+				
 				</div>
 			</div>
 		</div>

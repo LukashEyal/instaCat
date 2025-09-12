@@ -13,7 +13,7 @@
 
 // pages
 @import "RootCmp";
-
+@import "pages/LoginSignin.scss";
 @import "pages/HomePage";
 @import "pages/Explore";
 @import "pages/Reels";
@@ -34,6 +34,8 @@
 @import "cmps/posts/ImgUploader.scss";
 @import "cmps/posts/ImageCrop.scss";
 @import "cmps/posts/AddPost.scss";
+@import "cmps/CatStack.scss";
+@import "cmps/SignUpModal.scss";
 
 
 

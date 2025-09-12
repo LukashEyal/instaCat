@@ -20,11 +20,14 @@ import { useSelector } from "react-redux"
 import { loadUser } from "../store/user.actions.js"
 
 export function SideBar() {
-	useEffect(() => {
-		loadUser()
-	}, [])
+
 
 	const user = useSelector(storeState => storeState.userModule.user)
+
+	// useEffect(() => {
+	// 	loadUser(user._id)
+	// }, [])
+
 
 	const [isSearchDrawerOpen, setIsSearchDrawerOpen] = useState(false)
 	const [isCreateOpen, setIsCreateOpen] = useState(false)
@@ -75,9 +78,9 @@ export function SideBar() {
 		},
 	]
 
-	if (user.length === 0) {
-		return <div className="loader">Loading...</div>
-	}
+	// if (user.length === 0) {
+	// 	return <div className="loader">Loading...</div>
+	// }
 
 	return (
 		<>

@@ -1,5 +1,6 @@
 import { storageService } from '../async-storage.service.js';
 import { utilService } from '../util.service.js';
+import { httpService } from '../http.service.js';
 import instaData from '../db/instaCatData.json' assert { type: 'json' };
 
 
@@ -11,8 +12,24 @@ export const userService = {
   query,
   get,
   getLoggedinUser,
-  getUsers
+  getUsers,
+  login,
+  signUp
 };
+
+
+async function signUp(userCred) {
+
+  const user = await httpService.post('auth/signup', userCred)
+  return user
+
+}
+
+async function login(userCred) {
+	const user = await httpService.post('auth/login', userCred)
+  return user
+
+}
 
 function _createUsers() {
   let users = utilService.loadFromStorage(USER_KEY);
@@ -25,15 +42,15 @@ function query() {
   return storageService.query(USER_KEY);
 }
 
-function get(userId) {
-  return storageService.get(USER_KEY, userId);
+async function get(userId) {
+  const user = await httpService.get(`user/${userId}`)
+  return user
 }
 
 
-function getLoggedinUser() {
-  const users = utilService.loadFromStorage(USER_KEY);
-  // Return a hardcoded default user (e.g., u1)
-  return users?.find(user => user._id === 'u1') || null;
+async function getLoggedinUser(userId) {
+  const user = await httpService.get(`user/${userId}`)
+  return user
 }
 
 

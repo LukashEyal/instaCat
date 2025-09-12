@@ -11,7 +11,7 @@ export const SET_SCORE = 'SET_SCORE'
 
 const initialState = {
     
-    user: [],
+    user: null,
     users: [],
  
 }
