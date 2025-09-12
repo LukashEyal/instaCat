@@ -18,7 +18,7 @@ const [text, setText] = useState("")
       
       userId: userId, 
       text: text,
-      createdAt: new Date().toISOString()
+      
     }
 
     

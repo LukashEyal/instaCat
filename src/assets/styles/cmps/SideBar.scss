@@ -37,8 +37,14 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-  }
 
+
+    .injected-svg {
+
+      height: 50%;
+      width: 50%;
+  }
+  }
   a {
     text-decoration: none;
     width: 100%;

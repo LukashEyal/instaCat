@@ -1,22 +1,27 @@
+import cat1 from "../assets/img/1.jpg"
+import cat2 from "../assets/img/2.jpg"
+import cat5 from "../assets/img/5.jpg"
 
 
 export  function CatStack() {
   return (
     <div className="catstack" aria-hidden="true">
       {/* back cards */}
-      <div
-        className="catstack__card catstack__card--left"
-        style={{ backgroundImage: 'url("https://placekitten.com/420/520")' }}
-      />
-      <div
-        className="catstack__card catstack__card--right"
-        style={{ backgroundImage: 'url("https://placekitten.com/421/520")' }}
-      />
+   <div
+  className="catstack__card catstack__card--left"
+  style={{ backgroundImage: `url(${cat2})` }}
+/>
+
+<div
+  className="catstack__card catstack__card--right"
+  style={{ backgroundImage: `url(${cat5})` }}
+/>
+      
 
       {/* center phone-like frame */}
       <div className="catstack__phone">
         <img
-          src="https://placekitten.com/520/680"
+          src={cat1}
           alt=""
           className="catstack__img"
           loading="lazy"
