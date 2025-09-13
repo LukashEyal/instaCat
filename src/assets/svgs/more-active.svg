@@ -1,0 +1,10 @@
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 840 513" preserveAspectRatio="xMidYMid meet"
+  role="img" aria-label="Settings">
+  <title>Settings</title>
+  <!-- Center the 24×24 icon inside 840×513:
+       scale(21) -> 504×504, translate((840-504)/2, (513-504)/2) -> (168, 4.5) -->
+  <g transform="translate(168,4.5) scale(21)">
+    <path fill="currentColor" d="M3.5 6.5h17a1.5 1.5 0 0 0 0-3h-17a1.5 1.5 0 0 0 0 3Zm17 4h-17a1.5 1.5 0 0 0 0 3h17a1.5 1.5 0 0 0 0-3Zm0 7h-17a1.5 1.5 0 0 0 0 3h17a1.5 1.5 0 0 0 0-3Z"/>
+  </g>
+</svg>

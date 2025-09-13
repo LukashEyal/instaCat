@@ -4,9 +4,7 @@ import { httpService } from '../http.service.js';
 import instaData from '../db/instaCatData.json' assert { type: 'json' };
 
 
-export const USER_KEY = 'userDB';
 
-_createUsers();
 
 export const userService = {
   query,
@@ -56,7 +54,7 @@ async function getLoggedinUser(userId) {
 
 function getUsers() {
   try {
-    const users = utilService.loadFromStorage(USER_KEY)
+    const users = httpService.get(`user`)
     return users || []
   } catch (err) {
     console.error('Failed to load userDB from localStorage:', err)

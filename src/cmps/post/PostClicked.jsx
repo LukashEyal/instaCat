@@ -15,11 +15,18 @@ import { PostButton } from "./PostButton.jsx"
 import { LikeBy } from "./LikeBy.jsx"
 import { Comments } from "./Comments.jsx"
 
-export function PostClicked({ post, user }) {
+export function PostClicked({ post, user, users, postOwner }) {
 	const [showModal, setShowModal] = useState(false)
 	const [selectedComments, setSelectedComments] = useState(null)
+	
+	
 
-	const postAuthor = post.user
+
+	
+
+	const postAuthor = postOwner
+
+	
 	const comments = post.comments
 
 	function onToggleLike(postId, userId) {
@@ -40,7 +47,7 @@ export function PostClicked({ post, user }) {
 						</span>
 						<span className="post-created-at">
 							•{" "}
-							{formatDistanceToNow(new Date(post.createdAt), {
+							{formatDistanceToNow(new Date(post.createAt), {
 								addSuffix: true,
 							})}
 						</span>
@@ -68,7 +75,7 @@ export function PostClicked({ post, user }) {
 			<span className="user-post-content">{post.content}</span>
 
 			<div className="post-comments">
-				<Comments comments={comments} />
+				<Comments comments={comments} users={users} />
 			</div>
 
 			<div className="actions">
@@ -120,9 +127,10 @@ export function PostClicked({ post, user }) {
 
 				{showModal && selectedComments && (
 					<Comments
-						post={post}
+						comments={comments}
 						onClose={() => setShowModal(false)}
 						user={user}
+						users={users}
 					/>
 				)}
 			</div>

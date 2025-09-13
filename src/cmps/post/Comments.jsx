@@ -1,33 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { formatDistanceToNow } from 'date-fns';
-import { getUserNames } from '../../store/posts.actions';
-import { loadUsers } from '../../store/user.actions';
+import React, { useMemo } from "react";
+import { formatDistanceToNow } from "date-fns";
 
-export function Comments({ comments }) {
-  const [usernames, setUsernames] = useState([]);
+export function Comments({ comments = [], users = [] }) {
+  // Build a fast lookup: userId -> user
+  const usersById = useMemo(() => {
+    const map = new Map();
+    for (const u of users) map.set(u._id, u);
+    return map;
+  }, [users]);
 
-  useEffect(() => {
-    
-    console.log('comments data' ,comments)
-
-  
-  }, [comments]);
-
-  console.log(usernames)
+  if (!comments.length) {
+    return <div className="comments-list empty">No comments yet</div>;
+  }
 
   return (
     <div className="comments-list">
-      {comments.map((comment, i) => (
-        <div key={comment._id} className="comment-item">
-          <span className="user-id">
-            <strong>{usernames[i] || comment.userId}</strong>
-          </span>
-          <span className="comment-text">{comment.txt}</span>
-          <span className="comment-time">
-            {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
-          </span>
-        </div>
-      ))}
+      {comments.map((c, idx) => {
+        const user = usersById.get(c.userId);
+        const displayName = user?.username
+
+      
+        const ts = c.createdAt ?? c.createAt;
+        const timeAgo = ts
+          ? formatDistanceToNow(new Date(ts), { addSuffix: true })
+          : "";
+
+        return (
+          <div key={c._id || `${c.userId}-${ts || idx}`} className="comment-item">
+            <span className="user-id">
+              <strong>{displayName}</strong>
+            </span>
+            <span className="comment-text">{c.comment}</span>
+            {timeAgo && <span className="comment-time">{timeAgo}</span>}
+          </div>
+        );
+      })}
     </div>
   );
 }

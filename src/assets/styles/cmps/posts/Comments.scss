@@ -1,9 +1,7 @@
+/* === Modal === */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.65);
   display: flex;
   align-items: center;
@@ -18,184 +16,225 @@
   max-height: 90vh;
   width: 85%;
   border-radius: 10px;
-  overflow: hidden; // keep this
+  overflow: hidden; /* keep this */
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   pointer-events: auto;
 
+  /* === Post layout === */
   .post {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 2.5fr 2.5fr 2.5fr 2.5fr;
+    grid-template-columns: minmax(320px, 1fr) minmax(360px, 1fr);
+    grid-template-rows: auto 1fr auto;
     grid-template-areas:
       "image header"
-      "image content"
       "image comments"
-      "image comments"
-      "image postActions";
+      "image actions";
+    gap: 0;
+    min-height: 60vh;
 
-    .actions {
-      grid-area: postActions;
-    }
-
+    /* image pane */
     .post-image {
       grid-area: image;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0.5em;
-      width: 100%;
-      height: 100%;
+        background: transparent;   /* remove black */
 
       img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: cover; /* preserve full asset; change to cover if you prefer */
         display: block;
+         background: transparent;   /* no fallback color */
+
       }
     }
 
- .user-post {
-  display: flex;
-  flex-direction: column; /* Stack header and content */
-}
-
-.user-post-header {
-
-  display: flex;
-gap: 0.75em;
-  img {
-      width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-
-  }
-
-  .user-name {
-
-    font-weight: 600;
-  }
-
-}
-
-    .post-comments {
-   grid-area: comments;
-  padding: 1em;
-  overflow-y: auto; // scroll the entire comments section
-
-
-      .comments-list {
-     display: flex;
-    flex-direction: column;
-    gap: 1em;
-
-  .comment-item {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 0.75em;
-
-  .avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  
-
-  .comment-body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-      .comment-text {
-      color: #444;
-      line-height: 1.5;
-      margin-bottom: 0.5em;
-      font-size: 0.95em;
-    }
-
-      .comment-time {
-      font-size: 0.75em;
-      color: #888;
-      align-self: flex-end;
-    }
-  }
-}
-
-
-    }
-
-    .header {
+    /* header row (avatar + name + time + options) */
+    .post-header {
       grid-area: header;
       display: flex;
+      align-items: center;
       gap: 0.8em;
-      margin-bottom: 1em;
+      padding: 0.75em 0.75em 0.5em;
 
       img {
         width: 40px;
         height: 40px;
         border-radius: 50%;
+        object-fit: cover;
       }
+      .post-user-details {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
 
-      strong {
-        font-weight: 600;
+        .post-user-meta {
+          display: flex;
+          align-items: baseline;
+          gap: 6px;
+
+          .post-user-name { font-weight: 600; }
+          .post-created-at { color: #8e8e8e; font-size: 0.85rem; }
+        }
+        .post-location { font-size: 0.85rem; color: #666; }
+      }
+      .post-options {
+        margin-left: auto;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        padding: 4px;
       }
     }
 
-    .post-caption {
-      grid-area: content;
-
-      strong {
-        font-weight: 600;
-        margin-right: 4px;
-      }
+    /* caption + small header under the big header */
+    .user-post,
+    .user-post-content {
+      grid-area: comments; /* stack at the top of the comments column */
     }
 
-    .comment-section {
+    .user-post {
       display: flex;
       flex-direction: column;
-      border-top: 1px solid #eee;
-      padding-top: 1em;
-      margin-top: 1em;
+      padding: 0 0.75em;
 
-      
-
-      .user-content {
+      .user-post-header {
         display: flex;
-        gap: 0.5em;
-        margin-bottom: 1em;
         align-items: center;
+        gap: 0.75em;
 
-        img {
+        .avatar img {
           width: 32px;
           height: 32px;
           border-radius: 50%;
+          object-fit: cover;
         }
-
-        strong {
+        .user-name {
           font-weight: 600;
         }
       }
+    }
 
-      .comment-row {
-        margin-bottom: 1.2em;
+    .user-post-content {
+      display: block;
+      padding: 0.5em 0.75em 0;
+      color: #222;
+    }
 
-        p {
-          margin: 0;
-          line-height: 1.4;
-          font-size: 0.95em;
+    /* comments column (scrolls) */
+    .post-comments {
+      grid-area: comments;
+      padding: 0.75em;
+      overflow-y: auto;
+
+      .comments-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75em;
+
+        &.empty {
+          color: #8e8e8e;
+          font-size: 0.95rem;
+          padding: 0.5em 0;
         }
 
-        small {
-          display: block;
-          color: #999;
-          font-size: 0.75em;
-          margin-top: 4px;
+        /* your Comments.jsx outputs three spans:
+           .user-id, .comment-text, .comment-time */
+        .comment-item {
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          align-items: baseline;
+          column-gap: 0.5em;
+          row-gap: 2px;
+
+          .user-id { white-space: nowrap; }
+          .comment-text { color: #444; line-height: 1.45; word-break: break-word; }
+          .comment-time { color: #888; font-size: 0.75rem; white-space: nowrap; }
         }
       }
+    }
+
+    /* actions row */
+    .actions {
+      grid-area: actions;
+      padding: 0.5em 0.75em 0.75em;
+
+      .post-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+
+        button {
+          background: transparent;
+          border: 0;
+          cursor: pointer;
+          padding: 0.25em;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+
+          &:focus-visible {
+            outline: 2px solid #0095f6;
+            outline-offset: 2px;
+          }
+        }
+
+        .unlike-icon { color: #ed4956; } /* if you tint active heart via currentColor */
+      }
+
+      .post-likes {
+        margin: 0.5em 0;
+        font-weight: 600;
+      }
+
+      .post-comment {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 0.5em;
+        margin-top: 0.25em;
+
+        .comment-input {
+          width: 100%;
+          border: 1px solid #dbdbdb;
+          border-radius: 8px;
+          padding: 10px 12px;
+          outline: none;
+          font-size: 0.95rem;
+          transition: border-color 0.15s ease;
+
+          &:focus { border-color: #a1a1a1; }
+        }
+
+        .emoji-button {
+          background: transparent;
+          border: 0;
+          cursor: pointer;
+          padding: 0.25em;
+        }
+      }
+
+      hr {
+        border: 0;
+        border-top: 1px solid #eee;
+        margin: 0.75em 0 0;
+      }
+    }
+  }
+
+  /* responsive: stack vertically on narrow screens */
+  @media (max-width: 900px) {
+    .post {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto;
+      grid-template-areas:
+        "image"
+        "header"
+        "comments"
+        "actions";
+
+      .post-image img { object-fit: cover; } /* better for tall mobile */
     }
   }
 }

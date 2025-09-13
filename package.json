@@ -15,6 +15,7 @@
         "@faker-js/faker": "^9.9.0",
         "axios": "^1.11.0",
         "date-fns": "^4.1.0",
+        "emoji-picker-react": "^4.13.3",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-easy-crop": "^5.5.0",

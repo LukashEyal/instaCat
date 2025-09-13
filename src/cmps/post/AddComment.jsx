@@ -1,44 +1,35 @@
-import { useState } from "react"
-import { addComment, loadPosts } from "../../store/posts.actions"
+import { addComment } from "../../store/posts.actions";
 
-
-
-export function AddComment({ postId, userId }) {
-
-  
-const [text, setText] = useState("")
+export function AddComment({ postId, userId, text, onChange, inputRef }) {
 
   async function handleSubmit(e) {
-    e.preventDefault()
-    if (!text.trim()) return
+    e.preventDefault();
+    const trimmed = (text || "").trim();
+    if (!trimmed) return;
 
     const comment = {
-    
-      postId: postId,
-      
-      userId: userId, 
-      text: text,
-      
-    }
+      postId,
+      userId,
+      text: trimmed,
+    };
 
-    
-    await addComment(comment)
-
-    setText("") // clear input after submit
-
+    await addComment(comment);
+    onChange(""); // clear input after submit
   }
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <input 
+      <input
+        ref={inputRef}
         className="comment-input"
         type="text"
         value={text}
         placeholder="Add a comment..."
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
       />
-
-      {text.trim() && <button type="submit" className="post-button">Post</button>}
+      {text.trim() && (
+        <button type="submit" className="post-button">Post</button>
+      )}
     </form>
-  )
+  );
 }

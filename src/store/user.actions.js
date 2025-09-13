@@ -9,7 +9,7 @@ import { REMOVE_USER, SET_USER, SET_USERS, SET_WATCHED_USER } from '../store/use
 export async function loadUsers() {
     try {
         
-        const users = await userService.query()
+        const users = await userService.getUsers()
         store.dispatch({ type: SET_USERS, users })
     } catch (err) {
         console.log('UserActions: err in loadUsers', err)

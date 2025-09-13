@@ -9,24 +9,26 @@ import { useState, useEffect } from "react"
 import { loadPosts } from "../store/posts.actions"
 
 import { Post } from "../cmps/post/Post"
-import { loadUser } from "../store/user.actions"
+import { loadUser, loadUsers } from "../store/user.actions"
 
 export function HomePage() {
 	const loggedInUser = useSelector(storeState => storeState.userModule.user)
 	const posts = useSelector(store => store.postsModule.posts)
+	const users = useSelector(store => store.userModule.users)
 	
 	
 	
 	useEffect(() => {
 		
 		loadPosts()
+		loadUsers()
 	}, [])
 
 	return (
 		<div className="main-layout">
 			<div className="feed-container">
 				{posts.map(post => (
-					<Post key={post._id} post={post} user={loggedInUser} />
+					<Post key={post._id} post={post} user={loggedInUser} users={users}/>
 				))}
 			</div>
 			<div className="sidebar-container">

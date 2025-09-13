@@ -235,4 +235,41 @@ strong {
   }
 
 
+  
+.emoji-wrap { position: relative; display: inline-block; }
+.emoji-pop  { position: absolute; top: 110%; left: 0; z-index: 10; }
+
+}
+
+.emoji-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;           /* above your UI */
+  background: transparent; /* or rgba(0,0,0,.35) if you want dim */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* top of page */
+  padding-top: 64px;       /* space from very top; tweak as you like */
+}
+
+/* The picker “sheet” */
+.emoji-sheet {
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  border-radius: 12px;
+  overflow: hidden;        /* rounds the picker corners nicely */
+}
+
+.emoji-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: transparent; // or rgba(0,0,0,.35) if you want dim
+}
+
+.emoji-sheet {
+  position: fixed;        /* ← key: fixed to the viewport */
+  width: 320px;           /* matches the picker width */
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  border-radius: 12px;
+  overflow: hidden;
 }

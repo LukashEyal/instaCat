@@ -9,7 +9,9 @@ import {
 
 import PostClicked from "./PostClicked"
 
-export function Comments({ post, onClose }) {
+export function Comments({ post, onClose, user, users, postUserObj }) {
+
+	
 	const modalRef = useRef()
 
 	const handleClickOutside = e => {
@@ -24,14 +26,13 @@ export function Comments({ post, onClose }) {
 			document.removeEventListener("mousedown", handleClickOutside)
 	}, [])
 
-	if (!post) return null
-	console.log(post)
-	const { user, imageUrl, likeBy, content, comments, createdAt } = post
+
+
 
 	return (
 		<div className="modal-overlay">
 			<div className="modal-content" ref={modalRef}>
-				<PostClicked post={post} user={user} />
+				<PostClicked post={post} user={user} users={users} postOwner={postUserObj} />
 			</div>
 		</div>
 	)

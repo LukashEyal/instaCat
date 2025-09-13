@@ -1,60 +1,122 @@
-import { formatDistanceToNow } from "date-fns"
-import { useState, useEffect } from "react"
-import { useSelector } from "react-redux"
-import { toggleLike } from "../../store/posts.actions.js"
-import { getUser } from "../../store/user.actions.js"
+import { useState, useEffect, useRef } from "react";
+import { toggleLike } from "../../store/posts.actions.js";
+import { getUser } from "../../store/user.actions.js";
+import EmojiPicker from "emoji-picker-react";
+import { createPortal } from "react-dom";
+import { Comments } from "./PostModal.jsx";
+import { PostButton } from "./PostButton.jsx";
+import { LikeBy } from "./LikeBy.jsx";
+import { CommentBy } from "./CommentBy.jsx";
+import { getShortTimeAgo } from "./GetTime.js";
+import { AddComment } from "./AddComment.jsx";
 
-import bookmark from "../../assets/svgs/post-container/bookmark.svg"
-import comment from "../../assets/svgs/post-container/comment.svg"
-import emoji from "../../assets/svgs/post-container/emoji.svg"
-import like from "../../assets/svgs/post-container/like.svg"
-import unlike from "../../assets/svgs/post-container/unlike.svg"
-import option from "../../assets/svgs/post-container/option.svg"
-import share from "../../assets/svgs/post-container/share.svg"
-import verfied from "../../assets/svgs/post-container/verified.svg"
-import avatarPlaceHolder from "../../assets/svgs/post-container/avatar-placeholder.svg"
-import { Comments } from "./PostModal.jsx"
-import { PostButton } from "./PostButton.jsx"
-import { LikeBy } from "./LikeBy.jsx"
-import { CommentBy } from "./CommentBy.jsx"
-import { getShortTimeAgo } from "./GetTime.js"
-import { AddComment } from "./AddComment.jsx"
 
-export function Post({ post, user }) {
-  const [showModal, setShowModal] = useState(false)
-  const [selectedComments, setSelectedComments] = useState(null)
-  const [postUser, setPostUser] = useState(null)
+import bookmark from "../../assets/svgs/post-container/bookmark.svg";
+import comment from "../../assets/svgs/post-container/comment.svg";
+import emoji from "../../assets/svgs/post-container/emoji.svg";
+import like from "../../assets/svgs/post-container/like.svg";
+import unlike from "../../assets/svgs/post-container/unlike.svg";
+import option from "../../assets/svgs/post-container/option.svg";
+import share from "../../assets/svgs/post-container/share.svg";
+import verfied from "../../assets/svgs/post-container/verified.svg";
+import avatarPlaceHolder from "../../assets/svgs/post-container/avatar-placeholder.svg";
 
-  const postId = post._id
-  const postAuthorId = post.userId
-  const comments = post.comments
 
-  const DEFAULT_AVATAR = avatarPlaceHolder
+export function Post({ post, user, users }) {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedComments, setSelectedComments] = useState(null);
+  const [postUser, setPostUser] = useState(null);
+  
+  const postId = post._id;
+  const postAuthorId = post.userId;
+  const comments = post.comments;
 
-  useEffect(() => {
-    let ignore = false
-    async function loadUser() {
-      try {
-        const userObj = await getUser(postAuthorId)
-        if (!ignore) setPostUser(userObj || null)
-      } catch (err) {
-        console.error("Failed to fetch post author:", err)
-        if (!ignore) setPostUser(null)
-      }
-    }
-    loadUser()
-    return () => { ignore = true }
-  }, [postAuthorId])
+  const DEFAULT_AVATAR = avatarPlaceHolder;
 
-  function onToggleLike(postId, userId) {
-    toggleLike(postId, userId)
+  // --- Emoji picker + controlled comment input ---
+  const [ShowPicker, setShowPicker] = useState(false);
+  const [pickerPos, setPickerPos] = useState({ top: 64, left: 0 });
+  const emojiBtnRef = useRef(null);
+  const emojiPopRef = useRef(null);
+
+  // Controlled input for AddComment (so we can inject emojis)
+  const [commentText, setCommentText] = useState("");
+  const inputRef = useRef(null);
+
+  function EmojiPortal({ open, onClose, children, style, popRef }) {
+    if (!open) return null;
+    return createPortal(
+      <div className="emoji-backdrop" onMouseDown={onClose} role="dialog" aria-modal="true">
+        <div
+          className="emoji-sheet"
+          ref={popRef}
+          style={style}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          {children}
+        </div>
+      </div>,
+      document.body
+    );
   }
 
-  // Optional: block render until author is loaded
+  useEffect(() => {
+    if (!ShowPicker) return;
+
+    const onDocMouseDown = (e) => {
+      const pop = emojiPopRef.current;
+      const btn = emojiBtnRef.current;
+      if (!pop || !btn) return;
+
+      const clickedInsidePop = pop.contains(e.target);
+      const clickedButton = btn.contains(e.target);
+
+      if (!clickedInsidePop && !clickedButton) {
+        setShowPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", onDocMouseDown);
+    return () => document.removeEventListener("mousedown", onDocMouseDown);
+  }, [ShowPicker]);
+
+
+useEffect(()=> {
+
+  const match = users.find(user => user._id === postAuthorId)
+  
+  setPostUser(match)
+  
+  
+
+})
+
+
+  // useEffect(() => {
+  //   let ignore = false;
+  //   async function loadUser() {
+  //     try {
+  //       const userObj = await getUser(postAuthorId);
+  //       if (!ignore) setPostUser(userObj || null);
+  //     } catch (err) {
+  //       console.error("Failed to fetch post author:", err);
+  //       if (!ignore) setPostUser(null);
+  //     }
+  //   }
+  //   loadUser();
+  //   return () => {
+  //     ignore = true;
+  //   };
+  // }, [postAuthorId]);
+
+  function onToggleLike(postId, userId) {
+    toggleLike(postId, userId);
+  }
+
+
   if (!postUser) {
     return (
       <div className="post">
-        {/* simple skeleton / fallback */}
         <div className="post-header">
           <img src={DEFAULT_AVATAR} alt="user's avatar" />
           <div className="post-user-details">
@@ -65,7 +127,7 @@ export function Post({ post, user }) {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -78,13 +140,9 @@ export function Post({ post, user }) {
 
         <div className="post-user-details">
           <div className="post-user-meta">
-            <span className="post-user-name">
-              {postUser?.username || "Unknown"}
-            </span>
+            <span className="post-user-name">{postUser?.username || "Unknown"}</span>
             <PostButton path={verfied} />
-            <span className="post-created-at">
-              • {getShortTimeAgo(post.createdAt)}
-            </span>
+            <span className="post-created-at">• {getShortTimeAgo(post.createdAt)}</span>
           </div>
           <div className="post-location">{post.location}</div>
         </div>
@@ -136,27 +194,76 @@ export function Post({ post, user }) {
           <CommentBy
             comments={comments}
             currentUser={user}
+            
             onClick={() => {
-              setSelectedComments(post)
-              setShowModal(true)
+              setSelectedComments(post);
+              setShowModal(true);
             }}
           />
         </div>
 
         <div className="post-comment">
-          <AddComment postId={postId} userId={user._id} />
-          <button className="emoji-button">
+          {/* Controlled input */}
+          <AddComment
+            postId={postId}
+            userId={user._id}
+            text={commentText}
+            onChange={setCommentText}
+            inputRef={inputRef}
+          />
+
+          <button
+            type="button"
+            className="emoji-button"
+            ref={emojiBtnRef}
+            onClick={() => {
+              const r = emojiBtnRef.current.getBoundingClientRect();
+              const PICKER_W = 320;
+              const PICKER_H = 380;
+              const GAP = 8;
+
+              const left = Math.min(
+                Math.max(8, r.right - PICKER_W),
+                window.innerWidth - PICKER_W - 8
+              );
+              const top = Math.max(8, r.top - PICKER_H - GAP);
+
+              setPickerPos({ top, left });
+              setShowPicker((v) => !v);
+            }}
+            aria-expanded={ShowPicker}
+            title="Add emoji"
+          >
             <PostButton path={emoji} />
           </button>
+
+          <EmojiPortal
+            open={ShowPicker}
+            onClose={() => setShowPicker(false)}
+            style={{ top: pickerPos.top, left: pickerPos.left }}
+            popRef={emojiPopRef}
+          >
+            <EmojiPicker
+              emojiStyle="facebook"
+              previewConfig={{ showPreview: false }}
+              height={380}
+              width={320}
+              onEmojiClick={(emojiData) => {
+                setCommentText((t) => t + emojiData.emoji);
+                requestAnimationFrame(() => inputRef.current?.focus());
+                // If you want it to close after pick:
+                // setShowPicker(false);
+              }}
+            />
+          </EmojiPortal>
         </div>
       </div>
 
       {showModal && selectedComments && (
-        <Comments post={post} onClose={() => setShowModal(false)} user={user} />
+        <Comments post={post} user={user} users={users} postUserObj={postUser} onClose={() => setShowModal(false)} />
       )}
     </div>
-  )
+  );
 }
 
-
-export default Post
+export default Post;
