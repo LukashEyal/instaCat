@@ -1,91 +1,93 @@
 import { postService } from "../services/posts/post.service"
-
 import { SET_POSTS, UPDATE_POST } from "./posts.reducer"
-
 import { store } from "./store"
+import { ensureUsers } from "./user.actions"
 
 export async function loadPosts() {
-	try {
-		const posts = await postService.query()
+  try {
+    const posts = await postService.query()
+    store.dispatch({ type: SET_POSTS, posts })
 
-		store.dispatch({ type: SET_POSTS, posts })
-	} catch (err) {
-		console.log("Cannot load posts", err)
-		throw err
-	}
+    // NEW: warm the authors cache
+    const authorIds = Array.from(new Set(posts.map((p) => p.userId)))
+    await ensureUsers(authorIds)
+  } catch (err) {
+    console.log("Cannot load posts", err)
+    throw err
+  }
 }
 
 export async function toggleLike(postId, userId) {
-	console.log("post.actions.js: toggleLike called with", postId, userId)
+  console.log("post.actions.js: toggleLike called with", postId, userId)
 
-	try {
-		const likedPost = await postService.toggleLike(postId, userId)
-		const post = await postService.getById(postId)
-		store.dispatch({ type: UPDATE_POST, post })
-	} catch (err) {
-		console.error("Cannot like post", err)
-		throw err
-	}
+  try {
+    const likedPost = await postService.toggleLike(postId, userId)
+    const post = await postService.getById(postId)
+    store.dispatch({ type: UPDATE_POST, post })
+  } catch (err) {
+    console.error("Cannot like post", err)
+    throw err
+  }
 }
 
 export async function getFullNamesFromUserIds(userIds = []) {
-	const allUsers = await postService.getUsers()
+  const allUsers = await postService.getUsers()
 
-	// Filter users that are in the list
-	const matchedUsers = allUsers.filter(user => userIds.includes(user._id))
+  // Filter users that are in the list
+  const matchedUsers = allUsers.filter((user) => userIds.includes(user._id))
 
-	// Return only fullnames
-	return matchedUsers.map(user => user.fullname)
+  // Return only fullnames
+  return matchedUsers.map((user) => user.fullname)
 }
 
 export async function getUserNames(userIds = []) {
-	const allUsers = await postService.getUsers()
+  const allUsers = await postService.getUsers()
 
-	// Filter users that are in the list
-	const matchedUsers = allUsers.filter(user => userIds.includes(user._id))
+  // Filter users that are in the list
+  const matchedUsers = allUsers.filter((user) => userIds.includes(user._id))
 
-	// Return only fullnames
-	return matchedUsers.map(user => user.username)
+  // Return only fullnames
+  return matchedUsers.map((user) => user.username)
 }
 
 export async function addComment(commentInput) {
-	try {
-		const { postId, userId, text } = commentInput
-		const payload = { postId, userId, text: text }
+  try {
+    const { postId, userId, text } = commentInput
+    const payload = { postId, userId, text: text }
 
-		const updatedPost = await postService.addComment(payload)
+    const updatedPost = await postService.addComment(payload)
 
-		// Update Redux
-		store.dispatch({ type: UPDATE_POST, post: updatedPost })
-	} catch (err) {
-		console.error("Cannot Add Comment to post", err)
-		throw err
-	}
+    // Update Redux
+    store.dispatch({ type: UPDATE_POST, post: updatedPost })
+  } catch (err) {
+    console.error("Cannot Add Comment to post", err)
+    throw err
+  }
 }
 
 export async function AddPostAction(data) {
-	console.log("Actions : ", data)
+  console.log("Actions : ", data)
 
-	const post =  {
-		content : data.content,
-		location : data.location,
-		imageUrl : data.imageUrl,
-		user : data.user,
-		userId : data.userId,
-		likeBy : data.likeBy,
-		comments : data.comments,
-		createdAt : data.createdAt
-	}
+  const post = {
+    content: data.content,
+    location: data.location,
+    imageUrl: data.imageUrl,
+    user: data.user,
+    userId: data.userId,
+    likeBy: data.likeBy,
+    comments: data.comments,
+    createdAt: data.createdAt,
+  }
 
-	console.log("usedid :" , post.userId)
+  console.log("usedid :", post.userId)
 
-	const addedPost = await postService.addPost(post)
+  const addedPost = await postService.addPost(post)
 
-	const posts = await postService.query()
+  const posts = await postService.query()
 
-	store.dispatch({ type: SET_POSTS, posts })
+  store.dispatch({ type: SET_POSTS, posts })
 
-	return addedPost
+  return addedPost
 }
 
 // onClick = {() => like(post._id, user._id)}
