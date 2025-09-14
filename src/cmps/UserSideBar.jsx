@@ -3,6 +3,7 @@ import { useSelector } from "react-redux"
 
 export function UserSideBar() {
 	const user = useSelector(storeState => storeState.userModule.user)
+	console.log("user in sidebar:", user)
 
 	if (!user) return null
 
@@ -12,7 +13,6 @@ export function UserSideBar() {
 				<img src={user.avatarUrl} alt={user.username} />
 				<div>
 					<div className="username">{user.username}</div>
-				
 				</div>
 			</div>
 		</div>
