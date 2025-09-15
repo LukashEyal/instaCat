@@ -1,4 +1,4 @@
-import { httpService } from "../http.service"
+import { httpService } from '../http.service'
 
 export const postService = {
 	query,
@@ -28,7 +28,7 @@ async function save(post) {
 	if (post._id) {
 		savedPost = await httpService.put(`post/${post._id}`, post)
 	} else {
-		savedPost = await httpService.post("post", post)
+		savedPost = await httpService.post('post', post)
 	}
 	return savedPost
 }
@@ -38,20 +38,16 @@ async function addPostMsg(postId, txt) {
 	return savedMsg
 }
 
-
 async function toggleLike(postId, userId) {
-
-	const likedPost = await httpService.patch(`post/${postId}/like`, {userId : userId})
+	const likedPost = await httpService.patch(`post/like/${postId}`, {
+		userId: userId,
+	})
 	return likedPost
-
-	
-
 }
 
-
 async function addPost(paylod) {
-	console.log("payload serivce front" , paylod)
-	const addedPost = await httpService.post(`post/`,paylod)
+	console.log('payload serivce front', paylod)
+	const addedPost = await httpService.post(`post/`, paylod)
 	return addedPost
 
 

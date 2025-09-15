@@ -130,13 +130,13 @@ useEffect(()=> {
     );
   }
 
-  return (
-    <div className="post">
-      <div className="post-header">
-        <img
-          src={postUser?.avatarUrl || DEFAULT_AVATAR}
-          alt={`${postUser?.username || "user"}'s avatar`}
-        />
+	return (
+		<div className="post">
+			<div className="post-header">
+				<img
+					src={postUser?.avatarUrl || DEFAULT_AVATAR}
+					alt={`${postUser?.username || "user"}'s avatar`}
+				/>
 
         <div className="post-user-details">
           <div className="post-user-meta">
@@ -147,48 +147,56 @@ useEffect(()=> {
           <div className="post-location">{post.location}</div>
         </div>
 
-        <button className="post-options">
-          <PostButton path={option} />
-        </button>
-      </div>
+				<button className="post-options">
+					<PostButton path={option} />
+				</button>
+			</div>
 
-      <div className="post-content">
-        <div className="post-image">
-          <img src={post.imageUrl || post.imgUrl} alt="post" />
-        </div>
+			<div className="post-content">
+				<div className="post-image">
+					<img src={post.imageUrl || post.imgUrl} alt="post" />
+				</div>
 
-        <div className="post-actions">
-          <div className="left-actions">
-            <button className="like-button">
-              <PostButton
-                onClick={() => onToggleLike(post._id, user._id)}
-                path={post.likeBy.includes(user._id) ? unlike : like}
-                className={post.likeBy.includes(user._id) ? "unlike" : ""}
-              />
-            </button>
-            <button className="comment-button">
-              <PostButton path={comment} />
-            </button>
-            <button className="share-button">
-              <PostButton path={share} />
-            </button>
-          </div>
-          <button className="bookmark-button">
-            <PostButton path={bookmark} />
-          </button>
-        </div>
+				<div className="post-actions">
+					<div className="left-actions">
+						<button className="like-button">
+							<PostButton
+								onClick={() => onToggleLike(post._id, user._id)}
+								path={
+									post.likeBy.includes(user._id)
+										? unlike
+										: like
+								}
+								className={
+									post.likeBy.includes(user._id)
+										? "unlike"
+										: ""
+								}
+							/>
+						</button>
+						<button className="comment-button">
+							<PostButton path={comment} />
+						</button>
+						<button className="share-button">
+							<PostButton path={share} />
+						</button>
+					</div>
+					<button className="bookmark-button">
+						<PostButton path={bookmark} />
+					</button>
+				</div>
 
-        <div className="post-likes">
-          <LikeBy likeIds={post.likeBy} currentUser={user} />
-        </div>
+				<div className="post-likes">
+					<LikeBy likeIds={post.likeBy} currentUser={user} />
+				</div>
 
-        <div className="post-caption">
-          <span className="caption-user">
-            <strong>{postUser?.username || "Unknown"}</strong>
-            <PostButton path={verfied} />
-          </span>
-          {` ${post.content}`}
-        </div>
+				<div className="post-caption">
+					<span className="caption-user">
+						<strong>{postUser?.username || "Unknown"}</strong>
+						<PostButton path={verfied} />
+					</span>
+					{` ${post.content}`}
+				</div>
 
         <div className="post-comments">
           <CommentBy

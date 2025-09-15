@@ -15,7 +15,6 @@ export function UserSideBar() {
 				<img src={user?.avatarUrl || DEFAULT_AVATAR} alt={user.username} />
 				<div>
 					<div className="username">{user.username}</div>
-				
 				</div>
 			</div>
 		</div>
