@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { toggleLike, toggleLikeOptimistic } from '../../store/posts.actions.js'
+import { toggleLikeOptimistic } from '../../store/posts.actions.js'
 import { getUser } from '../../store/user.actions.js'
 import EmojiPicker from 'emoji-picker-react'
 import { createPortal } from 'react-dom'
@@ -20,13 +20,13 @@ import share from '../../assets/svgs/post-container/share.svg'
 import verfied from '../../assets/svgs/post-container/verified.svg'
 import avatarPlaceHolder from '../../assets/svgs/post-container/avatar-placeholder.svg'
 
-export function Post({ post, user, users }) {
+export function Post({ post, user, postUser }) {
 	const [showModal, setShowModal] = useState(false)
 	const [selectedComments, setSelectedComments] = useState(null)
-	const [postUser, setPostUser] = useState(null)
+
+	console.log('postUser', postUser)
 
 	const postId = post._id
-	const postAuthorId = post.userId
 	const comments = post.comments
 
 	const DEFAULT_AVATAR = avatarPlaceHolder
@@ -82,29 +82,6 @@ export function Post({ post, user, users }) {
 		document.addEventListener('mousedown', onDocMouseDown)
 		return () => document.removeEventListener('mousedown', onDocMouseDown)
 	}, [ShowPicker])
-
-	useEffect(() => {
-		const match = users.find(user => user._id === postAuthorId)
-
-		setPostUser(match)
-	})
-
-	// useEffect(() => {
-	//   let ignore = false;
-	//   async function loadUser() {
-	//     try {
-	//       const userObj = await getUser(postAuthorId);
-	//       if (!ignore) setPostUser(userObj || null);
-	//     } catch (err) {
-	//       console.error("Failed to fetch post author:", err);
-	//       if (!ignore) setPostUser(null);
-	//     }
-	//   }
-	//   loadUser();
-	//   return () => {
-	//     ignore = true;
-	//   };
-	// }, [postAuthorId]);
 
 	function onToggleLike(postId, userId) {
 		// toggleLike(postId, userId);
@@ -276,7 +253,6 @@ export function Post({ post, user, users }) {
 				<Comments
 					post={post}
 					user={user}
-					users={users}
 					postUserObj={postUser}
 					onClose={() => setShowModal(false)}
 				/>

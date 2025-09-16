@@ -1,32 +1,26 @@
-import React, { useState } from "react"
-import { formatDistanceToNow } from "date-fns"
+import React, { useState } from 'react'
+import { formatDistanceToNow } from 'date-fns'
 
-import { toggleLike } from "../../store/posts.actions.js"
+import { toggleLike } from '../../store/posts.actions.js'
 
-import bookmark from "../../assets/svgs/post-container/bookmark.svg"
-import comment from "../../assets/svgs/post-container/comment.svg"
-import emoji from "../../assets/svgs/post-container/emoji.svg"
-import like from "../../assets/svgs/post-container/like.svg"
-import unlike from "../../assets/svgs/post-container/unlike.svg"
-import option from "../../assets/svgs/post-container/option.svg"
-import share from "../../assets/svgs/post-container/share.svg"
+import bookmark from '../../assets/svgs/post-container/bookmark.svg'
+import comment from '../../assets/svgs/post-container/comment.svg'
+import emoji from '../../assets/svgs/post-container/emoji.svg'
+import like from '../../assets/svgs/post-container/like.svg'
+import unlike from '../../assets/svgs/post-container/unlike.svg'
+import option from '../../assets/svgs/post-container/option.svg'
+import share from '../../assets/svgs/post-container/share.svg'
 
-import { PostButton } from "./PostButton.jsx"
-import { LikeBy } from "./LikeBy.jsx"
-import { Comments } from "./Comments.jsx"
+import { PostButton } from './PostButton.jsx'
+import { LikeBy } from './LikeBy.jsx'
+import { Comments } from './Comments.jsx'
 
-export function PostClicked({ post, user, users, postOwner }) {
+export function PostClicked({ post, user, postOwner }) {
 	const [showModal, setShowModal] = useState(false)
 	const [selectedComments, setSelectedComments] = useState(null)
-	
-	
-
-
-	
 
 	const postAuthor = postOwner
 
-	
 	const comments = post.comments
 
 	function onToggleLike(postId, userId) {
@@ -46,7 +40,7 @@ export function PostClicked({ post, user, users, postOwner }) {
 							{postAuthor?.username}
 						</span>
 						<span className="post-created-at">
-							•{" "}
+							•{' '}
 							{formatDistanceToNow(new Date(post.createAt), {
 								addSuffix: true,
 							})}
@@ -75,7 +69,7 @@ export function PostClicked({ post, user, users, postOwner }) {
 			<span className="user-post-content">{post.content}</span>
 
 			<div className="post-comments">
-				<Comments comments={comments} users={users} />
+				<Comments comments={comments} />
 			</div>
 
 			<div className="actions">
@@ -88,8 +82,8 @@ export function PostClicked({ post, user, users, postOwner }) {
 							}
 							className={
 								post.likeBy.includes(user._id)
-									? "unlike-icon"
-									: ""
+									? 'unlike-icon'
+									: ''
 							}
 						/>
 					</button>
@@ -130,7 +124,6 @@ export function PostClicked({ post, user, users, postOwner }) {
 						comments={comments}
 						onClose={() => setShowModal(false)}
 						user={user}
-						users={users}
 					/>
 				)}
 			</div>
