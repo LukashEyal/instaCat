@@ -8,7 +8,8 @@ export const postService = {
 	addPostMsg,
 	toggleLike,
 	addPost,
-	addComment
+	addComment,
+	deleteComment,
 }
 
 async function query(filterBy = {}) {
@@ -49,15 +50,20 @@ async function addPost(paylod) {
 	console.log('payload serivce front', paylod)
 	const addedPost = await httpService.post(`post/`, paylod)
 	return addedPost
-
-
 }
 
 async function addComment(payload) {
-
-	
-
-	const post = await httpService.post(`post/${payload.postId}/comment`, payload)
+	const post = await httpService.post(
+		`post/add/comment/${payload.postId}`,
+		payload
+	)
 	return post
-	
+}
+
+async function deleteComment(payload) {
+	const post = await httpService.post(
+		`post/delete/comment/${payload.postId}`,
+		payload
+	)
+	return post
 }
