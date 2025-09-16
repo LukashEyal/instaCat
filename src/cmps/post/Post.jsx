@@ -24,8 +24,6 @@ export function Post({ post, user, postUser }) {
 	const [showModal, setShowModal] = useState(false)
 	const [selectedComments, setSelectedComments] = useState(null)
 
-	console.log('postUser', postUser)
-
 	const postId = post._id
 	const comments = post.comments
 
