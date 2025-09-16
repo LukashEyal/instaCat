@@ -1,8 +1,13 @@
-import { postService } from "../services/posts/post.service"
+import { postService } from '../services/posts/post.service'
 
-import { SET_POSTS, UPDATE_POST } from "./posts.reducer"
+import {
+	SET_POSTS,
+	UPDATE_POST,
+	TOGGLE_LIKE_OPTIMISTIC,
+	TOGGLE_LIKE_UNDO,
+} from './posts.reducer'
 
-import { store } from "./store"
+import { store } from './store'
 
 export async function loadPosts() {
 	try {
@@ -10,20 +15,35 @@ export async function loadPosts() {
 
 		store.dispatch({ type: SET_POSTS, posts })
 	} catch (err) {
-		console.log("Cannot load posts", err)
+		console.log('Cannot load posts', err)
 		throw err
 	}
 }
 
 export async function toggleLike(postId, userId) {
-	console.log("post.actions.js: toggleLike called with", postId, userId)
+	// console.log("post.actions.js: toggleLike called with", postId, userId)
 
 	try {
 		const likedPost = await postService.toggleLike(postId, userId)
 		const post = await postService.getById(postId)
 		store.dispatch({ type: UPDATE_POST, post })
 	} catch (err) {
-		console.error("Cannot like post", err)
+		console.error('Cannot like post', err)
+		throw err
+	}
+}
+
+export async function toggleLikeOptimistic(postId, userId) {
+	store.dispatch({
+		type: TOGGLE_LIKE_OPTIMISTIC,
+		payload: { postId, userId },
+	})
+
+	try {
+		const likedPost = await postService.toggleLike(postId, userId)
+	} catch (err) {
+		console.error('Cannot like post', err)
+		store.dispatch({ type: TOGGLE_LIKE_UNDO, payload: { postId, userId } })
 		throw err
 	}
 }
@@ -58,26 +78,26 @@ export async function addComment(commentInput) {
 		// Update Redux
 		store.dispatch({ type: UPDATE_POST, post: updatedPost })
 	} catch (err) {
-		console.error("Cannot Add Comment to post", err)
+		console.error('Cannot Add Comment to post', err)
 		throw err
 	}
 }
 
 export async function AddPostAction(data) {
-	console.log("Actions : ", data)
+	console.log('Actions : ', data)
 
-	const post =  {
-		content : data.content,
-		location : data.location,
-		imageUrl : data.imageUrl,
-		user : data.user,
-		userId : data.userId,
-		likeBy : data.likeBy,
-		comments : data.comments,
-		createdAt : data.createdAt
+	const post = {
+		content: data.content,
+		location: data.location,
+		imageUrl: data.imageUrl,
+		user: data.user,
+		userId: data.userId,
+		likeBy: data.likeBy,
+		comments: data.comments,
+		createdAt: data.createdAt,
 	}
 
-	console.log("usedid :" , post.userId)
+	console.log('usedid :', post.userId)
 
 	const addedPost = await postService.addPost(post)
 
