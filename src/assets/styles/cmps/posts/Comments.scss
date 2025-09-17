@@ -1,8 +1,16 @@
-/* === Modal === */
+/* === Modal (Instagram-like, no letterboxing) === */
+:root {
+  --ig-border: #d3d1d1;
+  --ig-muted:  #8e8e8e;
+  --ig-text:   #262626;
+  --ig-bg:     #fff;
+  --ig-blue:   #0095f6;
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: rgba(0,0,0,.65);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,230 +19,228 @@
 
 .modal-content {
   display: flex;
-  background: #fff;
-  max-width: 1000px;
+  background: var(--ig-bg);
+  max-width: 935px;
+  width: 95%;
   max-height: 90vh;
-  width: 85%;
+  height: clamp(620px, 85vh, 940px);
   border-radius: 10px;
-  overflow: hidden; /* keep this */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,.25);
   pointer-events: auto;
 
-  /* === Post layout === */
   .post {
     display: grid;
-    grid-template-columns: minmax(320px, 1fr) minmax(360px, 1fr);
-    grid-template-rows: auto 1fr auto;
+    grid-template-columns: minmax(400px, 1fr) 350px;
+    /* header | caption | comments | actions */
+    grid-template-rows: auto auto 1fr auto;
     grid-template-areas:
       "image header"
+      "image caption"
       "image comments"
-      "image actions";
-    gap: 0;
-    min-height: 60vh;
+      "image actions"
+      "image null";
+    height: 100%;
 
-    /* image pane */
+    /* IMAGE PANE — fill & crop (no black bars) */
     .post-image {
       grid-area: image;
+      align-self: stretch;
+      height: 100%;
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
-        background: transparent;   /* remove black */
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* preserve full asset; change to cover if you prefer */
-        display: block;
-         background: transparent;   /* no fallback color */
-
-      }
+    }
+    .post-image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background: transparent;
     }
 
-    /* header row (avatar + name + time + options) */
+    /* HEADER (sticky + divider) */
     .post-header {
       grid-area: header;
+      position: sticky;
+      top: 0;
+      background: var(--ig-bg);
       display: flex;
       align-items: center;
-      gap: 0.8em;
-      padding: 0.75em 0.75em 0.5em;
+      gap: 10px;
+      padding: 16px;
+      border-bottom: 1px solid var(--ig-border);
+      margin-bottom: 12px;
 
-      img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
+      img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+
       .post-user-details {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-
+        display: flex; flex-direction: column; gap: 2px;
         .post-user-meta {
-          display: flex;
-          align-items: baseline;
-          gap: 6px;
-
-          .post-user-name { font-weight: 600; }
-          .post-created-at { color: #8e8e8e; font-size: 0.85rem; }
+          display: flex; align-items: baseline; gap: 6px;
+          .post-user-name { font-weight: 600; color: var(--ig-text); }
         }
-        .post-location { font-size: 0.85rem; color: #666; }
+        .post-location { font-size: .85rem; color: var(--ig-muted); }
       }
+
       .post-options {
-        margin-left: auto;
-        background: transparent;
-        border: 0;
-        cursor: pointer;
-        padding: 4px;
+        margin-left: auto; background: transparent; border: 0; cursor: pointer; padding: 4px;
+        &:focus-visible { outline: 2px solid var(--ig-blue); outline-offset: 2px; }
       }
     }
 
-    /* caption + small header under the big header */
+    /* CAPTION (own grid area) */
     .user-post,
-    .user-post-content {
-      grid-area: comments; /* stack at the top of the comments column */
-    }
+    .user-post-content { grid-area: caption; }
 
-    .user-post {
+    .user-post { padding: 12px; }
+
+    .user-post-header {
       display: flex;
-      flex-direction: column;
-      padding: 0 0.75em;
-
-      .user-post-header {
-        display: flex;
-        align-items: center;
-        gap: 0.75em;
-
-        .avatar img {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-        .user-name {
-          font-weight: 600;
-        }
-      }
+      align-items: flex-start; /* top-align avatar with first line */
+      gap: 12px;
     }
 
-    .user-post-content {
-      display: block;
-      padding: 0.5em 0.75em 0;
-      color: #222;
+    .user-post .avatar { flex: 0 0 32px; }
+    .user-post .avatar img {
+      width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
     }
 
-    /* comments column (scrolls) */
+    .user-post .caption { display: flex; flex-direction: column; min-width: 0; }
+    .user-post .caption-line {
+      line-height: 1.35; color: var(--ig-text); word-break: break-word;
+    }
+    .user-post .user-name { font-weight: 600; }
+    .user-post .caption-text { color: #222; }
+
+    /* COMMENTS (own scroll area) */
     .post-comments {
       grid-area: comments;
-      padding: 0.75em;
       overflow-y: auto;
+      min-height: 0;
+      padding: 0 12px 12px;
 
       .comments-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75em;
+        display: flex; flex-direction: column; gap: 12px;
 
-        &.empty {
-          color: #8e8e8e;
-          font-size: 0.95rem;
-          padding: 0.5em 0;
+        &.empty { color: var(--ig-muted); font-size: .95rem; padding: 8px 0; }
+
+        .comment-row { display: flex; align-items: flex-start; gap: 10px; }
+        .comment-avatar { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex: 0 0 24px; }
+        .comment-main { display: flex; flex-direction: column; line-height: 1.35; min-width: 0; }
+        .comment-line { color: var(--ig-text);
+          .comment-username { font-weight: 600; }
+          .comment-text { color: #222; word-break: break-word; }
         }
-
-        /* your Comments.jsx outputs three spans:
-           .user-id, .comment-text, .comment-time */
-        .comment-item {
-          display: grid;
-          grid-template-columns: auto 1fr auto;
-          align-items: baseline;
-          column-gap: 0.5em;
-          row-gap: 2px;
-
-          .user-id { white-space: nowrap; }
-          .comment-text { color: #444; line-height: 1.45; word-break: break-word; }
-          .comment-time { color: #888; font-size: 0.75rem; white-space: nowrap; }
-        }
+        .comment-time { font-size: 12px; color: var(--ig-muted); margin-top: 2px; white-space: nowrap; }
       }
     }
 
-    /* actions row */
+    /* ACTIONS */
     .actions {
       grid-area: actions;
-      padding: 0.5em 0.75em 0.75em;
+      border-top: 1px solid var(--ig-border);
+      padding: 4px 4px 0;
+      display: flex;
+      flex-direction: column;
+      
+    }
 
-      .post-actions {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
+    .actions .post-actions {
+      
+      display: flex; align-items: center; gap: 8px; margin-top: 2px;
 
-        button {
-          background: transparent;
-          border: 0;
-          cursor: pointer;
-          padding: 0.25em;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-
-          &:focus-visible {
-            outline: 2px solid #0095f6;
-            outline-offset: 2px;
-          }
-        }
-
-        .unlike-icon { color: #ed4956; } /* if you tint active heart via currentColor */
+      button {
+        background: transparent; border: 0; cursor: pointer; padding: 4px;
+        display: inline-flex; align-items: center; justify-content: center;
+        transition: transform .08s ease, opacity .08s ease;
+        svg, img { width: 24px; height: 24px; display: block; }
+        &:hover { transform: scale(1.04); }
+        &:active { transform: scale(0.97); }
+        &:focus-visible { outline: 2px solid var(--ig-blue); outline-offset: 2px; }
       }
 
-      .post-likes {
-        margin: 0.5em 0;
-        font-weight: 600;
-      }
+      .bookmark-button { margin-left: auto; }
+      .unlike-icon { color: #ed4956; }
+    }
 
-      .post-comment {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        align-items: center;
-        gap: 0.5em;
-        margin-top: 0.25em;
+    .actions .post-likes {
+  
+      font-weight: 600; color: var(--ig-text);
+      display: flex;
+     margin-top: -1em;
+      justify-content: start;
 
-        .comment-input {
-          width: 100%;
-          border: 1px solid #dbdbdb;
-          border-radius: 8px;
-          padding: 10px 12px;
-          outline: none;
-          font-size: 0.95rem;
-          transition: border-color 0.15s ease;
+    }
 
-          &:focus { border-color: #a1a1a1; }
-        }
+    /* INPUT ROW — anchored at the bottom */
+    .actions .post-comment {
+       margin-bottom: -2em;
+      margin-top: auto;                 /* keep at bottom */
+      border-top: 1px solid var(--ig-border);
+      min-height: 44px;                 /* IG-like height */
+      display: grid;
+      grid-template-columns: auto 1fr;  /* 😊 | AddComment (input + Post) */
+      align-items: center;              /* vertical centering */
+      gap: 8px;
+      padding: 0 0 8px;                 /* tiny bottom padding */
+    }
 
-        .emoji-button {
-          background: transparent;
-          border: 0;
-          cursor: pointer;
-          padding: 0.25em;
-        }
-      }
+    .actions .post-comment .emoji-button {
+      background: transparent; border: 0; cursor: pointer; padding: 6px;
+      svg, img { width: 24px; height: 24px; display: block; }
+    }
 
-      hr {
-        border: 0;
-        border-top: 1px solid #eee;
-        margin: 0.75em 0 0;
-      }
+    /* From AddComment component */
+    .actions .post-comment .comment-input {
+      width: 100%;
+      border: none; outline: none;
+      height: 44px; line-height: 44px;   /* centers placeholder */
+      font-size: 14px; padding: 0;
+      &::placeholder { color: var(--ig-muted); }
+    }
+
+    /* Fade Post only when disabled (covers .post-button and .post-btn) */
+    .actions .post-comment .post-button,
+    .actions .post-comment .post-btn {
+      margin-left: auto;
+      background: transparent; border: 0; padding: 0 4px;
+      font-size: 14px; font-weight: 600; color: var(--ig-blue);
+      cursor: pointer; opacity: .3; pointer-events: none;
+    }
+    .actions .post-comment .post-button:not([disabled]),
+    .actions .post-comment .post-btn:not([disabled]) {
+      opacity: 1; pointer-events: auto;
     }
   }
 
-  /* responsive: stack vertically on narrow screens */
+  /* Responsive stack */
   @media (max-width: 900px) {
     .post {
       grid-template-columns: 1fr;
-      grid-template-rows: auto auto auto auto;
+      grid-template-rows: auto auto auto 1fr auto;
       grid-template-areas:
         "image"
         "header"
+        "caption"
         "comments"
         "actions";
+      height: auto;
 
-      .post-image img { object-fit: cover; } /* better for tall mobile */
+      .post-image img { object-fit: cover; }
     }
   }
 }
+
+/* Emoji picker portal */
+.emoji-backdrop { position: fixed; inset: 0; background: transparent; z-index: 2000; }
+.emoji-sheet {
+  position: absolute; width: 320px; height: 380px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  border: 1px solid var(--ig-border);
+  border-radius: 12px; overflow: hidden; background: #fff;
+}
+
+/* Timestamp style */
+.post-created-at { color: var(--ig-muted); font-size: .85rem; }

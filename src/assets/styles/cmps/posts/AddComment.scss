@@ -2,19 +2,16 @@ form {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 10px;
+
   width: 100%;
 
   .comment-input {
     flex: 1;
-    padding: 8px 0; // remove side padding for cleaner look
-    border: none;   // remove the border
    
+    border: none;
     font-size: 14px;
     outline: none;
     background: transparent;
-
-
 
     &::placeholder {
       color: #aaa;
@@ -22,17 +19,26 @@ form {
     }
   }
 
-  .post-button {
+  .post-btn {
+ 
     background: none;
     border: none;
-    color: #0095f6;
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
     transition: opacity 0.2s ease;
+    color: #0095f6;
 
-    &:hover {
-      opacity: 0.7;
+    opacity: 0.2;          /* default faded */
+    pointer-events: none;  /* disable click when empty */
+
+    &.active {
+      opacity: 1;          /* full blue when text present */
+      pointer-events: auto;
+    }
+
+    &:hover.active {
+      opacity: 0.7;        /* IG hover effect */
     }
   }
 }

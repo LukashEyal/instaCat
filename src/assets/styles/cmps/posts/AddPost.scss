@@ -62,20 +62,19 @@ textarea, input[type="text"] { width: 100%; box-sizing: border-box; }
 }
 
 
-.emoji-counter-div{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.emoji-counter-div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;  /* put items at the start */
+  gap: 8px;                     /* small breathing room */
 
-
-  
-.counter {
-
-   color: #918e8e;
-   font-size: 12px;
+  /* the counter stays on the far right */
+  .counter {
+    margin-left: auto;          /* pushes it to the end */
+    color: #918e8e;
+    font-size: 12px;
+  }
 }
-}
-
 
 .collab-btn {
 
@@ -170,4 +169,25 @@ border: none;
 
     border:none;
 
+}.emoji-counter-div .emoji-btn,
+.emoji-counter-div .emoji-button {   /* support both class names */
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 0;                    /* <-- remove the left offset */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+/* optional: if your icon is an injected svg */
+.emoji-counter-div .emoji-btn svg.injected-svg,
+.emoji-counter-div .emoji-button svg.injected-svg {
+  width: 23px;
+  height: 23px;
+  fill: #918e8e;
+  display: block;
 }

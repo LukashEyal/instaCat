@@ -1,16 +1,16 @@
 import { addComment } from "../../store/posts.actions";
 
 export function AddComment({ postId, userId, text, onChange, inputRef }) {
+  const canSubmit = Boolean(text?.trim());
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const trimmed = (text || "").trim();
-    if (!trimmed) return;
+    if (!canSubmit) return;
 
     const comment = {
       postId,
       userId,
-      text: trimmed,
+      text: text.trim(),
     };
 
     await addComment(comment);
@@ -27,9 +27,15 @@ export function AddComment({ postId, userId, text, onChange, inputRef }) {
         placeholder="Add a comment..."
         onChange={(e) => onChange(e.target.value)}
       />
-      {text.trim() && (
-        <button type="submit" className="post-button">Post</button>
-      )}
+
+      {/* Always render — disabled state controlled via CSS */}
+      <button
+        type="submit"
+        className={`post-btn ${canSubmit ? "active" : ""}`}
+        disabled={!canSubmit}
+      >
+        Post
+      </button>
     </form>
   );
 }
