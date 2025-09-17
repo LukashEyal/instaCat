@@ -25,8 +25,7 @@ $primary-disabled: rgba(0, 149, 246, 0.3);
   place-content: center;
   gap: 12px;
   padding: 32px 16px;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-
+  
   &__card {
     width: 350px;
     background: $card-bg;

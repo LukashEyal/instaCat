@@ -21,7 +21,7 @@
   display: grid;
   grid-template-columns: 48px 1fr 72px;
   align-items: center;
-  padding: 10px 14px;
+  
 }
 .crop-header .header-title { justify-self: center; font-weight: 600; }
 .crop-header .next-btn {
@@ -127,4 +127,21 @@
 .back-btn:focus-visible {
   outline: 2px solid #1877f2;
   outline-offset: 2px;
+}
+
+.header-right {
+  flex: 1; // make it take full remaining space in the header
+  display: flex;
+  justify-content: flex-end; // push button to the right
+
+  .next-btn {
+    flex: 1;              // button text stretches across full width
+    text-align: right;    // keep text aligned to the end
+    background: none;     // optional, depends on your style
+    border: none;         // optional
+    font-weight: 600;     // make it stand out
+    cursor: pointer;
+
+
+  }
 }

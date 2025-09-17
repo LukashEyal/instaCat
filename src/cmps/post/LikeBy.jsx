@@ -1,12 +1,3 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { ReactSVG } from 'react-svg'
-import { formatDistanceToNow } from 'date-fns'
-
-import { useSelector } from 'react-redux'
-import { toggleLike, getFullNamesFromUserIds, getUserNames } from '../../store/posts.actions.js'
-
-
 
 
 

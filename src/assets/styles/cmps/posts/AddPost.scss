@@ -1,7 +1,7 @@
 
 
 
-.create-post-main-container { transition: width .25s ease;   font-family: var(--ui-font);}
+.create-post-main-container { transition: width .25s ease; }
 .create-post-main-container.wide { width: 1040px; }
 
 .create-post-main-container.wide .add-post-body {
@@ -43,7 +43,7 @@
 }
 
 
-.caption-wrap .counter {}
+
 
 .collab-input { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
 .collab-list { display: grid; gap: 6px; list-style: none; padding: 0; margin: 0; }
