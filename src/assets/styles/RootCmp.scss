@@ -1,28 +1,29 @@
-
-:root { --ui-font: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
-
-body { font-family: var(--ui-font); }
-
-input, textarea, select, button {
-  font: inherit;           // inherits family, size, weight, line-height, etc.
-  letter-spacing: inherit;
+:root {
+  --ui-font: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
+body {
+  font-family: var(--ui-font);
+}
 
-
+input,
+textarea,
+select,
+button {
+  font: inherit; // inherits family, size, weight, line-height, etc.
+  letter-spacing: inherit;
+}
 
 .main-container {
   min-height: calc(100vh - 10rem);
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;                       // full-screen backdrop
-  background: rgba(0, 0, 0, 0.5); // dim the page
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;                  // above everything
+  .modal-overlay {
+    position: fixed;
+    inset: 0; // full-screen backdrop
+    background: rgba(0, 0, 0, 0.5); // dim the page
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; // above everything
+  }
 }
-}
-
-

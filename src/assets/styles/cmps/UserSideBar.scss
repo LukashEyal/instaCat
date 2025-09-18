@@ -1,10 +1,12 @@
 .user-sidebar {
   position: sticky;
   top: 2rem;
-  padding: 1rem 0;
+  padding-left: 4rem;
   background: #fff;
   color: #262626;
   font-size: 14px;
+  height: 38.5625rem;
+  width: 23.9375rem;
 
   /* current user row */
   .user-info {
@@ -46,7 +48,9 @@
       cursor: pointer;
       padding: 4px 6px;
 
-      &:hover { opacity: 0.8; }
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 
@@ -61,8 +65,8 @@
       color: #8e8e8e;
       font-weight: 600;
       font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .02em;
+      // text-transform: uppercase;
+      letter-spacing: 0.02em;
     }
     .see-all {
       background: transparent;
@@ -73,7 +77,9 @@
       cursor: pointer;
       padding: 4px 6px;
 
-      &:hover { opacity: 0.8; }
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 
@@ -122,7 +128,9 @@
         cursor: pointer;
         padding: 4px 6px;
 
-        &:hover { opacity: 0.8; }
+        &:hover {
+          opacity: 0.8;
+        }
       }
     }
   }
@@ -138,7 +146,9 @@
       color: #c7c7c7;
       text-decoration: none;
 
-      &:hover { text-decoration: underline; }
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
