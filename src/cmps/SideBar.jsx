@@ -77,26 +77,26 @@ export function SideBar() {
 				activePath: exploreActive,
 				linkTo: '/explore',
 			},
-			{
-				icon: 'Reels',
-				path: reels,
-				activePath: reelsActive,
-				linkTo: '/reels',
-			},
+			// {
+			// 	icon: 'Reels',
+			// 	path: reels,
+			// 	activePath: reelsActive,
+			// 	linkTo: '/reels',
+			// },
 			{
 				icon: 'Messages',
 				path: messages,
 				activePath: messagesActive,
 				linkTo: '/messages',
 			},
-			{
-				icon: 'Notifications',
-				path: notifications,
-				activePath: notificationsActive,
-				isActive: isNotificationsOpen,
-				onClick: () => onNotificationsClick(prev => !prev), // drawer toggle
-				// no linkTo -> prevents navigation; click opens drawer
-			},
+			// {
+			// 	icon: 'Notifications',
+			// 	path: notifications,
+			// 	activePath: notificationsActive,
+			// 	isActive: isNotificationsOpen,
+			// 	onClick: () => onNotificationsClick(prev => !prev), // drawer toggle
+			// 	// no linkTo -> prevents navigation; click opens drawer
+			// },
 			{
 				icon: 'Create',
 				path: create,

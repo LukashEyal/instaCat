@@ -2,19 +2,27 @@ body,
 html {
   margin: 0;
   padding: 0;
- 
+
   background-color: rgb(255, 255, 255);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  overflow-y: auto;
 }
 
 .main-container {
   display: flex;
-  height: 100vh;
 }
 
 main {
   flex: 1;
-  padding: 20px;
-  overflow-y: auto;
+  // overflow-y: auto;
 }
 
 * {

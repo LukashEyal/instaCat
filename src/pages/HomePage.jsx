@@ -38,11 +38,7 @@ export function HomePage() {
 					)
 				})}
 			</div>
-			<div className="sidebar-container">
-				<div className="user-sidebar">
-					<UserSideBar user={loggedInUser} />
-				</div>
-			</div>
+			<UserSideBar user={loggedInUser} />
 		</div>
 	)
 }
