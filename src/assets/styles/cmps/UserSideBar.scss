@@ -16,11 +16,11 @@
     padding: 0 8px;
 
     img {
-      width: 56px;
-      height: 56px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       object-fit: cover;
-      flex: 0 0 56px;
+      // flex: 0 0 56px;
     }
 
     .user-info__meta {
@@ -64,7 +64,7 @@
     .title {
       color: #8e8e8e;
       font-weight: 600;
-      font-size: 12px;
+      font-size: 0.875rem;
       // text-transform: uppercase;
       letter-spacing: 0.02em;
     }
@@ -96,8 +96,8 @@
       padding: 8px 0;
 
       .avatar {
-        width: 32px;
-        height: 32px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         object-fit: cover;
         flex: 0 0 32px;
@@ -122,7 +122,7 @@
         margin-left: auto;
         background: transparent;
         border: 0;
-        color: #0095f6;
+        color: #4150f7;
         font-weight: 600;
         font-size: 12px;
         cursor: pointer;

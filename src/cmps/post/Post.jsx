@@ -86,24 +86,6 @@ export function Post({ post, user, postUser }) {
 		toggleLikeOptimistic(postId, userId)
 	}
 
-	if (!postUser) {
-		return (
-			<div className="post">
-				<div className="post-header">
-					<img src={DEFAULT_AVATAR} alt="user's avatar" />
-					<div className="post-user-details">
-						<div className="post-user-meta">
-							<span className="post-user-name">Loading…</span>
-							<span className="post-created-at">
-								• {getShortTimeAgo(post.createdAt)}
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		)
-	}
-
 	return (
 		<div className="post">
 			<div className="post-header">
@@ -119,7 +101,7 @@ export function Post({ post, user, postUser }) {
 						</span>
 						<PostButton path={verfied} />
 						<span className="post-created-at">
-							• {getShortTimeAgo(post.createdAt)}
+							• {getShortTimeAgo(post.createAt)}
 						</span>
 					</div>
 					<div className="post-location">{post.location}</div>
@@ -165,7 +147,13 @@ export function Post({ post, user, postUser }) {
 				</div>
 
 				<div className="post-likes">
-					<LikeBy likeIds={post.likeBy} currentUser={user} />
+					<LikeBy
+						fromHomePage={true}
+						likeIds={post.likeBy}
+						currentUser={user}
+						postId={post._id}
+						userId={user._id}
+					/>
 				</div>
 
 				<div className="post-caption">
