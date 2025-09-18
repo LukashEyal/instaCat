@@ -27,14 +27,16 @@
     width: 100%;
   }
 
+  .logo-full {
+    display: block;
+  }
+  .logo-icon {
+    display: none;
+  }
+
   .logo-link {
     display: inline-flex;
     cursor: pointer; /* only the SVG itself is clickable */
-
-    .injected-svg {
-      width: 6.4375rem;
-      height: 2rem;
-    }
   }
 
   a {
@@ -124,6 +126,18 @@
     .sidebar-item-name {
       display: none;
     }
+
+    .logo-full {
+      display: none;
+    }
+    .logo-icon {
+      display: block;
+
+      .injected-svg {
+        width: 32px;
+        height: 36px;
+      }
+    }
   }
 
   .main-container main {
@@ -136,6 +150,13 @@
 @media (min-width: 1920px) {
   .side-bar {
     width: var(--nav-wide-width);
+
+    .logo-full {
+      display: block;
+    }
+    .logo-icon {
+      display: none;
+    }
   }
 
   .main-container main {

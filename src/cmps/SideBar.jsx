@@ -11,7 +11,8 @@ import notifications from '../assets/svgs/notifications.svg'
 import create from '../assets/svgs/create.svg'
 import threads from '../assets/svgs/threads.svg'
 import more from '../assets/svgs/more.svg'
-import logo from '../assets/svgs/instacat-logo.svg'
+import logoFull from '../assets/svgs/instacat-logo.svg'
+import logoIcon from '../assets/svgs/instacat-logo-icon.svg'
 
 import homeActive from '../assets/svgs/home-active.svg'
 import searchActive from '../assets/svgs/search-active.svg'
@@ -111,8 +112,10 @@ export function SideBar() {
 		<>
 			<section className="side-bar">
 				<div className="logo">
+					{/* keep the link only if you actually want it clickable */}
 					<Link to="/" className="logo-link">
-						<ReactSVG src={logo} />
+						<ReactSVG src={logoFull} className="logo-full" />
+						<ReactSVG src={logoIcon} className="logo-icon" />
 					</Link>
 				</div>
 
