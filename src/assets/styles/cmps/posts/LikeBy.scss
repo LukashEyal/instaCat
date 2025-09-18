@@ -1,12 +1,17 @@
 .like-by {
   font-weight: 600;
-  margin-top: 8px;
-  margin-bottom: 4px;
-  font-size: 0.9em;
   color: #262626;
 
   strong {
     font-weight: 600;
     margin: 0 3px;
+  }
+}
+
+.in-post-like-this {
+  font-weight: 700;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
   }
 }
