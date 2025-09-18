@@ -17,18 +17,26 @@
   z-index: 1000;
   width: var(--nav-medium-width); /* single base width */
 
-  .sidebar-side-items { width: 100%; }
+  .sidebar-side-items {
+    width: 100%;
+  }
 
   .logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 25px 12px 16px; /* spacing belongs to outer div */
+    margin-bottom: 14px;
     width: 100%;
+  }
 
-    .injected-svg {
-      width: 50%;
-      height: 50%;
-    }
+  .logo-full {
+    display: block;
+  }
+  .logo-icon {
+    display: none;
+  }
+
+  .logo-link {
+    display: inline-flex;
+    cursor: pointer; /* only the SVG itself is clickable */
   }
 
   a {
@@ -48,7 +56,9 @@
     cursor: pointer;
     font-size: 1rem;
 
-    &.active { font-weight: 700; }
+    &.active {
+      font-weight: 700;
+    }
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.05);
@@ -56,7 +66,7 @@
     }
 
     .injected-svg {
-      width: 1.5625rem;  /* 25px */
+      width: 1.5625rem; /* 25px */
       height: 1.5625rem;
     }
   }
@@ -96,7 +106,9 @@
     }
   }
 
-  .sidebar-item svg { transition: fill 0.2s ease; }
+  .sidebar-item svg {
+    transition: fill 0.2s ease;
+  }
 }
 
 /* ==== MAIN LAYOUT NEXT TO SIDEBAR ==== */
@@ -111,7 +123,21 @@
   .side-bar {
     width: var(--nav-narrow-width);
 
-    .sidebar-item-name { display: none; }
+    .sidebar-item-name {
+      display: none;
+    }
+
+    .logo-full {
+      display: none;
+    }
+    .logo-icon {
+      display: block;
+
+      .injected-svg {
+        width: 32px;
+        height: 36px;
+      }
+    }
   }
 
   .main-container main {
@@ -122,7 +148,16 @@
 
 /* Large screens (≥1920px) */
 @media (min-width: 1920px) {
-  .side-bar { width: var(--nav-wide-width); }
+  .side-bar {
+    width: var(--nav-wide-width);
+
+    .logo-full {
+      display: block;
+    }
+    .logo-icon {
+      display: none;
+    }
+  }
 
   .main-container main {
     width: calc(100% - var(--nav-wide-width));
@@ -134,7 +169,7 @@
 .drawer-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, .3);
+  background: rgba(0, 0, 0, 0.3);
   z-index: 1090;
 }
 
@@ -142,7 +177,7 @@
   position: fixed;
   top: 0;
   bottom: 0;
-  left: var(--nav-medium-width);   /* sits next to the sidebar */
+  left: var(--nav-medium-width); /* sits next to the sidebar */
   width: 397px;
   background: #fff;
   border-right: 1px solid #dbdbdb;
@@ -150,12 +185,20 @@
   display: flex;
   flex-direction: column;
   transform: translateX(0);
-  transition: transform .2s ease;
+  transition: transform 0.2s ease;
 }
 
 /* respect sidebar widths */
-@media (max-width: 1263px) { .drawer { left: var(--nav-narrow-width); } }
-@media (min-width: 1920px) { .drawer { left: var(--nav-wide-width); } }
+@media (max-width: 1263px) {
+  .drawer {
+    left: var(--nav-narrow-width);
+  }
+}
+@media (min-width: 1920px) {
+  .drawer {
+    left: var(--nav-wide-width);
+  }
+}
 
 /* shared drawer header (used by both Notifications & Search) */
 .drawer-header {
@@ -196,8 +239,13 @@
     row-gap: 4px;
     border-bottom: 1px solid #f4f4f4;
 
-    .notif-title { color: #262626; }
-    .notif-time  { color: #8e8e8e; font-size: .85rem; }
+    .notif-title {
+      color: #262626;
+    }
+    .notif-time {
+      color: #8e8e8e;
+      font-size: 0.85rem;
+    }
   }
 }
 
@@ -213,9 +261,11 @@
     padding: 10px 12px;
     outline: none;
     font-size: 0.95rem;
-    transition: border-color .15s ease;
+    transition: border-color 0.15s ease;
 
-    &:focus { border-color: #a1a1a1; }
+    &:focus {
+      border-color: #a1a1a1;
+    }
   }
 }
 
@@ -227,8 +277,15 @@
 .search-empty-state {
   padding: 24px 16px;
 
-  .title { font-weight: 600; color: #262626; margin-bottom: 6px; }
-  .subtitle { color: #8e8e8e; font-size: .9rem; }
+  .title {
+    font-weight: 600;
+    color: #262626;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    color: #8e8e8e;
+    font-size: 0.9rem;
+  }
 }
 
 .search-results {
@@ -241,6 +298,8 @@
     border-bottom: 1px solid #f4f4f4;
     cursor: pointer;
 
-    &:hover { background: rgba(0,0,0,.03); }
+    &:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
   }
 }
