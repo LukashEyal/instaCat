@@ -1,15 +1,9 @@
-import { Link } from 'react-router-dom'
-
 import { UserSideBar } from '../cmps/UserSideBar'
-
 import { useSelector } from 'react-redux'
-
-import { useState, useEffect } from 'react'
-
+import { useEffect } from 'react'
 import { loadPosts } from '../store/posts.actions'
-
 import { Post } from '../cmps/post/Post'
-import { loadUser, loadUsers } from '../store/user.actions'
+import { loadUsers } from '../store/user.actions'
 
 export function HomePage() {
 	const loggedInUser = useSelector(storeState => storeState.userModule.user)
@@ -38,10 +32,7 @@ export function HomePage() {
 					)
 				})}
 			</div>
-			<UserSideBar user={loggedInUser} />
+			<UserSideBar />
 		</div>
 	)
 }
-
-// const [showModal, setShowModal] = useState(false)
-// const [selectedComments, setSelectedComments] = useState([])

@@ -13,6 +13,7 @@ export const userService = {
 	login,
 	signUp,
 	saveLocalUser,
+	logout,
 }
 
 async function signUp(userCred) {
@@ -26,6 +27,11 @@ async function login(userCred) {
 		// return saveLocalUser(user)
 		return user
 	}
+}
+
+async function logout() {
+	await httpService.post('auth/logout')
+	sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
 }
 
 function saveLocalUser(user) {

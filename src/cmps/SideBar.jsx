@@ -5,9 +5,9 @@ import { useMemo, useState } from 'react'
 import home from '../assets/svgs/home.svg'
 import search from '../assets/svgs/search.svg'
 import explore from '../assets/svgs/explore.svg'
-import reels from '../assets/svgs/reels.svg'
+// import reels from '../assets/svgs/reels.svg'
 import messages from '../assets/svgs/messages.svg'
-import notifications from '../assets/svgs/notifications.svg'
+// import notifications from '../assets/svgs/notifications.svg'
 import create from '../assets/svgs/create.svg'
 import threads from '../assets/svgs/threads.svg'
 import more from '../assets/svgs/more.svg'
@@ -17,9 +17,9 @@ import logoIcon from '../assets/svgs/instacat-logo-icon.svg'
 import homeActive from '../assets/svgs/home-active.svg'
 import searchActive from '../assets/svgs/search-active.svg'
 import exploreActive from '../assets/svgs/explore-active.svg'
-import reelsActive from '../assets/svgs/reels-active.svg'
+// import reelsActive from '../assets/svgs/reels-active.svg'
 import messagesActive from '../assets/svgs/messages-active.svg'
-import notificationsActive from '../assets/svgs/notifications-active.svg'
+// import notificationsActive from '../assets/svgs/notifications-active.svg'
 import moreActive from '../assets/svgs/more-active.svg'
 
 import { SearchDrawer } from './SearchDrawer.jsx'
@@ -27,9 +27,14 @@ import { CreateCmp } from './CreateCmp.jsx'
 import { NotificationsDrawer } from './NotificationsDrawer.jsx'
 
 import { useSelector } from 'react-redux'
-// import { loadUser } from "../store/user.actions.js"
 
 import avatarPlaceHolder from '../assets/svgs/post-container/avatar-placeholder.svg'
+
+import { logout } from '../store/user.actions.js'
+
+function onLogout() {
+	logout()
+}
 
 export function SideBar() {
 	const user = useSelector(storeState => storeState.userModule.user)
@@ -37,20 +42,24 @@ export function SideBar() {
 	const [isSearchDrawerOpen, setIsSearchDrawerOpen] = useState(false)
 	const [isCreateOpen, setIsCreateOpen] = useState(false)
 	const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
+	const [isMoreOpen, setIsMoreOpen] = useState(false)
 
 	function changeSearchDrawer(stateOrUpdater) {
 		// close others if you like single-open behavior
 		setIsNotificationsOpen(false)
+		setIsMoreOpen(false)
 		setIsSearchDrawerOpen(stateOrUpdater)
 	}
 
 	function onCreateClick(stateOrUpdater) {
 		setIsNotificationsOpen(false)
 		setIsSearchDrawerOpen(false)
+		setIsMoreOpen(false)
 		setIsCreateOpen(stateOrUpdater)
 	}
 
 	function onNotificationsClick(stateOrUpdater) {
+		setIsMoreOpen(false)
 		setIsSearchDrawerOpen(false)
 		setIsNotificationsOpen(stateOrUpdater)
 	}
@@ -77,30 +86,15 @@ export function SideBar() {
 				activePath: exploreActive,
 				linkTo: '/explore',
 			},
-			// {
-			// 	icon: 'Reels',
-			// 	path: reels,
-			// 	activePath: reelsActive,
-			// 	linkTo: '/reels',
-			// },
 			{
 				icon: 'Messages',
 				path: messages,
 				activePath: messagesActive,
 				linkTo: '/messages',
 			},
-			// {
-			// 	icon: 'Notifications',
-			// 	path: notifications,
-			// 	activePath: notificationsActive,
-			// 	isActive: isNotificationsOpen,
-			// 	onClick: () => onNotificationsClick(prev => !prev), // drawer toggle
-			// 	// no linkTo -> prevents navigation; click opens drawer
-			// },
 			{
 				icon: 'Create',
 				path: create,
-				// activePath: createActive, // if you add one later
 				isActive: isCreateOpen,
 				onClick: () => onCreateClick(prev => !prev),
 			},
@@ -127,10 +121,25 @@ export function SideBar() {
 				</div>
 
 				<div className="sidebar-side-items">
-					<SideBarItem
+					{isMoreOpen && (
+						<div
+							className="sidebar-backdrop"
+							onClick={() => setIsMoreOpen(false)}
+						>
+							<div
+								className="sidebar-more-dropdown-item"
+								onClick={onLogout}
+							>
+								Log out
+							</div>
+						</div>
+					)}
+					<SideBarItemMore
 						icon="More"
 						path={more}
-						activePath={moreActive}
+						// activePath={moreActive}
+						isActive={isMoreOpen}
+						onClick={() => setIsMoreOpen(prev => !prev)}
 					/>
 					<SideBarItem icon="Also from InstaCat" path={threads} />
 				</div>
@@ -238,5 +247,30 @@ function SideBarItem({
 		>
 			{content}
 		</Link>
+	)
+}
+
+function SideBarItemMore({ icon, path, onClick, isActive }) {
+	const svgSrc = path
+
+	const content = (
+		<>
+			<ReactSVG src={svgSrc} />
+			<div className="sidebar-item-name">
+				<span>{icon}</span>
+			</div>
+		</>
+	)
+
+	return (
+		<div
+			className={`sidebar-item ${isActive ? 'active' : ''}`}
+			onClick={onClick}
+			role="button"
+			tabIndex={0}
+			onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onClick(e)}
+		>
+			{content}
+		</div>
 	)
 }
