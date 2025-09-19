@@ -134,7 +134,13 @@ export function Post({ post, user, postUser }) {
 								}
 							/>
 						</button>
-						<button className="comment-button">
+						<button
+							className="comment-button"
+							onClick={() => {
+								setSelectedComments(post)
+								setShowModal(true)
+							}}
+						>
 							<PostButton path={comment} />
 						</button>
 						<button className="share-button">

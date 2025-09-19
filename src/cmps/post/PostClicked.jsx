@@ -18,6 +18,7 @@ import { PostButton } from './PostButton.jsx'
 import { LikeBy } from './LikeBy.jsx'
 import { Comments } from './Comments.jsx'
 import { AddComment } from './AddComment.jsx'
+import { use } from 'react'
 
 export function PostClicked({ post, user, postOwner }) {
 	const [showModal, setShowModal] = useState(false)
@@ -26,6 +27,10 @@ export function PostClicked({ post, user, postOwner }) {
 	const [pickerPos, setPickerPos] = useState({ top: 64, left: 0 })
 	const emojiBtnRef = useRef(null)
 	const emojiPopRef = useRef(null)
+
+	function setFocus(ref) {
+		ref.current?.focus()
+	}
 
 	const postAuthor = postOwner
 	const postId = post._id
@@ -159,7 +164,10 @@ export function PostClicked({ post, user, postOwner }) {
 							}
 						/>
 					</button>
-					<button className="comment-button">
+					<button
+						className="comment-button"
+						onClick={() => setFocus(inputRef)}
+					>
 						<PostButton path={comment} />
 					</button>
 					<button className="share-button">

@@ -58,9 +58,9 @@ export function UserSideBar() {
 			</ul>
 
 			{/* About / links cluster */}
-			<nav className="about-links" aria-label="About">
+			{/* <nav className="about-links" aria-label="About">
 				<a href="#">About</a>
-			</nav>
+			</nav> */}
 
 			{/* Copyright */}
 			<div className="copyright">
