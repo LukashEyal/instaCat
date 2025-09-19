@@ -29,7 +29,7 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   pointer-events: auto;
 
-  .post {
+  .modal-post {
     display: grid;
     grid-template-columns: minmax(400px, 1fr) 350px;
     /* header | caption | comments | actions */
@@ -43,7 +43,7 @@
     height: 100%;
 
     /* IMAGE PANE — fill & crop (no black bars) */
-    .post-image {
+    .modal-post-image {
       grid-area: image;
       align-self: stretch;
       height: 100%;
@@ -52,7 +52,7 @@
       align-items: center;
       justify-content: center;
     }
-    .post-image img {
+    .modal-post-image img {
       width: 100%;
       height: 100%;
       display: block;
@@ -61,7 +61,7 @@
     }
 
     /* HEADER (sticky + divider) */
-    .post-header {
+    .modal-post-header {
       grid-area: header;
       position: sticky;
       top: 0;
@@ -80,19 +80,22 @@
         object-fit: cover;
       }
 
-      .post-user-details {
+      .modal-post-user-details {
         display: flex;
         flex-direction: column;
         gap: 2px;
-        .post-user-meta {
+
+        .modal-post-user-meta {
           display: flex;
           align-items: baseline;
           gap: 6px;
+
           .post-user-name {
             font-weight: 600;
             color: var(--ig-text);
           }
         }
+
         .post-location {
           font-size: 0.85rem;
           color: var(--ig-muted);
@@ -113,50 +116,50 @@
     }
 
     /* CAPTION (own grid area) */
-    .user-post,
+    .modal-user-post,
     .user-post-content {
       grid-area: caption;
     }
 
-    .user-post {
+    .modal-user-post {
       padding: 12px;
     }
 
-    .user-post-header {
+    .modal-user-post-header {
       display: flex;
       align-items: flex-start; /* top-align avatar with first line */
       gap: 12px;
     }
 
-    .user-post .avatar {
+    .modal-avatar {
       flex: 0 0 32px;
     }
-    .user-post .avatar img {
+    .modal-avatar img {
       width: 32px;
       height: 32px;
       border-radius: 50%;
       object-fit: cover;
     }
 
-    .user-post .caption {
+    .modal-caption {
       display: flex;
       flex-direction: column;
       min-width: 0;
     }
-    .user-post .caption-line {
+    .modal-caption .caption-line {
       line-height: 1.35;
       color: var(--ig-text);
       word-break: break-word;
     }
-    .user-post .user-name {
+    .modal-user-post .user-name {
       font-weight: 600;
     }
-    .user-post .caption-text {
+    .modal-user-post .caption-text {
       color: #222;
     }
 
     /* COMMENTS (own scroll area) */
-    .post-comments {
+    .modal-post-comments {
       grid-area: comments;
       overflow-y: auto;
       min-height: 0;
@@ -211,7 +214,7 @@
     }
 
     /* ACTIONS */
-    .actions {
+    .modal-actions {
       grid-area: actions;
       border-top: 1px solid var(--ig-border);
       padding: 4px 4px 0;
@@ -219,7 +222,7 @@
       flex-direction: column;
     }
 
-    .actions .post-actions {
+    .modal-actions .modal-post-actions {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -262,15 +265,14 @@
       }
     }
 
-    .actions .post-likes {
-      // font-weight: 600; color: var(--ig-text);
+    .modal-actions .modal-post-likes {
       display: flex;
       margin-top: -1em;
       justify-content: start;
     }
 
     /* INPUT ROW — anchored at the bottom */
-    .actions .post-comment {
+    .modal-actions .modal-post-comment {
       margin-bottom: -2em;
       margin-top: auto; /* keep at bottom */
       border-top: 1px solid var(--ig-border);
@@ -282,7 +284,7 @@
       padding: 0 0 8px; /* tiny bottom padding */
     }
 
-    .actions .post-comment .emoji-button {
+    .modal-actions .modal-post-comment .emoji-button {
       background: transparent;
       border: 0;
       cursor: pointer;
@@ -296,7 +298,7 @@
     }
 
     /* From AddComment component */
-    .actions .post-comment .comment-input {
+    .modal-actions .modal-post-comment .comment-input {
       width: 100%;
       border: none;
       outline: none;
@@ -310,8 +312,8 @@
     }
 
     /* Fade Post only when disabled (covers .post-button and .post-btn) */
-    .actions .post-comment .post-button,
-    .actions .post-comment .post-btn {
+    .modal-actions .modal-post-comment .post-button,
+    .modal-actions .modal-post-comment .post-btn {
       margin-left: auto;
       background: transparent;
       border: 0;
@@ -323,8 +325,8 @@
       opacity: 0.3;
       pointer-events: none;
     }
-    .actions .post-comment .post-button:not([disabled]),
-    .actions .post-comment .post-btn:not([disabled]) {
+    .modal-actions .modal-post-comment .post-button:not([disabled]),
+    .modal-actions .modal-post-comment .post-btn:not([disabled]) {
       opacity: 1;
       pointer-events: auto;
     }
@@ -332,7 +334,7 @@
 
   /* Responsive stack */
   @media (max-width: 900px) {
-    .post {
+    .modal-post {
       grid-template-columns: 1fr;
       grid-template-rows: auto auto auto 1fr auto;
       grid-template-areas:
@@ -343,7 +345,7 @@
         "actions";
       height: auto;
 
-      .post-image img {
+      .modal-post-image img {
         object-fit: cover;
       }
     }
