@@ -1,10 +1,9 @@
-import { storageService } from '../async-storage.service.js';
-import { utilService } from '../util.service.js';
-import { httpService } from '../http.service.js';
-import instaData from '../db/instaCatData.json' assert { type: 'json' };
+import { storageService } from '../async-storage.service.js'
+import { utilService } from '../util.service.js'
+import { httpService } from '../http.service.js'
+// import instaData from '../db/instaCatData.json' assert { type: 'json' }
 
-
-
+const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
 
 export const userService = {
 	query,
@@ -13,6 +12,7 @@ export const userService = {
 	getUsers,
 	login,
 	signUp,
+	saveLocalUser,
 }
 
 async function signUp(userCred) {
@@ -22,15 +22,24 @@ async function signUp(userCred) {
 
 async function login(userCred) {
 	const user = await httpService.post('auth/login', userCred)
+	if (user) {
+		// return saveLocalUser(user)
+		return user
+	}
+}
+
+function saveLocalUser(user) {
+	user = { _id: user._id, username: user.username }
+	sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
 	return user
 }
 
-function _createUsers() {
-	let users = utilService.loadFromStorage(USER_KEY)
-	if (!users || !users.length) {
-		utilService.saveToStorage(USER_KEY, instaData.users)
-	}
-}
+// function _createUsers() {
+// 	let users = utilService.loadFromStorage(USER_KEY)
+// 	if (!users || !users.length) {
+// 		utilService.saveToStorage(USER_KEY, instaData.users)
+// 	}
+// }
 
 function query() {
 	return storageService.query(USER_KEY)
@@ -41,17 +50,21 @@ async function get(userId) {
 	return user
 }
 
-async function getLoggedinUser(userId) {
-	const user = await httpService.get(`user/${userId}`)
-	return user
+// async function getLoggedinUser(userId) {
+// 	const user = await httpService.get(`user/${userId}`)
+// 	return user
+// }
+
+function getLoggedinUser() {
+	return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
 }
 
 function getUsers() {
-  try {
-    const users = httpService.get(`user`)
-    return users || []
-  } catch (err) {
-    console.error('Failed to load userDB from localStorage:', err)
-    return []
-  }
+	try {
+		const users = httpService.get(`user`)
+		return users || []
+	} catch (err) {
+		console.error('Failed to load userDB from localStorage:', err)
+		return []
+	}
 }

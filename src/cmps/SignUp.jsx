@@ -43,11 +43,10 @@ export function Signup({ onDone }) {
 				payload.avatarUrl = avatarPlaceHolder
 			}
 
-			console.log(payload)
 			await signup(payload)
 			clearState()
 			onDone?.()
-			navigate('/homepage')
+			navigate('/')
 		} catch (err) {
 			console.error('Signup failed:', err)
 		} finally {

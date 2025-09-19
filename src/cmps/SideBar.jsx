@@ -62,7 +62,7 @@ export function SideBar() {
 				icon: 'Home',
 				path: home,
 				activePath: homeActive,
-				linkTo: '/homepage',
+				linkTo: '/',
 			},
 			{
 				icon: 'Search',
@@ -131,13 +131,8 @@ export function SideBar() {
 						icon="More"
 						path={more}
 						activePath={moreActive}
-						linkTo="/more"
 					/>
-					<SideBarItem
-						icon="Also from InstaCat"
-						path={threads}
-						linkTo="/threads"
-					/>
+					<SideBarItem icon="Also from InstaCat" path={threads} />
 				</div>
 			</section>
 
@@ -223,6 +218,13 @@ function SideBarItem({
 					(e.key === 'Enter' || e.key === ' ') && onClick(e)
 				}
 			>
+				{content}
+			</div>
+		)
+	}
+	if (!linkTo) {
+		return (
+			<div className={`sidebar-item ${isActive ? 'active' : ''}`}>
 				{content}
 			</div>
 		)
