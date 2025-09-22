@@ -11,6 +11,7 @@ import { Messages } from './pages/Messages.jsx'
 import { Profile } from './pages/Profile.jsx'
 import { LoginSignup } from './pages/LoginSignUp.jsx'
 import { SET_USER } from './store/user.reducer.js'
+import { ExplorePost } from './pages/ExplorePost.jsx'
 
 const STORAGE_KEY = 'loggedinUser' // your sessionStorage key
 
@@ -29,7 +30,6 @@ export function RootCmp() {
 	const dispatch = useDispatch()
 	const [ready, setReady] = useState(false)
 
-	// 🔹 Hydrate Redux from sessionStorage on first mount
 	useEffect(() => {
 		try {
 			const saved = sessionStorage.getItem(STORAGE_KEY)
@@ -62,6 +62,10 @@ export function RootCmp() {
 						<Route path="/reels" element={<Reels />} />
 						<Route path="/messages" element={<Messages />} />
 						<Route path="/profile/:userId" element={<Profile />} />
+						<Route
+							path="/p/:explorePostId"
+							element={<ExplorePost />}
+						/>
 					</Route>
 					<Route path="*" element={<Navigate to="/" replace />} />
 				</>
