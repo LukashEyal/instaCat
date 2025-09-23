@@ -4,7 +4,11 @@ import { useEffect } from 'react'
 import { loadPosts, getAddedPostAction } from '../store/posts.actions'
 import { Post } from '../cmps/post/Post'
 import { loadUsers } from '../store/user.actions'
-import { socketService, SOCKET_EVENT_POST_ADDED } from '../services/socket.service'
+import {
+  socketService,
+  SOCKET_EVENT_POST_ADDED,
+  SOCKET_EVENT_POST_UPDATED,
+} from '../services/socket.service'
 
 export function HomePage() {
   const loggedInUser = useSelector(storeState => storeState.userModule.user)
@@ -16,6 +20,11 @@ export function HomePage() {
     loadUsers()
 
     socketService.on(SOCKET_EVENT_POST_ADDED, post => {
+      console.log(`GOT FROM SOCKET`, post)
+      loadPosts()
+    })
+
+    socketService.on(SOCKET_EVENT_POST_UPDATED, post => {
       console.log(`GOT FROM SOCKET`, post)
       loadPosts()
     })
