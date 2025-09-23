@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ReactSVG } from 'react-svg'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import home from '../assets/svgs/home.svg'
 import search from '../assets/svgs/search.svg'
@@ -31,6 +31,26 @@ export function SideBar() {
 	const [isCreateOpen, setIsCreateOpen] = useState(false)
 	const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
 	const [isMoreOpen, setIsMoreOpen] = useState(false)
+
+	const moreBtnRef = useRef(null) // the "More" button
+	const dropdownRef = useRef(null) // the dropdown itself
+
+	useEffect(() => {
+		if (!isMoreOpen) return
+
+		function handleClick(e) {
+			const insideBtn = moreBtnRef.current?.contains(e.target)
+			const insideDD = dropdownRef.current?.contains(e.target)
+			console.log('e.target', e.target)
+			console.log('moreBtnRef.current', moreBtnRef.current)
+			if (!insideBtn && !insideDD) {
+				setIsMoreOpen(false)
+			}
+		}
+
+		document.addEventListener('click', handleClick)
+		return () => document.removeEventListener('click', handleClick)
+	}, [isMoreOpen])
 
 	function onLogout() {
 		logout()
@@ -105,27 +125,28 @@ export function SideBar() {
 
 				<div className="sidebar-side-items">
 					{isMoreOpen && (
-						<>
+						<div
+							ref={dropdownRef}
+							className="sidebar-backdrop"
+							onClick={e => e.stopPropagation()}
+						>
 							<div
-								className="sidebar-backdrop"
-								onClick={() => setIsMoreOpen(false)}
+								className="sidebar-more-dropdown-item"
+								onClick={onLogout}
 							>
-								<div
-									className="sidebar-more-dropdown-item"
-									onClick={onLogout}
-								>
-									Log out
-								</div>
+								Log out
 							</div>
-						</>
+						</div>
 					)}
-					<SideBarItemMore
-						icon="More"
-						path={more}
-						// activePath={moreActive}
-						isActive={isMoreOpen}
-						onClick={() => setIsMoreOpen(prev => !prev)}
-					/>
+					<div ref={moreBtnRef}>
+						<SideBarItemMore
+							icon="More"
+							path={more}
+							// activePath={moreActive}
+							isActive={isMoreOpen}
+							onClick={() => setIsMoreOpen(prev => !prev)}
+						/>
+					</div>
 					<SideBarItem icon="Also from InstaCat" path={threads} />
 				</div>
 			</section>
