@@ -35,7 +35,7 @@ async function logout() {
 }
 
 function saveLocalUser(user) {
-	user = { _id: user._id, username: user.username }
+	user = { _id: user._id, username: user.username, avatarUrl: user.avatarUrl }
 	sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
 	return user
 }

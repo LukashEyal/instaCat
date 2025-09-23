@@ -4,12 +4,14 @@ import { postsReducer } from './posts.reducer'
 import { userReducer } from './user.reducer'
 import { reviewReducer } from './review.reducer'
 import { systemReducer } from './system.reducer'
+import { msgReducer } from './msg.reducer'
 
 const rootReducer = combineReducers({
     postsModule: postsReducer,
     userModule: userReducer,
     systemModule: systemReducer,
     reviewModule: reviewReducer,
+    msgModule : msgReducer,
 })
 
 

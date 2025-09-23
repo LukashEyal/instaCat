@@ -1,5 +1,5 @@
 import { userService } from '../services/user/user.service'
-// import { socketService } from '../services/socket.service'
+import { socketService } from '../services/socket.service'
 import { store } from '../store/store'
 import { showErrorMsg } from '../services/event-bus.service'
 
@@ -36,7 +36,7 @@ export async function login(credentials) {
 			user: user,
 		})
 		userService.saveLocalUser(user)
-		// socketService.login(user._id)
+		socketService.login(user._id)
 		return user
 	} catch (err) {
 		console.log('Cannot login', err)
@@ -53,7 +53,7 @@ export async function signup(credentials) {
 			user: user,
 		})
 		userService.saveLocalUser(user)
-		// socketService.login(user)
+		socketService.login(user)
 		return user
 	} catch (err) {
 		console.log('Cannot signup', err)
@@ -68,7 +68,7 @@ export async function logout() {
 			type: SET_USER,
 			user: null,
 		})
-		// socketService.logout()
+		socketService.logout()
 	} catch (err) {
 		console.log('Cannot logout', err)
 		throw err

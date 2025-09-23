@@ -108,6 +108,13 @@ export async function AddPostAction(data) {
 	return addedPost
 }
 
+
+
+export function getAddedPostAction(posts){
+  return loadPosts()
+}
+
+
 // onClick = {() => like(post._id, user._id)}
 // export async function loadCar(carId) {
 //     try {

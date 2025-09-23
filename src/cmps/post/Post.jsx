@@ -9,7 +9,9 @@ import { LikeBy } from './LikeBy.jsx'
 import { CommentBy } from './CommentBy.jsx'
 import { getShortTimeAgo } from './GetTime.js'
 import { AddComment } from './AddComment.jsx'
-
+import { OptionsMenuModal } from './OptionsMenuModal.jsx'
+import { SendMessageModal } from './SendMessageModal.jsx'
+import { socketService, SOCKET_EVENT_POST_UPDATED } from '../../services/socket.service.js'
 import bookmark from '../../assets/svgs/post-container/bookmark.svg'
 import comment from '../../assets/svgs/post-container/comment.svg'
 import emoji from '../../assets/svgs/post-container/emoji.svg'
@@ -19,10 +21,12 @@ import option from '../../assets/svgs/post-container/option.svg'
 import share from '../../assets/svgs/post-container/share.svg'
 import verfied from '../../assets/svgs/post-container/verified.svg'
 import avatarPlaceHolder from '../../assets/svgs/post-container/avatar-placeholder.svg'
+import { useDispatch } from 'react-redux'
 
 export function Post({ post, user, postUser }) {
   const [showModal, setShowModal] = useState(false)
   const [selectedComments, setSelectedComments] = useState(null)
+  const dispatch = useDispatch()
 
   const postId = post._id
   const comments = post.comments
@@ -32,6 +36,9 @@ export function Post({ post, user, postUser }) {
   // --- Emoji picker + controlled comment input ---
   const [ShowPicker, setShowPicker] = useState(false)
   const [pickerPos, setPickerPos] = useState({ top: 64, left: 0 })
+  const [showOptions, setShowOptions] = useState(false)
+  const [showSendMsg, setShowSendMsg] = useState(false)
+
   const emojiBtnRef = useRef(null)
   const emojiPopRef = useRef(null)
 
@@ -76,6 +83,17 @@ export function Post({ post, user, postUser }) {
     return () => document.removeEventListener('mousedown', onDocMouseDown)
   }, [ShowPicker])
 
+  useEffect(() => {
+    if (!postId) return
+    const onPostUpdated = updatedPost => {
+      if (!updatedPost || updatedPost._id !== postId) return
+      // replace this post in Redux so the component re-renders with latest likes/comments
+      dispatch({ type: UPDATE_POST, post: updatedPost })
+    }
+    socketService.on(SOCKET_EVENT_POST_UPDATED, onPostUpdated)
+    return () => socketService.off(SOCKET_EVENT_POST_UPDATED, onPostUpdated)
+  }, [postId, dispatch])
+
   function onToggleLike(postId, userId) {
     // toggleLike(postId, userId);
     toggleLikeOptimistic(postId, userId)
@@ -98,7 +116,13 @@ export function Post({ post, user, postUser }) {
           <div className="post-location">{post.location}</div>
         </div>
 
-        <button className="post-options">
+        <button
+          className="post-options"
+          onClick={() => setShowOptions(true)}
+          aria-haspopup="dialog"
+          aria-expanded={showOptions}
+          title="Post options"
+        >
           <PostButton path={option} />
         </button>
       </div>
@@ -227,6 +251,33 @@ export function Post({ post, user, postUser }) {
           user={user}
           postUserObj={postUser}
           onClose={() => setShowModal(false)}
+        />
+      )}
+
+      {showOptions && (
+        <OptionsMenuModal
+          onClose={() => setShowOptions(false)}
+          onSendMessage={() => {
+            setShowOptions(false)
+            setShowSendMsg(true)
+          }}
+        />
+      )}
+
+      {showSendMsg && (
+        <SendMessageModal
+          toUser={postUser}
+          fromUserId={user._id}
+          onClose={() => setShowSendMsg(false)}
+          onSend={async txt => {
+            // OPTION A: delegate to parent (recommended)
+            // await sendMsg({ toUserId: postUser._id, fromUserId: user._id, txt })
+
+            // OPTION B: emit via socket or call your API service directly here.
+            // await msgService.send({ toUserId: postUser._id, fromUserId: user._id, txt })
+
+            setShowSendMsg(false)
+          }}
         />
       )}
     </div>

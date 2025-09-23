@@ -1,0 +1,42 @@
+/* Options modal */
+.opt-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+.opt-card {
+  width: min(92vw, 360px);
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.opt-row {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 14px 16px;
+  font-size: 15px;
+  background: #fff;
+  border: none;
+  border-top: 1px solid #eee;
+  cursor: pointer;
+}
+
+.opt-row:first-child {
+  border-top: 0;
+}
+
+.opt-row:hover {
+  background: #fafafa;
+}
+
+.opt-row.cancel {
+  font-weight: 500;
+  color: #444;
+}
