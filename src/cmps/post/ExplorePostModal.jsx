@@ -1,10 +1,21 @@
+import { useEffect } from "react"
+
 export function ExplorePostModal({ post, onBackDropClick }) {
+  function handleEscapeKey(event) {
+    if (event.key === "Escape") onBackDropClick()
+  }
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscapeKey)
+    return () => document.removeEventListener("keydown", handleEscapeKey)
+  }, [])
+
   return (
-    <section className='explore-post-modal-backdrop'>
-      <div
-        className='explore-post-modal-container'
-        onClick={() => onBackDropClick()}
-      >
+    <section
+      className='explore-post-modal-backdrop'
+      onClick={() => onBackDropClick()}
+    >
+      <div className='explore-post-modal-container'>
         <div
           className='explore-post-modal'
           onClick={(ev) => ev.stopPropagation()}
