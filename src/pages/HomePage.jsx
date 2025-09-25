@@ -1,7 +1,7 @@
 import { UserSideBar } from '../cmps/UserSideBar'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { loadPosts, getAddedPostAction } from '../store/posts.actions'
+import { loadPosts } from '../store/posts.actions'
 import { Post } from '../cmps/post/Post'
 import { loadUsers } from '../store/user.actions'
 import {
@@ -11,26 +11,30 @@ import {
 } from '../services/socket.service'
 
 export function HomePage() {
-  const loggedInUser = useSelector(storeState => storeState.userModule.user)
-  const posts = useSelector(store => store.postsModule.posts)
-  const users = useSelector(store => store.userModule.users)
+  const loggedInUser = useSelector(s => s.userModule.user)
+  const posts = useSelector(s => s.postsModule.posts) || []
+  const users = useSelector(s => s.userModule.users) || []
 
   useEffect(() => {
     loadPosts()
     loadUsers()
 
-    socketService.on(SOCKET_EVENT_POST_ADDED, post => {
-      console.log(`GOT FROM SOCKET`, post)
-      loadPosts()
-    })
+    const onAdded = post => {
+      loadPosts() // or dispatch ADD_POST for lighter update
+      return post
+    }
+    const onUpdated = post => {
+      console.log('GOT FROM SOCKET UPDATED', post)
+      loadPosts() // or dispatch UPDATE_POST
+      return post
+    }
 
-    socketService.on(SOCKET_EVENT_POST_UPDATED, post => {
-      console.log(`GOT FROM SOCKET`, post)
-      loadPosts()
-    })
+    socketService.on(SOCKET_EVENT_POST_ADDED, onAdded)
+    socketService.on(SOCKET_EVENT_POST_UPDATED, onUpdated)
 
     return () => {
-      socketService.off(SOCKET_EVENT_POST_ADDED)
+      socketService.off(SOCKET_EVENT_POST_ADDED, onAdded)
+      socketService.off(SOCKET_EVENT_POST_UPDATED, onUpdated)
     }
   }, [])
 

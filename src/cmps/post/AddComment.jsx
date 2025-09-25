@@ -1,5 +1,5 @@
 import { addComment } from '../../store/posts.actions'
-
+import { socketService, SOCKET_EVENT_POST_UPDATED } from '../../services/socket.service'
 export function AddComment({ postId, userId, text, onChange, inputRef }) {
   const canSubmit = Boolean(text?.trim())
 
@@ -14,6 +14,8 @@ export function AddComment({ postId, userId, text, onChange, inputRef }) {
     }
 
     await addComment(comment)
+
+    socketService.emit(SOCKET_EVENT_POST_UPDATED, postId)
     onChange('') // clear input after submit
   }
 

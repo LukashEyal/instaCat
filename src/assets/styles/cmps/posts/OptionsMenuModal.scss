@@ -2,7 +2,7 @@
 .opt-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.6);
+  background: rgba(0, 0, 0, 0.6);
   display: grid;
   place-items: center;
   z-index: 1000;
@@ -13,7 +13,7 @@
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 .opt-row {
@@ -39,4 +39,9 @@
 .opt-row.cancel {
   font-weight: 500;
   color: #444;
+}
+
+.opt-row.unfollow {
+  font-weight: 500;
+  color: #ff0000;
 }

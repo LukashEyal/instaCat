@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { toggleLikeOptimistic } from '../../store/posts.actions.js'
+import { toggleLikeOptimistic, getUpdatedPost } from '../../store/posts.actions.js'
+
 import { getUser } from '../../store/user.actions.js'
 import EmojiPicker from 'emoji-picker-react'
 import { createPortal } from 'react-dom'
@@ -23,7 +24,7 @@ import verfied from '../../assets/svgs/post-container/verified.svg'
 import avatarPlaceHolder from '../../assets/svgs/post-container/avatar-placeholder.svg'
 import { useDispatch } from 'react-redux'
 
-export function Post({ post, user, postUser }) {
+export function Post({ post, user, postUser, onUpdatePost }) {
   const [showModal, setShowModal] = useState(false)
   const [selectedComments, setSelectedComments] = useState(null)
   const dispatch = useDispatch()
@@ -83,20 +84,10 @@ export function Post({ post, user, postUser }) {
     return () => document.removeEventListener('mousedown', onDocMouseDown)
   }, [ShowPicker])
 
-  useEffect(() => {
-    if (!postId) return
-    const onPostUpdated = updatedPost => {
-      if (!updatedPost || updatedPost._id !== postId) return
-      // replace this post in Redux so the component re-renders with latest likes/comments
-      dispatch({ type: UPDATE_POST, post: updatedPost })
-    }
-    socketService.on(SOCKET_EVENT_POST_UPDATED, onPostUpdated)
-    return () => socketService.off(SOCKET_EVENT_POST_UPDATED, onPostUpdated)
-  }, [postId, dispatch])
-
   function onToggleLike(postId, userId) {
     // toggleLike(postId, userId);
     toggleLikeOptimistic(postId, userId)
+    socketService.emit(SOCKET_EVENT_POST_UPDATED, postId)
   }
 
   return (
@@ -256,6 +247,7 @@ export function Post({ post, user, postUser }) {
 
       {showOptions && (
         <OptionsMenuModal
+          post={post}
           onClose={() => setShowOptions(false)}
           onSendMessage={() => {
             setShowOptions(false)

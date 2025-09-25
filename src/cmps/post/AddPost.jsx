@@ -1,24 +1,21 @@
 // ./post/AddPost.jsx
-import backIcon from "../../assets/svgs/post-container/back.svg";
-import upArrow from "../../assets/svgs/post-container/up-arrow.svg";
-import downArrow from "../../assets/svgs/post-container/down-arrow.svg";
-import locationIcon from "../../assets/svgs/post-container/location.svg";
-import collaborator from "../../assets/svgs/post-container/collaborator.svg";
-import emojiIcon from "../../assets/svgs/post-container/emoji.svg";
+import backIcon from '../../assets/svgs/post-container/back.svg'
+import upArrow from '../../assets/svgs/post-container/up-arrow.svg'
+import downArrow from '../../assets/svgs/post-container/down-arrow.svg'
+import locationIcon from '../../assets/svgs/post-container/location.svg'
+import collaborator from '../../assets/svgs/post-container/collaborator.svg'
+import emojiIcon from '../../assets/svgs/post-container/emoji.svg'
 
-import React, { useEffect, useState, useRef } from "react";
-import { createPortal } from "react-dom";
-import EmojiPicker from "emoji-picker-react";
+import React, { useEffect, useState, useRef } from 'react'
+import { createPortal } from 'react-dom'
+import EmojiPicker from 'emoji-picker-react'
+import { socketService, SOCKET_EVENT_POST_ADDED } from '../../services/socket.service'
 
 function Section({ title, children, defaultOpen = false }) {
-  const [open, setOpen] = useState(defaultOpen);
+  const [open, setOpen] = useState(defaultOpen)
   return (
     <div className="section">
-      <button
-        className="section-header"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-      >
+      <button className="section-header" onClick={() => setOpen(!open)} aria-expanded={open}>
         <span>{title}</span>
         <span className="chev">
           {open ? <img src={upArrow} alt="" /> : <img src={downArrow} alt="" />}
@@ -26,23 +23,23 @@ function Section({ title, children, defaultOpen = false }) {
       </button>
       {open && <div className="section-body">{children}</div>}
     </div>
-  );
+  )
 }
 
 /** Same portal pattern you used in PostClicked */
 function EmojiPortal({ open, onClose, style, popRef, children }) {
-  if (!open) return null;
+  if (!open) return null
 
-  const handleBackdropDown = (e) => {
-    e.stopPropagation();
-    onClose?.();
-  };
+  const handleBackdropDown = e => {
+    e.stopPropagation()
+    onClose?.()
+  }
 
   return createPortal(
     <div
       className="emoji-backdrop"
       onMouseDown={handleBackdropDown}
-      onClick={(e) => e.stopPropagation()}
+      onClick={e => e.stopPropagation()}
       role="dialog"
       aria-modal="true"
     >
@@ -50,79 +47,72 @@ function EmojiPortal({ open, onClose, style, popRef, children }) {
         className="emoji-sheet"
         ref={popRef}
         style={style}
-        onMouseDown={(e) => e.stopPropagation()}
-        onClick={(e) => e.stopPropagation()}
+        onMouseDown={e => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
         {children}
       </div>
     </div>,
     document.body
-  );
+  )
 }
 
-export function AddPost({
-  imageBlob,
-  onBack,
-  onShare,
-  userAvatar,
-  UserFullName,
-}) {
-  const [url, setUrl] = useState(null);
+export function AddPost({ imageBlob, onBack, onShare, userAvatar, UserFullName }) {
+  const [url, setUrl] = useState(null)
 
   // right-side state
-  const [caption, setCaption] = useState("");
-  const [location, setLocation] = useState("");
-  const [collabInput, setCollabInput] = useState("");
-  const [collaborators, setCollaborators] = useState([]);
-  const [shareTo, setShareTo] = useState({ facebook: false });
-  const [altText, setAltText] = useState("");
+  const [caption, setCaption] = useState('')
+  const [location, setLocation] = useState('')
+  const [collabInput, setCollabInput] = useState('')
+  const [collaborators, setCollaborators] = useState([])
+  const [shareTo, setShareTo] = useState({ facebook: false })
+  const [altText, setAltText] = useState('')
   const [settings, setSettings] = useState({
     hideLikeCount: false,
     disableComments: false,
-  });
+  })
 
   // emoji picker state (borrowed from PostClicked)
-  const [showPicker, setShowPicker] = useState(false);
-  const [pickerPos, setPickerPos] = useState({ top: 64, left: 0 });
-  const emojiBtnRef = useRef(null);
-  const emojiPopRef = useRef(null);
-  const captionRef = useRef(null);
+  const [showPicker, setShowPicker] = useState(false)
+  const [pickerPos, setPickerPos] = useState({ top: 64, left: 0 })
+  const emojiBtnRef = useRef(null)
+  const emojiPopRef = useRef(null)
+  const captionRef = useRef(null)
 
   useEffect(() => {
-    if (!imageBlob) return;
-    const u = URL.createObjectURL(imageBlob);
-    setUrl(u);
-    return () => URL.revokeObjectURL(u);
-  }, [imageBlob]);
+    if (!imageBlob) return
+    const u = URL.createObjectURL(imageBlob)
+    setUrl(u)
+    return () => URL.revokeObjectURL(u)
+  }, [imageBlob])
 
   // close picker when clicking outside (same pattern)
   useEffect(() => {
-    if (!showPicker) return;
+    if (!showPicker) return
 
-    const onDocMouseDown = (e) => {
-      const pop = emojiPopRef.current;
-      const btn = emojiBtnRef.current;
-      if (!pop || !btn) return;
-      const clickedInsidePop = pop.contains(e.target);
-      const clickedButton = btn.contains(e.target);
-      if (!clickedInsidePop && !clickedButton) setShowPicker(false);
-    };
+    const onDocMouseDown = e => {
+      const pop = emojiPopRef.current
+      const btn = emojiBtnRef.current
+      if (!pop || !btn) return
+      const clickedInsidePop = pop.contains(e.target)
+      const clickedButton = btn.contains(e.target)
+      if (!clickedInsidePop && !clickedButton) setShowPicker(false)
+    }
 
-    document.addEventListener("mousedown", onDocMouseDown);
-    return () => document.removeEventListener("mousedown", onDocMouseDown);
-  }, [showPicker]);
+    document.addEventListener('mousedown', onDocMouseDown)
+    return () => document.removeEventListener('mousedown', onDocMouseDown)
+  }, [showPicker])
 
   const addCollaborator = () => {
-    const v = collabInput.trim();
-    if (!v) return;
-    if (!collaborators.includes(v)) setCollaborators((arr) => [...arr, v]);
-    setCollabInput("");
-  };
-  const removeCollaborator = (name) =>
-    setCollaborators((arr) => arr.filter((n) => n !== name));
+    const v = collabInput.trim()
+    if (!v) return
+    if (!collaborators.includes(v)) setCollaborators(arr => [...arr, v])
+    setCollabInput('')
+  }
+  const removeCollaborator = name => setCollaborators(arr => arr.filter(n => n !== name))
 
-  const handleShare = (e) => {
-    e.preventDefault();
+  const handleShare = e => {
+    e.preventDefault()
     onShare?.({
       blob: imageBlob,
       caption,
@@ -131,8 +121,8 @@ export function AddPost({
       shareTo,
       altText,
       settings,
-    });
-  };
+    })
+  }
 
   return (
     <>
@@ -151,9 +141,7 @@ export function AddPost({
       </div>
 
       <div className="add-post-body">
-        <div className="cropped-image">
-          {url && <img src={url} alt="Cropped" />}
-        </div>
+        <div className="cropped-image">{url && <img src={url} alt="Cropped" />}</div>
 
         {/* RIGHT SIDE */}
         <aside className="compose-right">
@@ -171,7 +159,7 @@ export function AddPost({
               aria-label="Caption"
               maxLength={2200}
               value={caption}
-              onChange={(e) => setCaption(e.target.value)}
+              onChange={e => setCaption(e.target.value)}
             />
 
             <div className="emoji-counter-div">
@@ -181,17 +169,17 @@ export function AddPost({
                 ref={emojiBtnRef}
                 title="Add emoji"
                 onClick={() => {
-                  const r = emojiBtnRef.current.getBoundingClientRect();
-                  const PICKER_W = 320;
-                  const PICKER_H = 380;
-                  const GAP = 8;
+                  const r = emojiBtnRef.current.getBoundingClientRect()
+                  const PICKER_W = 320
+                  const PICKER_H = 380
+                  const GAP = 8
                   const left = Math.min(
                     Math.max(8, r.right - PICKER_W),
                     window.innerWidth - PICKER_W - 8
-                  );
-                  const top = Math.max(8, r.top - PICKER_H - GAP);
-                  setPickerPos({ top, left });
-                  setShowPicker((v) => !v);
+                  )
+                  const top = Math.max(8, r.top - PICKER_H - GAP)
+                  setPickerPos({ top, left })
+                  setShowPicker(v => !v)
                 }}
               >
                 <img src={emojiIcon} alt="" />
@@ -212,9 +200,9 @@ export function AddPost({
                 previewConfig={{ showPreview: false }}
                 height={380}
                 width={320}
-                onEmojiClick={(emojiData) => {
-                  setCaption((t) => t + emojiData.emoji);
-                  requestAnimationFrame(() => captionRef.current?.focus());
+                onEmojiClick={emojiData => {
+                  setCaption(t => t + emojiData.emoji)
+                  requestAnimationFrame(() => captionRef.current?.focus())
                 }}
               />
             </EmojiPortal>
@@ -229,7 +217,7 @@ export function AddPost({
               type="text"
               placeholder="Add Location"
               value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={e => setLocation(e.target.value)}
             />
             <button className="location-button" type="button">
               <img src={locationIcon} alt="" />
@@ -242,8 +230,8 @@ export function AddPost({
               type="text"
               placeholder="Add collaborators"
               value={collabInput}
-              onChange={(e) => setCollabInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && addCollaborator()}
+              onChange={e => setCollabInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && addCollaborator()}
             />
             <button className="collab-btn" type="button" onClick={addCollaborator}>
               <img src={collaborator} alt="" />
@@ -252,7 +240,7 @@ export function AddPost({
 
           {!!collaborators.length && (
             <ul className="collab-list">
-              {collaborators.map((name) => (
+              {collaborators.map(name => (
                 <li key={name}>
                   <span>@{name}</span>
                   <button
@@ -273,9 +261,7 @@ export function AddPost({
               <input
                 type="checkbox"
                 checked={shareTo.facebook}
-                onChange={(e) =>
-                  setShareTo((s) => ({ ...s, facebook: e.target.checked }))
-                }
+                onChange={e => setShareTo(s => ({ ...s, facebook: e.target.checked }))}
               />
               <span>Facebook</span>
             </label>
@@ -287,7 +273,7 @@ export function AddPost({
             <textarea
               placeholder="Write alt text for your photo"
               value={altText}
-              onChange={(e) => setAltText(e.target.value)}
+              onChange={e => setAltText(e.target.value)}
             />
           </Section>
 
@@ -297,8 +283,8 @@ export function AddPost({
               <input
                 type="checkbox"
                 checked={settings.hideLikeCount}
-                onChange={(e) =>
-                  setSettings((s) => ({
+                onChange={e =>
+                  setSettings(s => ({
                     ...s,
                     hideLikeCount: e.target.checked,
                   }))
@@ -310,8 +296,8 @@ export function AddPost({
               <input
                 type="checkbox"
                 checked={settings.disableComments}
-                onChange={(e) =>
-                  setSettings((s) => ({
+                onChange={e =>
+                  setSettings(s => ({
                     ...s,
                     disableComments: e.target.checked,
                   }))
@@ -323,5 +309,5 @@ export function AddPost({
         </aside>
       </div>
     </>
-  );
+  )
 }
