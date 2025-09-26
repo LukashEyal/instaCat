@@ -1,4 +1,8 @@
-import { legacy_createStore as createStore, combineReducers } from 'redux'
+import {
+	legacy_createStore as createStore,
+	combineReducers,
+	compose,
+} from 'redux'
 
 import { postsReducer } from './posts.reducer'
 import { userReducer } from './user.reducer'
@@ -7,16 +11,21 @@ import { systemReducer } from './system.reducer'
 import { msgReducer } from './msg.reducer'
 
 const rootReducer = combineReducers({
-    postsModule: postsReducer,
-    userModule: userReducer,
-    systemModule: systemReducer,
-    reviewModule: reviewReducer,
-    msgModule : msgReducer,
+	postsModule: postsReducer,
+	userModule: userReducer,
+	systemModule: systemReducer,
+	reviewModule: reviewReducer,
+	msgModule: msgReducer,
 })
 
+const composeEnhancers =
+	(process.env.NODE_ENV !== 'production' &&
+		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+	compose
 
-const middleware = (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__() : undefined
-export const store = createStore(rootReducer, middleware)
+// const middleware = (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__() : undefined
+// export const store = createStore(rootReducer, middleware)
+export const store = createStore(rootReducer, composeEnhancers())
 
 // For debug:
 // store.subscribe(() => {
@@ -24,6 +33,3 @@ export const store = createStore(rootReducer, middleware)
 //     console.log('storeState:\n', store.getState())
 //     console.log('*******************************')
 // })
-
-
-
