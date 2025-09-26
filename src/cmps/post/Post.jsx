@@ -86,8 +86,9 @@ export function Post({ post, user, postUser, onUpdatePost }) {
 
   function onToggleLike(postId, userId) {
     // toggleLike(postId, userId);
-    toggleLikeOptimistic(postId, userId)
     socketService.emit(SOCKET_EVENT_POST_UPDATED, postId)
+
+    toggleLikeOptimistic(postId, userId)
   }
 
   return (

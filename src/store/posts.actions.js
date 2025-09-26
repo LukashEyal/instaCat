@@ -1,5 +1,5 @@
 import { postService } from '../services/posts/post.service'
-
+import { socketService, SOCKET_EVENT_POST_UPDATED } from '../services/socket.service.js'
 import {
   SET_POSTS,
   UPDATE_POST,

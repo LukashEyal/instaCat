@@ -150,8 +150,6 @@ strong {
   }
 }
 
-
-
 .post-caption {
   display: flex;
   align-items: center;
@@ -184,15 +182,15 @@ strong {
 
 .post-comments {
   color: #8e8e8e;
-  font-size: 16px;
-  margin-bottom: 4px;
+  font-size: 14px;
+  margin-bottom: 8px;
 }
 
 .post-comment {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1em;
+
   margin-left: -0.2em;
 }
 
@@ -258,4 +256,7 @@ strong {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   border-radius: 12px;
   overflow: hidden;
+}
+.like-placeholder {
+  height: 1.3rem; // match the line-height of the <p>
 }
