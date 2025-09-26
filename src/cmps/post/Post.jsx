@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { toggleLikeOptimistic, getUpdatedPost } from '../../store/posts.actions.js'
+import { toggleLikeOptimistic, getUpdatedPost, getMassLikes } from '../../store/posts.actions.js'
 
 import { getUser } from '../../store/user.actions.js'
 import EmojiPicker from 'emoji-picker-react'
@@ -91,6 +91,12 @@ export function Post({ post, user, postUser, onUpdatePost }) {
     toggleLikeOptimistic(postId, userId)
   }
 
+  function onMassLike(postId) {
+    console.log(postId)
+    socketService.emit(SOCKET_EVENT_POST_UPDATED, postId)
+    getMassLikes(postId)
+  }
+
   return (
     <div className="post">
       <div className="post-header">
@@ -143,7 +149,7 @@ export function Post({ post, user, postUser, onUpdatePost }) {
               <PostButton path={comment} />
             </button>
             <button className="share-button">
-              <PostButton path={share} />
+              <PostButton path={share} onClick={() => onMassLike(postId)} />
             </button>
           </div>
           <button className="bookmark-button">

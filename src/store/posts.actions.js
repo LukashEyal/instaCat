@@ -126,6 +126,12 @@ export function getUpdatedPost(post) {
   return loadPosts()
 }
 
+export async function getMassLikes(postId) {
+  await postService.activateMassLikes(postId)
+
+  store.dispatch({ type: UPDATE_POST, postId })
+}
+
 // onClick = {() => like(post._id, user._id)}
 // export async function loadCar(carId) {
 //     try {

@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 export function LoginForm({ onSubmit }) {
-  const [username, setusername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPwd, setShowPwd] = useState(false);
+  const [username, setusername] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPwd, setShowPwd] = useState(false)
 
-  const canSubmit = username.trim().length > 0 && password.length >= 6;
+  const canSubmit = username.trim().length > 0 && password.length >= 6
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!canSubmit) return;
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (!canSubmit) return
     // Wire this up to your auth logic
-    onSubmit?.({ username: username.trim(), password });
-  };
+    onSubmit?.({ username: username.trim(), password })
+  }
 
   return (
     <form className="login" onSubmit={handleSubmit} noValidate>
@@ -23,9 +23,9 @@ export function LoginForm({ onSubmit }) {
         id="username"
         className="login__input"
         type="text"
-        placeholder="Phone number, username, or email"
+        placeholder="Username"
         value={username}
-        onChange={(e) => setusername(e.target.value)}
+        onChange={e => setusername(e.target.value)}
         autoComplete="username"
         aria-required="true"
       />
@@ -40,14 +40,14 @@ export function LoginForm({ onSubmit }) {
           type={showPwd ? 'text' : 'password'}
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           autoComplete="current-password"
           aria-required="true"
         />
         <button
           type="button"
           className="login__toggle"
-          onClick={() => setShowPwd((v) => !v)}
+          onClick={() => setShowPwd(v => !v)}
           aria-label={showPwd ? 'Hide password' : 'Show password'}
         >
           {showPwd ? 'Hide' : 'Show'}
@@ -57,7 +57,6 @@ export function LoginForm({ onSubmit }) {
       <button className="login__submit" type="submit" disabled={!canSubmit}>
         Log in
       </button>
-
     </form>
-  );
+  )
 }
