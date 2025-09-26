@@ -5,7 +5,8 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
 	plugins: [react()],
 	build: {
-		outDir: '../instaCat-Render/public',
+		// outDir: '../instaCat-Render/public',
+		outDir: 'dist',
 		emptyOutDir: true,
 	},
 })
