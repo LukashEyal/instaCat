@@ -35,12 +35,13 @@
     /* header | caption | comments | actions */
     grid-template-rows: auto auto 1fr auto;
     grid-template-areas:
-      "image header"
-      "image caption"
-      "image comments"
-      "image actions"
-      "image null";
+      'image header'
+      'image caption'
+      'image comments'
+      'image actions'
+      'image null';
     height: 100%;
+    width: 100%;
 
     /* IMAGE PANE — fill & crop (no black bars) */
     .modal-post-image {
@@ -236,9 +237,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        transition:
-          transform 0.08s ease,
-          opacity 0.08s ease;
+        transition: transform 0.08s ease, opacity 0.08s ease;
         svg,
         img {
           width: 24px;
@@ -338,11 +337,11 @@
       grid-template-columns: 1fr;
       grid-template-rows: auto auto auto 1fr auto;
       grid-template-areas:
-        "image"
-        "header"
-        "caption"
-        "comments"
-        "actions";
+        'image'
+        'header'
+        'caption'
+        'comments'
+        'actions';
       height: auto;
 
       .modal-post-image img {

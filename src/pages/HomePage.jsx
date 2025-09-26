@@ -20,12 +20,11 @@ export function HomePage() {
     loadUsers()
 
     const onAdded = post => {
-      loadPosts() // or dispatch ADD_POST for lighter update
+      loadPosts()
       return post
     }
     const onUpdated = post => {
-      console.log('GOT FROM SOCKET UPDATED', post)
-      loadPosts() // or dispatch UPDATE_POST
+      loadPosts()
       return post
     }
 
