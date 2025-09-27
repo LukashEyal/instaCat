@@ -93,16 +93,25 @@ export function Messages() {
     return () => document.removeEventListener('mousedown', onDocDown)
   }, [showPicker])
 
-  useEffect(() => {
-    if (activeUserId || !users.length || !loggedInUser?._id) return
-    const firstOther = users.find(u => u._id !== loggedInUser._id)
-    if (firstOther) setActiveUserId(firstOther._id)
-  }, [users, activeUserId, loggedInUser?._id])
+  // Build set of partner IDs who have sent me a message
+  const incomingSenders = useMemo(() => {
+    if (!loggedInUser?._id) return new Set()
+    const s = new Set()
+    for (const m of msgs) {
+      if (m.to === loggedInUser._id && m.from) s.add(m.from)
+    }
+    return s
+  }, [msgs, loggedInUser?._id])
 
-  const convos = useMemo(
-    () => users.filter(u => u._id !== loggedInUser?._id),
-    [users, loggedInUser?._id]
-  )
+  // Conversations only with users who sent me at least one message
+  const convos = useMemo(() => {
+    return users.filter(u => u._id !== loggedInUser?._id && incomingSenders.has(u._id))
+  }, [users, loggedInUser?._id, incomingSenders])
+
+  useEffect(() => {
+    if (activeUserId || !convos.length) return
+    setActiveUserId(convos[0]._id)
+  }, [convos, activeUserId])
 
   const lastMsgByPartner = useMemo(() => {
     const map = Object.create(null)
@@ -271,7 +280,9 @@ export function Messages() {
 
         <div className="dm__list" role="list">
           {filteredConvos.length === 0 && (
-            <div style={{ padding: '16px', color: '#8e8e8e', fontSize: 13 }}>No results</div>
+            <div style={{ padding: '16px', color: '#8e8e8e', fontSize: 13 }}>
+              {searchQ ? 'No results' : 'No conversations yet'}
+            </div>
           )}
 
           {filteredConvos.map(u => (
