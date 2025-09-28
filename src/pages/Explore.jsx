@@ -61,7 +61,7 @@ export function Explore() {
         <Comments
           post={openPost}
           user={loggedInUser}
-          postUserObj={openPostUser} // ✅ use correct variable
+          postOwner={openPostUser} // ✅ use correct variable
           onClose={() => setOpenPostId(null)}
         />
       )}
