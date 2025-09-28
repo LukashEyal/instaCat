@@ -1,104 +1,104 @@
 // CreateCmp.jsx
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AddImage } from './post/AddImage'
-import { ImageCrop } from './post/ImageCorp' // your file name
+import { ImageCrop } from './post/ImageCrop' // ← fix import name
 import { AddPost } from './post/AddPost'
 import { uploadService } from '../services/upload.service.js'
 import { AddPostAction } from '../store/posts.actions.js'
 import { useSelector } from 'react-redux'
 
 export function CreateCmp({ onClose }) {
-	const loggedInUser = useSelector(storeState => storeState.userModule.user)
+  const loggedInUser = useSelector(s => s.userModule.user)
 
-	const [step, setStep] = useState('select') // 'select' | 'crop' | 'compose'
-	const [imgUrl, setImgUrl] = useState(null) // original uploaded image url
-	const [cropResult, setCropResult] = useState(null) // { blob, url, meta }
-	const [PostImageUrl, setPostImageUrl] = useState()
-	const [content, setContent] = useState(null)
-	const [location, setLocation] = useState(null)
-	const [postObj, setPostObj] = useState(null)
-	const [user, setUser] = useState(loggedInUser)
+  const [step, setStep] = useState('select') // 'select' | 'crop' | 'compose'
+  const [imgUrl, setImgUrl] = useState(null) // original uploaded image url (for cropping UI)
+  const [cropResult, setCropResult] = useState(null) // { blob, url, meta }
+  const [postImageUrl, setPostImageUrl] = useState(null) // final uploaded (cropped) URL
 
-	const userId = user._id
+  // cleanup preview URL to avoid leaks
+  useEffect(() => {
+    return () => {
+      if (cropResult?.url) URL.revokeObjectURL(cropResult.url)
+    }
+  }, [cropResult?.url])
 
-	const handleUploaded = url => {
-		setImgUrl(url)
-		setStep('crop')
-	}
+  const user = loggedInUser
+  const userId = user._id
 
-	const handleCropped = (blob, url, meta) => {
-		setCropResult({ blob, url, meta })
-		// keep imgUrl so Back from compose returns to crop
-		setStep('compose')
-	}
+  function handleUploaded(url) {
+    setImgUrl(url)
+    setStep('crop')
+  }
 
-	const handleShare = async draft => {
-		const {
-			blob, // image Blob
-			caption, // string
-			location, // string
-			collaborators, // string[]
-			shareTo, // { facebook: boolean, ... }
-			altText, // string
-			settings, // { hideLikeCount, disableComments }
-		} = draft
+  function handleCropped(blob, url, meta) {
+    setCropResult({ blob, url, meta })
+    setStep('compose')
+  }
 
-		const type = blob.type || 'image/jpeg'
-		const ext = type.split('/')[1] || 'jpg'
-		const file = new File([blob], `post_${Date.now()}.${ext}`, { type })
+  async function handleShare(draft) {
+    // draft comes from <AddPost/> and should include the cropped blob & fields
+    const {
+      blob, // cropped image Blob
+      caption, // string
+      location, // string
+      collaborators, // string[] (if you support)
+      shareTo, // {facebook?: boolean, ...} (if you support)
+      altText, // string (if you support)
+      settings, // { hideLikeCount?, disableComments? } (if you support)
+    } = draft
 
-		// Your uploadService expects an <input type="file">-style event
-		const fakeEvent = { target: { files: [file] } }
-		const imgData = await uploadService.uploadImg(fakeEvent)
+    // 1) Upload the CROPPED blob
+    const type = blob?.type || 'image/jpeg'
+    const ext = type.split('/')[1] || 'jpg'
+    const file = new File([blob], `post_${Date.now()}.${ext}`, { type })
 
-		setPostImageUrl(imgData.url)
+    // If uploadService expects an input-change-like event:
+    const fakeEvent = { target: { files: [file] } }
+    const imgData = await uploadService.uploadImg(fakeEvent) // expect { url: '...' }
 
-		setStep('post')
+    const finalUrl = imgData.url
+    setPostImageUrl(finalUrl)
 
-		const postData = {
-			comments: [],
-			content: caption,
-			createdAt: Date.now(),
-			likeBy: [],
-			location: location,
-			imageUrl: imgUrl,
-			userId: userId,
-		}
+    // 2) Build the post using the uploaded (cropped) URL
+    const postData = {
+      comments: [],
+      content: caption ?? '',
+      createdAt: Date.now(),
+      likeBy: [],
+      location: location ?? '',
+      imageUrl: finalUrl, // ← IMPORTANT: use cropped upload url
+      userId,
+    }
 
-		AddPostAction(postData)
-		onClose()
-	}
+    // 3) Dispatch and close
+    AddPostAction(postData)
+    onClose()
+  }
 
-	return (
-		<div className="modal-overlay" onClick={onClose}>
-			<div
-				className={`create-post-main-container ${
-					step === 'compose' ? 'wide' : ''
-				}`}
-				onClick={e => e.stopPropagation()}
-			>
-				{step === 'select' && <AddImage onUploaded={handleUploaded} />}
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className={`create-post-main-container ${step === 'compose' ? 'wide' : ''}`}
+        onClick={e => e.stopPropagation()}
+      >
+        {step === 'select' && <AddImage onUploaded={handleUploaded} />}
 
-				{step === 'crop' && imgUrl && (
-					<ImageCrop
-						imgUrl={imgUrl}
-						onBack={() => setStep('select')}
-						onConfirm={handleCropped}
-					/>
-				)}
+        {step === 'crop' && imgUrl && (
+          <ImageCrop imgUrl={imgUrl} onBack={() => setStep('select')} onConfirm={handleCropped} />
+        )}
 
-				{step === 'compose' && cropResult?.blob && (
-					<AddPost
-						imageBlob={cropResult.blob}
-						onBack={() => setStep('crop')}
-						onShare={handleShare}
-						userAvatar={user.avatarUrl}
-						UserFullName={user.username}
-					/>
-				)}
-
-				{step === 'post' && PostImageUrl && AddPostAction(postData)}
-			</div>
-		</div>
-	)
+        {step === 'compose' && cropResult?.blob && (
+          <AddPost
+            imageBlob={cropResult.blob} // ← CROPPED blob goes in
+            imagePreviewUrl={cropResult.url} // optional: show preview
+            onBack={() => setStep('crop')}
+            onShare={handleShare}
+            userAvatar={user.avatarUrl}
+            UserFullName={user.username}
+          />
+        )}
+        {/* removed the "post" step that tried to call AddPostAction in JSX */}
+      </div>
+    </div>
+  )
 }

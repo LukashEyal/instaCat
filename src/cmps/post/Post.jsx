@@ -24,7 +24,7 @@ import verfied from '../../assets/svgs/post-container/verified.svg'
 import avatarPlaceHolder from '../../assets/svgs/post-container/avatar-placeholder.svg'
 import { useDispatch } from 'react-redux'
 
-export function Post({ post, user, postUser, onUpdatePost }) {
+export function Post({ post, user, postOwner, onUpdatePost }) {
   const [showModal, setShowModal] = useState(false)
   const [selectedComments, setSelectedComments] = useState(null)
   const dispatch = useDispatch()
@@ -101,13 +101,13 @@ export function Post({ post, user, postUser, onUpdatePost }) {
     <div className="post">
       <div className="post-header">
         <img
-          src={postUser?.avatarUrl || DEFAULT_AVATAR}
-          alt={`${postUser?.username || 'user'}'s avatar`}
+          src={postOwner?.avatarUrl || DEFAULT_AVATAR}
+          alt={`${postOwner?.username || 'user'}'s avatar`}
         />
 
         <div className="post-user-details">
           <div className="post-user-meta">
-            <span className="post-user-name">{postUser?.username || 'Unknown'}</span>
+            <span className="post-user-name">{postOwner?.username || 'Unknown'}</span>
             <PostButton path={verfied} />
             <span className="post-created-at">• {getShortTimeAgo(post.createAt)}</span>
           </div>
@@ -169,7 +169,7 @@ export function Post({ post, user, postUser, onUpdatePost }) {
 
         <div className="post-caption">
           <span className="caption-user">
-            <strong>{postUser?.username || 'Unknown'}</strong>
+            <strong>{postOwner?.username || 'Unknown'}</strong>
             <PostButton path={verfied} />
           </span>
           {` ${post.content}`}
@@ -247,7 +247,7 @@ export function Post({ post, user, postUser, onUpdatePost }) {
         <Comments
           post={post}
           user={user}
-          postUserObj={postUser}
+          postOwner={postOwner}
           onClose={() => setShowModal(false)}
         />
       )}
@@ -265,15 +265,15 @@ export function Post({ post, user, postUser, onUpdatePost }) {
 
       {showSendMsg && (
         <SendMessageModal
-          toUser={postUser}
+          toUser={postOwner}
           fromUserId={user._id}
           onClose={() => setShowSendMsg(false)}
           onSend={async txt => {
             // OPTION A: delegate to parent (recommended)
-            // await sendMsg({ toUserId: postUser._id, fromUserId: user._id, txt })
+            // await sendMsg({ toUserId: postOwner._id, fromUserId: user._id, txt })
 
             // OPTION B: emit via socket or call your API service directly here.
-            // await msgService.send({ toUserId: postUser._id, fromUserId: user._id, txt })
+            // await msgService.send({ toUserId: postOwner._id, fromUserId: user._id, txt })
 
             setShowSendMsg(false)
           }}

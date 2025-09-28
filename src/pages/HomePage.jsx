@@ -21,11 +21,9 @@ export function HomePage() {
 
     const onAdded = post => {
       loadPosts()
-      return post
     }
     const onUpdated = post => {
       loadPosts()
-      return post
     }
 
     socketService.on(SOCKET_EVENT_POST_ADDED, onAdded)
@@ -41,8 +39,8 @@ export function HomePage() {
     <div className="main-layout">
       <div className="feed-container">
         {posts.map(post => {
-          const postUser = users.find(user => user._id === post.userId)
-          return <Post key={post._id} post={post} user={loggedInUser} postUser={postUser} />
+          const postOwner = users.find(user => user._id === post.userId)
+          return <Post key={post._id} post={post} user={loggedInUser} postOwner={postOwner} />
         })}
       </div>
       <UserSideBar />

@@ -5,7 +5,7 @@ import { toggleLike, getFullNamesFromUserIds, getUserNames } from '../../store/p
 
 import PostModalView from './PostModalView'
 
-export function Comments({ post, onClose, user, postUserObj }) {
+export function Comments({ post, onClose, user, postOwner }) {
   const modalRef = useRef()
 
   const handleClickOutside = e => {
@@ -22,7 +22,7 @@ export function Comments({ post, onClose, user, postUserObj }) {
   return (
     <div className="modal-overlay">
       <div className="modal-content" ref={modalRef}>
-        <PostModalView post={post} user={user} postOwner={postUserObj} />
+        <PostModalView post={post} user={user} postOwner={postOwner} />
       </div>
     </div>
   )
