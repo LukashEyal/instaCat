@@ -1,5 +1,4 @@
 /* The cropper fills this, so set your desired size here */
-
 .create-post-body {
   display: flex;
   flex-direction: column;
@@ -9,11 +8,13 @@
 .cropper-wrap {
   position: relative;
   width: 100%;
-  height: 100%; /* set your desired height */
-
+  /* Give the whole area a meaningful height context */
+  min-height: 60vh; /* ← add a real height baseline */
   border-radius: 12px;
   overflow: hidden;
+  background: #fff; /* or transparent */
 }
+
 /* Header */
 .crop-header {
   display: grid;
@@ -39,22 +40,37 @@
   flex-direction: column;
 }
 .crop-body {
-  position: relative; /* anchor for toolbar */
+  position: relative;
 }
 
+/* The frame that directly wraps <Cropper/> MUST have explicit size */
+/* Force cropper background transparent (no gray) */
+.cropper-frame > .reactEasyCrop_Container {
+  background: #fff !important; /* use transparent if you prefer */
+}
+
+/* keep your existing size + overflow */
+.cropper-frame {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  overflow: hidden;
+  /* no background here so the container shows through */
+}
+
+/* ❌ Remove this rule – it breaks panning by overriding library transforms
 .cropper-frame img {
   width: 100%;
   height: 100%;
-
   overflow: hidden;
 }
+*/
 
-/* Toolbar bottom-left in white area */
 /* Toolbar bottom-left spanning full width so we can push the last button */
 .cropper-toolbar.bl {
   position: absolute;
   left: 20px;
-  right: 20px; /* stretch across the white area */
+  right: 20px;
   bottom: 16px;
   display: flex;
   gap: 8px;
@@ -104,13 +120,11 @@
   margin: 0;
   box-shadow: none;
   cursor: pointer;
-
-  /* optional layout */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 0; /* remove inline extra space */
-  width: 34px; /* optional hit area */
+  line-height: 0;
+  width: 34px;
   height: 34px;
 }
 
@@ -129,16 +143,16 @@
 }
 
 .header-right {
-  flex: 1; // make it take full remaining space in the header
+  flex: 1;
   display: flex;
-  justify-content: flex-end; // push button to the right
+  justify-content: flex-end;
 
   .next-btn {
-    flex: 1; // button text stretches across full width
-    text-align: right; // keep text aligned to the end
-    background: none; // optional, depends on your style
-    border: none; // optional
-    font-weight: 600; // make it stand out
+    flex: 1;
+    text-align: right;
+    background: none;
+    border: none;
+    font-weight: 600;
     cursor: pointer;
   }
 }
